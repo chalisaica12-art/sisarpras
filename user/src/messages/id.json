@@ -1,0 +1,381 @@
+{
+  "Navbar": {
+  "subtitle": "Sistem Informasi Sarana & Prasarana Sekolah",
+  "home": "Beranda",
+  "report": "Form Pelaporan",
+  "reports": "Daftar Laporan",
+  "language": "Bahasa",
+  "login": "Masuk",
+  "profileMenu": "Menu Profil",
+  "myProfile": "Profil Saya",
+  "logout": "Keluar",
+  "openMenu": "Buka menu",
+  "closeMenu": "Tutup menu"
+},
+
+  "Footer": {
+  "description": "SISARPRAS adalah sistem informasi sarana dan prasarana sekolah yang membantu memudahkan proses pelaporan kerusakan, pemantauan status laporan, serta pengelolaan data sarana dan prasarana secara lebih teratur dan mudah diakses.",
+  "linksTitle": "TAUTAN",
+  "home": "Beranda",
+  "report": "Form Pelaporan",
+  "reports": "Daftar Laporan",
+  "addressTitle": "ALAMAT",
+  "addressLine1": "Jl. Tanimbar No.22",
+  "addressLine2": "Kasin, Kecamatan Klojen, Kota Malang",
+  "addressLine3": "Jawa Timur 65117",
+  "copyright": "© 2026 SISARPRAS",
+  "tagline": "SISARPRAS - Sistem Informasi Sarana dan Prasarana Sekolah"
+},
+
+ "Home": {
+  "title": "SISARPRAS",
+  "description": "Layanan terpadu sarana sekolah untuk melaporkan kerusakan fasilitas dan memantau proses penanganannya.",
+  "reportButton": "Laporkan Kerusakan",
+  "checkReportButton": "Cek Laporan",
+
+  "crumb": "Sistem Pelaporan Sarana & Prasarana Sekolah",
+  "heroTitle1": "Laporkan Kerusakan Sarana &",
+  "heroTitle2": "Prasarana Sekolah",
+  "heroDescription": "Laporkan kerusakan fasilitas sekolah dan pantau proses penanganannya dengan mudah. Setiap laporan akan diproses dan bisa kamu pantau sampai selesai.",
+
+  "previousPhoto": "Foto sebelumnya",
+  "nextPhoto": "Foto berikutnya",
+  "choosePhoto": "Pilih foto",
+
+  "informationTitle": "Informasi Terkini Sarpras",
+  "informationDescription": "Update terbaru mengenai layanan, pemeliharaan, dan pengumuman sarana prasarana sekolah.",
+  "previousInformation": "Informasi sebelumnya",
+  "nextInformation": "Informasi berikutnya",
+
+  "active": "Aktif",
+  "important": "Penting",
+  "complaintService": "LAYANAN PENGADUAN",
+  "importantInformation": "INFORMASI PENTING",
+
+  "operatingHours": "Jam Operasional",
+  "mondayFriday": "Senin – Jumat",
+  "selfReporting": "Laporan dapat dikirim kapan saja melalui web.",
+
+  "developmentTitle1": "Web Masih Tahap",
+  "developmentTitle2": "Pengembangan",
+  "developmentDescription": "Website SISARPRAS masih dalam tahap pengembangan, beberapa fitur mungkin belum tersedia atau masih dalam proses penyempurnaan.",
+
+  "reportingGuide": "Panduan Pelaporan",
+  "guideTitle": "Perlu Diketahui Sebelum Melapor",
+  "guideDescription": "Lengkapi laporan Anda agar tim Sarpras dapat memahami kerusakan dan segera menindaklanjutinya.",
+
+  "fillReporterData": "Isi data pelapor",
+  "fillReporterDescription": "Masukkan nama, nomor WhatsApp, dan email yang dapat dihubungi.",
+
+  "determineLocation": "Tentukan lokasi dan barang",
+  "determineLocationDescription": "Pilih lokasi atau ruangan, lalu masukkan nama barang yang mengalami kerusakan.",
+
+  "explainDamage": "Jelaskan kerusakan",
+  "explainDamageDescription": "Tuliskan jenis dan kondisi kerusakan dengan jelas. Sertakan foto jika tersedia.",
+
+  "determineUrgency": "Tentukan urgensi dan kirim laporan",
+  "determineUrgencyDescription": "Pilih tingkat urgensi sesuai kondisi kerusakan, kemudian kirim laporan.",
+
+  "handlingProcess": "Proses Penanganan",
+  "fourEasySteps": "4 Langkah Mudah",
+  "processDescription": "Laporan Anda akan diproses dari pengiriman hingga selesai.",
+
+  "report": "Laporkan",
+  "reportDescription": "Isi formulir dengan data dan informasi barang yang mengalami kerusakan.",
+
+  "verified": "Diverifikasi",
+  "verifiedDescription": "Tim Sarpras akan memeriksa laporan dan memastikan informasi yang diberikan sudah sesuai.",
+
+  "processed": "Diproses",
+  "processedDescription": "Laporan yang sudah diverifikasi akan ditindaklanjuti oleh tim untuk dilakukan perbaikan.",
+
+  "completed": "Selesai",
+  "completedDescription": "Setelah perbaikan selesai, status laporan akan diperbarui dan dapat dilihat oleh pelapor."
+},
+
+  "Report": {
+  "title": "Form Pelaporan Kerusakan",
+  "subtitle": "Laporkan kerusakan fasilitas sekolah untuk segera ditindaklanjuti.",
+
+  "reporterData": "Data Pelapor",
+  "reporterIdentity": "Identitas Pelapor",
+  "reporter": "Pelapor",
+  "reporterPlaceholder": "Nama lengkap Anda",
+  "phone": "No. Telepon / WhatsApp",
+  "phonePlaceholder": "Contoh: 0812345678",
+  "email": "Email",
+  "emailPlaceholder": "Masukkan email",
+
+  "damageDetail": "Detail Kerusakan",
+  "required": "* Wajib Dilengkapi",
+  "location": "Lokasi / Ruangan",
+  "locationPlaceholder": "Pilih Lokasi",
+  "damagedItem": "Nama Barang yang Rusak",
+  "damagedItemPlaceholder": "Contoh: AC, Meja, Kursi, dll",
+  "damageType": "Jenis Kerusakan",
+  "broken": "Pecah / Patah",
+  "cracked": "Retak / Fisik",
+  "notWorking": "Tidak Berfungsi",
+  "other": "Lainnya...",
+
+  "otherPlaceholder": "Tuliskan jenis kerusakan lainnya",
+
+  "urgency": "Tingkat Urgensi",
+  "urgencyHelper": "Prioritas menentukan SLA perbaikan",
+  "low": "Rendah",
+  "medium": "Sedang",
+  "high": "Tinggi / Darurat",
+
+  "description": "Deskripsi Kerusakan",
+  "characterCount": "karakter",
+  "descriptionPlaceholder": "Jelaskan secara detail tentang kerusakan yang terjadi...",
+
+  "photoEvidence": "Bukti Foto Kerusakan",
+  "maxSize": "Maks. 2 MB",
+  "uploadTitle": "Unggah foto kerusakan barang",
+  "uploadDescription": "Gunakan foto yang jelas dan menunjukkan kondisi kerusakan",
+  "chooseFile": "Pilih Berkas",
+  "readyUpload": "Siap Diunggah",
+  "deletePhoto": "Hapus foto",
+
+  "cancelBack": "Batal & Kembali",
+  "saveDraft": "Simpan sebagai Draf",
+  "submit": "Kirim Pengaduan",
+
+  "summary": "Ringkasan Laporan",
+  "readyToSend": "Siap Kirim",
+  "incomplete": "Belum lengkap",
+  "noValue": "Belum diisi",
+  "phoneSummary": "No. Telepon/WhatsApp",
+  "locationSummary": "Lokasi/Ruangan",
+  "itemSummary": "Nama Barang yang Rusak",
+  "typeSummary": "Jenis",
+  "urgencySummary": "Urgensi",
+  "photoSummary": "Bukti Foto Kerusakan",
+  "photoAttached": "1 Foto Terlampir",
+  "noPhoto": "Belum ada foto",
+  "formCompleteness": "Kelengkapan Formulir",
+
+  "guide": "Panduan Pelaporan",
+  "guideReporter": "Isi data pelapor: Masukkan nama, nomor WhatsApp, dan email yang aktif.",
+  "guideLocation": "Tentukan lokasi fasilitas yang mengalami kerusakan dengan jelas.",
+  "guideDamage": "Jelaskan jenis dan kondisi kerusakan secara jelas. Sertakan foto jika tersedia.",
+  "guideUrgency": "Tentukan tingkat urgensi sesuai kondisi kerusakan, kemudian kirim laporan."
+},
+
+  "Reports": {
+    "title": "Laporan Saya",
+    "subtitle": "Pantau status dan perkembangan laporan kerusakan Anda.",
+    "searchPlaceholder": "Cari nomor laporan atau nama barang",
+    "newReport": "Buat Laporan Baru",
+    "all": "Semua",
+    "submitted": "Terkirim",
+    "verified": "Diverifikasi",
+    "processed": "Diproses",
+    "completed": "Selesai",
+    "draft": "Draf",
+    "photo": "Foto",
+    "status": "Status:",
+    "currentProgress": "Progres Terkini:",
+    "notSent": "Belum dikirim",
+    "viewDraft": "Lihat Draf",
+    "viewDetail": "Lihat Detail",
+    "emptyTitle": "Laporan tidak ditemukan",
+    "emptyDescription": "Tidak ada laporan yang sesuai dengan pencarian atau kategori yang dipilih.",
+    "showing": "Menampilkan",
+    "from": "dari",
+    "reports": "laporan sarana prasarana",
+    "previous": "Sebelumnya",
+    "next": "Selanjutnya"
+  },
+
+  "Detail": {
+    "backToReports": "Kembali ke Daftar Laporan",
+    "reportTitle": "Laporan #SR-2026-00128",
+    "statusProcessing": "Sedang Diproses",
+    "createdAt": "Dibuat pada 6 September 2026, 13:20 WIB",
+    "progressTitle": "PROGRES PENANGANAN",
+    "stepCounter": "Langkah {current} dari {total}",
+
+    "submitted": "TERKIRIM",
+    "verified": "DIVERIFIKASI",
+    "processed": "DIPROSES",
+    "completed": "SELESAI",
+
+    "submittedTitle": "Laporan Terkirim",
+    "verifiedTitle": "Diverifikasi Admin",
+    "processedTitle": "Sedang Diproses",
+    "completedTitle": "Selesai & Diuji",
+    "waitingAction": "Menunggu Tindakan",
+
+    "reportDetails": "Detail Informasi Laporan",
+    "reporter": "Pelapor:",
+    "reporterValue": "Budi Prasetyo, S.Pd. (Guru)",
+    "phone": "Telepon/WhatsApp",
+    "email": "Email",
+    "location": "Lokasi/Ruangan:",
+    "itemName": "Barang yang Rusak",
+    "itemValue": "Meja",
+    "type": "Jenis:",
+    "typeValue": "Tidak Berfungsi",
+    "urgency": "Urgensi:",
+    "urgencyValue": "Sedang",
+
+    "descriptionTitle": "DESKRIPSI LENGKAP KERUSAKAN",
+    "description": "Lampu indikator optik berkedip merah dan tidak mengeluarkan cahaya saat sesi praktikum pemrograman kelas XI. Port HDMI dan kabel power sudah diganti, tetapi perangkat masih tidak merespons. Kipas pendingin berbunyi cukup keras selama 10 detik sebelum tiba-tiba berhenti.",
+
+    "photoTitle": "FOTO BARANG YANG RUSAK",
+    "photoAlt": "Foto barang yang rusak",
+    "enlarge": "Perbesar",
+
+    "chatTitle": "Chat Tim Sarana",
+    "active": "Aktif",
+    "manageMessages": "Kelola pesan",
+    "deleteAll": "Hapus semua",
+    "selectMessages": "Pilih pesan",
+    "selectedCount": "{count} pesan dipilih",
+    "selectAll": "Pilih semua",
+    "cancel": "Batal",
+    "delete": "Hapus",
+    "selectMessage": "Pilih pesan",
+
+    "yesterday": "Kemarin • 6 September 2026",
+    "today": "Hari ini • 7 September 2026",
+    "read": "Dibaca",
+
+    "chatImageAlt": "Foto dalam chat",
+    "attachmentPreview": "Pratinjau foto",
+    "removePhoto": "Hapus foto",
+    "attachPhoto": "Lampirkan foto",
+    "camera": "Kamera",
+    "gallery": "Galeri / File",
+    "messagePlaceholder": "Tulis pesan kepada tim sarana...",
+    "sendMessage": "Kirim pesan",
+    "closePhoto": "Tutup foto",
+    "largePhotoAlt": "Foto diperbesar",
+
+    "adminName": "Admin Sarana",
+    "userName": "Anda (Budi Prasetyo)",
+    "now": "Sekarang",
+
+    "message1": "Selamat siang Pak Budi. Laporan proyektor Lab Komputer 2 sudah kami terima dan verifikasi. Teknisi Jo dijadwalkan memeriksa unit tersebut pagi ini.",
+    "message2": "Terima kasih, Admin. Mohon diprioritaskan karena lab akan digunakan besok pagi untuk penilaian sekolah kelas XI RPL.",
+    "message3": "Baik Pak Budi. Pak Joko sudah mengambil modul pengganti dari bengkel dan akan segera menuju gedung untuk melakukan perbaikan.",
+
+    "imageTooLarge": "Ukuran foto maksimal 2 MB.",
+    "imageOnly": "File yang dipilih harus berupa gambar.",
+    "imageProcessError": "Foto tidak dapat diproses. Silakan coba lagi.",
+    "deleteAllConfirm": "Hapus semua pesan dalam percakapan ini?",
+    "deleteSelectedConfirm": "Hapus {count} pesan yang dipilih?"
+  },
+
+  "Login": {
+    "title": "Masuk ke SISARPRAS",
+    "subtitle": "Masukkan email dan kata sandi akun Anda",
+    "schoolImageAlt": "Gedung sekolah",
+    "email": "Email",
+    "emailPlaceholder": "Masukkan email",
+    "emailRequired": "Email wajib diisi",
+    "invalidEmail": "Format email tidak valid",
+    "password": "Kata Sandi",
+    "passwordPlaceholder": "Masukkan kata sandi",
+    "passwordRequired": "Kata sandi wajib diisi",
+    "forgotPassword": "Lupa Kata Sandi?",
+    "showPassword": "Tampilkan kata sandi",
+    "hidePassword": "Sembunyikan kata sandi",
+    "rememberMe": "Ingat saya di perangkat ini",
+    "loginButton": "Masuk ke Akun",
+    "or": "ATAU",
+    "googleButton": "Lanjutkan dengan Google",
+    "noAccount": "Belum memiliki akun terdaftar?",
+    "registerButton": "Daftar Sekarang"
+  },
+
+  "Register": {
+  "title": "Daftar Akun SISARPRAS",
+  "subtitleLine1": "Buat akun untuk memudahkan pelaporan dan menyimpan",
+  "subtitleLine2": "riwayat data.",
+  "schoolImageAlt": "Gedung sekolah",
+
+  "name": "Nama Lengkap",
+  "namePlaceholder": "Masukkan nama lengkap",
+  "nameRequired": "Nama lengkap wajib diisi",
+
+  "email": "Email",
+  "emailPlaceholder": "Masukkan email",
+  "emailRequired": "Email wajib diisi",
+  "invalidEmail": "Format email tidak valid",
+
+  "password": "Kata Sandi",
+  "passwordPlaceholder": "Masukkan kata sandi",
+  "passwordRequired": "Kata sandi wajib diisi",
+  "passwordMinLength": "Kata sandi minimal 8 karakter",
+
+  "confirmPassword": "Konfirmasi Kata Sandi",
+  "confirmPasswordPlaceholder": "Ulangi kata sandi",
+  "confirmPasswordRequired": "Konfirmasi kata sandi wajib diisi",
+  "confirmPasswordMismatch": "Konfirmasi kata sandi tidak sesuai",
+
+  "showPassword": "Tampilkan kata sandi",
+  "hidePassword": "Sembunyikan kata sandi",
+
+  "passwordInfo": "Gunakan minimal 8 karakter untuk kata sandi",
+
+  "registerButton": "Daftar Akun",
+  "or": "ATAU",
+  "googleButton": "Daftar dengan Google",
+
+  "alreadyHaveAccount": "Sudah memiliki akun?",
+  "loginButton": "Masuk"
+},
+
+"ForgotPassword": {
+  "brandSubtitle": "Sistem Informasi Sarana & Prasarana Sekolah",
+  "title": "Lupa Kata Sandi?",
+  "subtitle": "Masukkan email yang terdaftar pada akun Anda",
+  "email": "Email Terdaftar",
+  "emailPlaceholder": "Masukkan email yang terdaftar",
+  "emailRequired": "Email wajib diisi",
+  "invalidEmail": "Format email tidak valid",
+  "infoTitle": "Informasi Pengiriman",
+  "infoText": "Pastikan email yang Anda masukkan aktif",
+  "sendButton": "Kirim Tautan Pemulihan",
+  "backButton": "Kembali ke Halaman Masuk"
+},
+
+"ResetPassword": {
+  "brandSubtitle": "Sistem Informasi Sarana & Prasarana Sekolah",
+  "title": "Perbarui Kata Sandi",
+  "subtitle": "Buat kata sandi baru untuk mengamankan akun SISARPRAS Anda.",
+  "password": "Kata Sandi Baru",
+  "passwordPlaceholder": "Masukkan kata sandi baru",
+  "passwordRequired": "Kata sandi wajib diisi",
+  "passwordMinLength": "Kata sandi minimal 8 karakter",
+  "confirmPassword": "Konfirmasi Kata Sandi",
+  "confirmPasswordPlaceholder": "Ulangi kata sandi baru",
+  "confirmPasswordRequired": "Konfirmasi kata sandi wajib diisi",
+  "confirmPasswordMismatch": "Konfirmasi kata sandi tidak sesuai",
+  "showPassword": "Tampilkan kata sandi",
+  "hidePassword": "Sembunyikan kata sandi",
+  "passwordInfo": "Gunakan minimal 8 karakter.",
+  "successMessage": "Kata sandi berhasil diperbarui. Mengarahkan ke halaman masuk...",
+  "updateButton": "Perbarui Kata Sandi",
+  "backButton": "Kembali ke Halaman Masuk"
+},
+
+"Profile": {
+  "title": "Profil Saya",
+  "subtitle": "Kelola nama dan foto profil Anda.",
+  "profilePhotoAlt": "Foto profil",
+  "changePhoto": "Ubah Foto",
+  "fullName": "NAMA LENGKAP",
+  "editable": "Dapat diedit",
+  "nameHelper": "Nama ini bisa digunakan pada formulir pelaporan.",
+  "email": "EMAIL",
+  "readOnly": "Hanya Baca",
+  "cancel": "Batal",
+  "saveChanges": "Simpan Perubahan",
+  "photoSizeError": "Ukuran foto maksimal 2 MB.",
+  "saveSuccess": "Perubahan profil berhasil disimpan."
+}
+}

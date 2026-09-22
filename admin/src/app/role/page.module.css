@@ -1,0 +1,819 @@
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page {
+  min-height: 100vh;
+  background: #f7f8fc;
+  color: #2d3748;
+  padding-bottom: 50px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+  width: 100%;
+  padding: 26px 32px 25px;
+
+  background: #eef5ff;
+
+  border-bottom: 1px solid #e2eaf5;
+}
+
+.header > div {
+  width: 100%;
+  max-width: 1450px;
+  margin: 0 auto;
+}
+
+.header h1 {
+  margin: 0;
+
+  color: #23477f;
+
+  font-size: 23px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.header p {
+  margin: 7px 0 0;
+
+  color: #7890b2;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container {
+  width: calc(100% - 48px);
+  max-width: 1450px;
+
+  margin: 20px auto 0;
+}
+
+/* =========================================================
+   TABLE CARD
+========================================================= */
+
+.tableCard {
+  width: 100%;
+
+  background: #ffffff;
+
+  border: 1px solid #e3e7ee;
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 2px 10px
+      rgba(35, 50, 75, 0.025);
+}
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
+.tableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 19px 20px;
+
+  border-bottom: 1px solid #edf0f4;
+}
+
+.tableHeader h2 {
+  margin: 0;
+
+  color: #435168;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.tableHeader p {
+  margin: 4px 0 0;
+
+  color: #9aa3b2;
+
+  font-size: 9px;
+}
+
+.addButton {
+  height: 35px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 0 13px;
+
+  color: #ffffff;
+  background: #547bb9;
+
+  border: 1px solid #547bb9;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 650;
+
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background: #466da9;
+}
+
+/* =========================================================
+   TABLE TOOLS
+========================================================= */
+
+.tableTools {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 14px 20px;
+
+  border-bottom: 1px solid #edf0f4;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.searchBox {
+  width: 310px;
+  height: 35px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 0 10px;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe4eb;
+  border-radius: 7px;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.searchBox:focus-within {
+  border-color: #91b5e9;
+
+  box-shadow:
+    0 0 0 3px
+      rgba(37, 99, 235, 0.06);
+}
+
+.searchBox svg {
+  flex: 0 0 auto;
+
+  color: #98a2b0;
+}
+
+.searchBox input {
+  width: 100%;
+
+  border: 0;
+  outline: none;
+
+  color: #56647a;
+  background: transparent;
+
+  font-family: inherit;
+  font-size: 9px;
+}
+
+.searchBox input::placeholder {
+  color: #a8b0bc;
+}
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+.filterArea {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+}
+
+.filterLabel {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  color: #7f8999;
+
+  font-size: 9px;
+  font-weight: 650;
+
+  white-space: nowrap;
+}
+
+.filterLabel svg {
+  color: #8995a6;
+}
+
+.selectWrap {
+  position: relative;
+}
+
+.selectWrap select {
+  height: 35px;
+
+  min-width: 190px;
+
+  appearance: none;
+
+  padding: 0 28px 0 9px;
+
+  color: #59677d;
+  background: #ffffff;
+
+  border: 1px solid #dfe4eb;
+  border-radius: 7px;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+.selectWrap select:focus {
+  border-color: #91b5e9;
+
+  box-shadow:
+    0 0 0 3px
+      rgba(37, 99, 235, 0.06);
+}
+
+.selectWrap svg {
+  position: absolute;
+
+  top: 50%;
+  right: 8px;
+
+  color: #8d98a9;
+
+  pointer-events: none;
+
+  transform: translateY(-50%);
+}
+
+/* =========================================================
+   SORTING
+========================================================= */
+
+.sortArea {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin-left: auto;
+}
+
+.sortArea > label {
+  color: #7f8999;
+
+  font-size: 9px;
+  font-weight: 650;
+
+  white-space: nowrap;
+}
+
+.sortSelect {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+}
+
+.sortSelect select {
+  height: 35px;
+
+  padding: 0 9px;
+
+  color: #59677d;
+  background: #ffffff;
+
+  border: 1px solid #dfe4eb;
+  border-radius: 7px;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+.sortSelect select:focus {
+  border-color: #91b5e9;
+
+  box-shadow:
+    0 0 0 3px
+      rgba(37, 99, 235, 0.06);
+}
+
+.sortSelect button {
+  height: 35px;
+
+  min-width: 43px;
+
+  padding: 0 7px;
+
+  color: #617087;
+  background: #ffffff;
+
+  border: 1px solid #dfe4eb;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 8px;
+  font-weight: 650;
+
+  cursor: pointer;
+}
+
+.sortSelect button:hover {
+  color: #4d6f9f;
+  background: #f4f7fb;
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+.resetButton {
+  height: 35px;
+
+  padding: 0 11px;
+
+  color: #68778d;
+  background: #f7f8fa;
+
+  border: 1px solid #dfe4eb;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 650;
+
+  cursor: pointer;
+}
+
+.resetButton:hover {
+  color: #4e6f9e;
+  background: #f0f3f7;
+}
+
+/* =========================================================
+   ENTRIES
+========================================================= */
+
+.entries {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #8993a3;
+
+  font-size: 9px;
+
+  white-space: nowrap;
+}
+
+.entries select {
+  height: 31px;
+
+  padding: 0 7px;
+
+  color: #59677d;
+  background: #ffffff;
+
+  border: 1px solid #dfe4eb;
+  border-radius: 6px;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 9px;
+}
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
+
+.tableWrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+/*
+  Dibuat sengaja lebar supaya tabel tidak terlalu
+  padat dan daftar hak akses punya ruang.
+*/
+
+.tableWrapper table {
+  width: 100%;
+
+  min-width: 1450px;
+
+  border-collapse: collapse;
+
+  table-layout: fixed;
+}
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
+.tableWrapper th {
+  height: 46px;
+
+  padding: 0 13px;
+
+  color: #7c8798;
+  background: #fafbfc;
+
+  border-bottom: 1px solid #e8ecf1;
+
+  text-align: left;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   TABLE BODY
+========================================================= */
+
+.tableWrapper td {
+  padding: 14px 13px;
+
+  color: #59677b;
+
+  border-bottom: 1px solid #edf0f4;
+
+  font-size: 9px;
+
+  vertical-align: top;
+}
+
+.tableWrapper tbody tr:hover {
+  background: #fafcff;
+}
+
+/* =========================================================
+   COLUMNS
+========================================================= */
+
+.numberColumn {
+  width: 55px;
+
+  text-align: center !important;
+}
+
+.roleColumn {
+  width: 170px;
+}
+
+.descriptionColumn {
+  width: 270px;
+}
+
+.permissionColumn {
+  width: 850px;
+}
+
+.actionColumn {
+  width: 105px;
+
+  text-align: center !important;
+}
+
+/* =========================================================
+   ROLE
+========================================================= */
+
+.roleName {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.roleName strong {
+  color: #45556c;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.roleName span {
+  display: inline-flex;
+
+  width: fit-content;
+
+  padding: 3px 6px;
+
+  color: #70839f;
+  background: #eef3f9;
+
+  border-radius: 4px;
+
+  font-size: 7px;
+  font-weight: 700;
+
+  letter-spacing: 0.2px;
+}
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.description {
+  max-width: 245px;
+
+  margin: 0;
+
+  color: #8792a2;
+
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+/* =========================================================
+   PERMISSION LIST
+========================================================= */
+
+.permissionList {
+  display: flex;
+  flex-wrap: wrap;
+
+  align-items: flex-start;
+
+  gap: 6px;
+}
+
+.permissionBadge {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 24px;
+
+  padding: 4px 9px;
+
+  color: #ffffff;
+  background: #547bb9;
+
+  border-radius: 12px;
+
+  font-size: 7px;
+  line-height: 1.2;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+/*
+  Hak akses yang cocok dengan search
+  dibuat sedikit lebih menonjol.
+*/
+
+.matchedPermission {
+  background: #365f9f;
+
+  box-shadow:
+    0 0 0 2px
+      rgba(84, 123, 185, 0.18);
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+}
+
+.actions button {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+.editButton {
+  color: #648b70;
+  background: #eef8f0;
+
+  border: 1px solid #dcecdf;
+}
+
+.editButton:hover {
+  background: #e3f2e6;
+}
+
+.deleteButton {
+  color: #c16c6c;
+  background: #fff1f1;
+
+  border: 1px solid #f1dddd;
+}
+
+.deleteButton:hover {
+  background: #fce6e6;
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.emptyTable {
+  height: 150px;
+
+  color: #9ba4b1 !important;
+
+  text-align: center !important;
+
+  vertical-align: middle !important;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.tableFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 14px 20px;
+}
+
+.tableFooter > span {
+  color: #969fad;
+
+  font-size: 9px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+}
+
+.pagination button {
+  width: 29px;
+  height: 29px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #7d8899;
+  background: #ffffff;
+
+  border: 1px solid #dfe4eb;
+  border-radius: 6px;
+
+  font-family: inherit;
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+.pagination button:hover:not(:disabled) {
+  color: #4f72a8;
+  background: #f4f7fb;
+
+  border-color: #cbd8e8;
+}
+
+.pagination button.activePage {
+  color: #ffffff;
+  background: #547bb9;
+
+  border-color: #547bb9;
+
+  font-weight: 700;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1250px) {
+  .tableTools {
+    flex-wrap: wrap;
+  }
+
+  .sortArea {
+    margin-left: 0;
+  }
+
+  .entries {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 800px) {
+  .container {
+    width: calc(100% - 28px);
+  }
+
+  .header {
+    padding: 22px 18px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+
+  .tableHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .addButton {
+    width: 100%;
+  }
+
+  .searchBox {
+    width: 100%;
+  }
+
+  .filterArea,
+  .sortArea,
+  .entries {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .filterArea .selectWrap,
+  .filterArea select {
+    flex: 1;
+  }
+
+  .sortSelect {
+    flex: 1;
+  }
+
+  .sortSelect select {
+    flex: 1;
+  }
+}

@@ -1,0 +1,806 @@
+.dashboard {
+  min-height: 100vh;
+  padding: 0 38px 50px;
+  background: #f7f8fc;
+  color: #172554;
+}
+
+/* =========================
+   HEADER / SOFT BLUE AREA
+========================= */
+
+.topArea {
+  margin: 0 -38px 28px;
+  padding: 34px 38px 28px;
+  background: #edf3ff;
+  border-bottom: 1px solid #e0e8f8;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.headerText {
+  min-width: 0;
+}
+
+.header h1 {
+  margin: 0;
+  color: #172554;
+  font-size: 28px;
+  font-weight: 750;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: #71809b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* =========================
+   NOTIFICATION
+========================= */
+
+.notificationButton {
+  position: relative;
+  width: 50px;
+  height: 50px;
+
+  border: 1px solid #e0e6f1;
+  background: #ffffff;
+  border-radius: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #647087;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.notificationButton:hover {
+  background: #f8faff;
+  transform: translateY(-1px);
+}
+
+.notificationDot {
+  position: absolute;
+  right: -3px;
+  top: -5px;
+
+  min-width: 19px;
+  height: 19px;
+  padding: 0 4px;
+
+  border-radius: 20px;
+
+  background: #ef4444;
+  color: white;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #edf3ff;
+}
+
+/* =========================
+   LANGUAGE
+========================= */
+
+.languageWrapper {
+  position: relative;
+  z-index: 100;
+}
+
+.languageButton {
+  width: 112px;
+  height: 44px;
+
+  padding: 0 15px;
+
+  border: none;
+  background: #f0f4ff;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  color: #243b6f;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.languageButton:hover,
+.languageButtonActive {
+  background: #e7efff;
+}
+
+.languageText {
+  width: auto !important;
+  height: auto !important;
+
+  margin: 0;
+  padding: 0 !important;
+
+  background: transparent !important;
+
+  color: #243b6f !important;
+
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+/* =========================
+   LANGUAGE DROPDOWN
+========================= */
+
+.languageDropdown {
+  position: absolute;
+
+  right: 0;
+  top: calc(100% + 10px);
+
+  width: 190px;
+
+  padding: 6px 0;
+
+  background: #ffffff;
+
+  border: 1px solid #e0e5ed;
+  border-radius: 16px;
+
+  box-shadow:
+    0 10px 25px rgba(35, 55, 100, 0.11);
+
+  overflow: hidden;
+
+  z-index: 999;
+}
+
+/* =========================
+   LANGUAGE OPTION
+========================= */
+
+.languageOption {
+  width: 100%;
+  height: 50px;
+
+  padding: 0 21px;
+
+  border: none;
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: #26385f;
+
+  font-size: 14px;
+  font-weight: 400;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.languageOption:hover {
+  background: #f5f7fc;
+}
+
+.languageOption > span {
+  width: auto !important;
+  height: auto !important;
+
+  margin: 0;
+  padding: 0 !important;
+
+  background: transparent !important;
+
+  color: #26385f !important;
+
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+.languageOption strong {
+  color: #243b7a;
+
+  font-size: 19px;
+  font-weight: 600;
+
+  line-height: 1;
+}
+
+/* =========================
+   STATISTIC CARDS
+========================= */
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.statCard {
+  position: relative;
+
+  min-height: 148px;
+  padding: 20px;
+
+  background: white;
+
+  border: 1px solid #e4e7ed;
+  border-radius: 13px;
+
+  overflow: hidden;
+}
+
+.statCard::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 3px;
+}
+
+.blueCard::before {
+  background: #315fba;
+}
+
+.greenCard::before {
+  background: #20b968;
+}
+
+.yellowCard::before {
+  background: #f4c51c;
+}
+
+.redCard::before {
+  background: #ef4444;
+}
+
+.statTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statLabel {
+  color: #70798d;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.statIcon {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 9px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blueIcon {
+  color: #315fba;
+  background: #edf3ff;
+}
+
+.greenIcon {
+  color: #20b968;
+  background: #eafaf1;
+}
+
+.yellowIcon {
+  color: #d59f00;
+  background: #fff9df;
+}
+
+.redIcon {
+  color: #e33b3b;
+  background: #fff0f0;
+}
+
+.statCard h2 {
+  margin: 15px 0 5px;
+
+  color: #182755;
+
+  font-size: 27px;
+  line-height: 1;
+  font-weight: 750;
+}
+
+.statInfo {
+  margin: 0;
+
+  color: #9aa1b0;
+
+  font-size: 10px;
+}
+
+/* =========================
+   CHART GRID
+========================= */
+
+.chartGrid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 18px;
+
+  margin-bottom: 18px;
+}
+
+.chartCard,
+.reportCard {
+  min-width: 0;
+
+  padding: 21px;
+
+  background: white;
+
+  border: 1px solid #e4e7ed;
+  border-radius: 13px;
+}
+
+.cardHeader h3 {
+  margin: 0;
+
+  color: #213667;
+
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+/* =========================
+   DONUT
+========================= */
+
+.donutArea {
+  min-height: 245px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 40px;
+}
+
+.donut {
+  position: relative;
+
+  width: 170px;
+  height: 170px;
+
+  border-radius: 50%;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut::before {
+  content: "";
+
+  position: absolute;
+
+  width: 110px;
+  height: 110px;
+
+  background: white;
+
+  border-radius: 50%;
+}
+
+.donutInner {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.donutInner strong {
+  color: #213667;
+
+  font-size: 23px;
+  font-weight: 750;
+}
+
+.donutInner span {
+  margin-top: 2px;
+
+  color: #999fad;
+
+  font-size: 9px;
+}
+
+/* =========================
+   LEGEND
+========================= */
+
+.legend {
+  min-width: 155px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 13px;
+}
+
+.legend > div {
+  display: grid;
+
+  grid-template-columns:
+    9px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #6e7789;
+
+  font-size: 10px;
+}
+
+.legend strong {
+  color: #26385f;
+
+  font-size: 10px;
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  display: block;
+}
+
+.greenDot {
+  background: #20bd69;
+}
+
+.yellowDot {
+  background: #f2c313;
+}
+
+.redDot {
+  background: #ef4444;
+}
+
+.blueDot {
+  background: #2878e8;
+}
+
+.purpleDot {
+  background: #8b5cf6;
+}
+
+.grayDot {
+  background: #9ca3af;
+}
+
+/* =========================
+   REKAP LAPORAN
+========================= */
+
+.reportCard {
+  margin-bottom: 18px;
+}
+
+.reportHeader {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.reportHeader h3 {
+  margin: 0;
+
+  color: #213667;
+
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.reportHeader p {
+  margin: 6px 0 0;
+
+  color: #8b95aa;
+
+  font-size: 10px;
+}
+
+/* =========================
+   REPORT NAVIGATION
+========================= */
+
+.reportNavigation {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+.reportArrow {
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid #e1e6ef;
+
+  background: white;
+
+  border-radius: 10px;
+
+  color: #31477e;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.reportArrow:hover:not(:disabled) {
+  background: #f2f5fb;
+
+  border-color: #d5ddec;
+}
+
+.reportArrow:disabled {
+  color: #b9c0cc;
+
+  background: #f8f9fb;
+
+  cursor: not-allowed;
+
+  opacity: 0.65;
+}
+
+.reportPeriod {
+  min-width: 136px;
+  height: 38px;
+
+  padding: 0 15px;
+
+  border: 1px solid #e1e6ef;
+
+  background: white;
+
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #30436f;
+
+  font-size: 11px;
+  font-weight: 650;
+}
+
+/* =========================
+   LINE CHART
+========================= */
+
+.lineChart {
+  height: 245px;
+
+  display: flex;
+
+  margin-top: 16px;
+}
+
+.yAxis {
+  width: 30px;
+
+  height: 195px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  color: #a0a7b5;
+
+  font-size: 9px;
+}
+
+.chartBody {
+  position: relative;
+
+  flex: 1;
+
+  min-width: 0;
+
+  height: 220px;
+}
+
+.gridLines {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 0;
+
+  height: 195px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.gridLines span {
+  display: block;
+
+  width: 100%;
+
+  border-top: 1px solid #edf0f4;
+}
+
+.lineSvg {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 195px;
+
+  overflow: visible;
+}
+
+.monthLabels {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  top: 205px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  color: #a0a7b5;
+
+  font-size: 9px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .chartGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .donutArea {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 700px) {
+  .dashboard {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .topArea {
+    margin-left: -20px;
+    margin-right: -20px;
+
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .headerRight {
+    width: 100%;
+
+    justify-content: flex-end;
+  }
+
+  .reportHeader {
+    flex-direction: column;
+  }
+
+  .reportNavigation {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 550px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .donutArea {
+    flex-direction: column;
+
+    min-height: 330px;
+  }
+
+  .legend {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .languageDropdown {
+    right: 0;
+    width: 210px;
+  }
+}

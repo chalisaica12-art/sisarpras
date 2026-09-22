@@ -1,0 +1,345 @@
+"use client";
+
+import { ChangeEvent, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import styles from "./page.module.css";
+
+/* =========================
+   ICON
+========================= */
+
+function Icon({
+  children,
+  size = 20,
+}: {
+  children: React.ReactNode;
+  size?: number;
+}) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {children}
+    </svg>
+  );
+}
+
+function UserIcon({ size = 20 }: { size?: number }) {
+  return (
+    <Icon size={size}>
+      <circle cx="12" cy="8" r="3.5" />
+      <path d="M5 20c.8-3.2 3.2-5 7-5s6.2 1.8 7 5" />
+    </Icon>
+  );
+}
+
+function MailIcon() {
+  return (
+    <Icon>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3 7 9 6 9-6" />
+    </Icon>
+  );
+}
+
+function CameraIcon() {
+  return (
+    <Icon size={17}>
+      <path d="M4 7h3l1.5-2h7L17 7h3v12H4V7Z" />
+      <circle cx="12" cy="13" r="3" />
+    </Icon>
+  );
+}
+
+/* =========================
+   PAGE
+========================= */
+
+export default function ProfilPage() {
+  const t = useTranslations("Profile");
+
+  const [name, setName] = useState("Naura_123");
+  const [savedName, setSavedName] = useState("Naura_123");
+  const [photo, setPhoto] = useState<string | null>(null);
+
+  /* =========================
+     LOAD PROFILE DATA
+  ========================= */
+
+  useEffect(() => {
+    const storedName =
+      localStorage.getItem("sisarpras-profile-name");
+
+    const storedPhoto =
+      localStorage.getItem("sisarpras-profile-photo");
+
+    if (storedName) {
+      setName(storedName);
+      setSavedName(storedName);
+    }
+
+    if (storedPhoto) {
+      setPhoto(storedPhoto);
+    }
+  }, []);
+
+  /* =========================
+     CHANGE PHOTO
+  ========================= */
+
+  function handlePhotoChange(
+    event: ChangeEvent<HTMLInputElement>
+  ) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    // Batasi ukuran file agar localStorage tidak cepat penuh
+    if (file.size > 2 * 1024 * 1024) {
+      alert(t("photoSizeError"));
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const result = reader.result;
+
+      if (typeof result !== "string") return;
+
+      setPhoto(result);
+
+      localStorage.setItem(
+        "sisarpras-profile-photo",
+        result
+      );
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  /* =========================
+     SAVE
+  ========================= */
+
+  function handleSave() {
+    const trimmedName = name.trim();
+
+    if (!trimmedName) {
+      setName(savedName);
+      return;
+    }
+
+    setName(trimmedName);
+    setSavedName(trimmedName);
+
+    localStorage.setItem(
+      "sisarpras-profile-name",
+      trimmedName
+    );
+
+    alert(t("saveSuccess"));
+  }
+
+  /* =========================
+     CANCEL
+  ========================= */
+
+  function handleCancel() {
+    setName(savedName);
+  }
+
+  return (
+    <main className={styles.page}>
+      {/* =========================
+          GLOBAL NAVBAR
+      ========================= */}
+
+      <Navbar />
+
+      {/* =========================
+          CONTENT
+      ========================= */}
+
+      <section className={styles.content}>
+        <div className={styles.container}>
+
+          {/* TITLE */}
+
+          <div className={styles.pageHeading}>
+            <h1>{t("title")}</h1>
+
+            <p>
+              {t("subtitle")}
+            </p>
+          </div>
+
+          {/* PROFILE CARD */}
+
+          <section className={styles.profileCard}>
+
+            {/* TOP ACCENT */}
+
+            <div className={styles.topAccent} />
+
+            {/* PROFILE HEADER */}
+
+            <div className={styles.profileHeader}>
+              <div className={styles.profileIdentity}>
+
+                {/* AVATAR */}
+
+                <div className={styles.avatar}>
+                  {photo ? (
+                    <img
+                      src={photo}
+                      alt={t("profilePhotoAlt")}
+                    />
+                  ) : (
+                    <span>HN</span>
+                  )}
+                </div>
+
+                {/* IDENTITY */}
+
+                <div className={styles.identityText}>
+                  <h2>{savedName}</h2>
+
+                  <p>nau@gmail.com</p>
+                </div>
+              </div>
+
+              {/* CHANGE PHOTO */}
+
+              <label className={styles.changePhotoButton}>
+                <CameraIcon />
+
+                <span>{t("changePhoto")}</span>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                  hidden
+                />
+              </label>
+            </div>
+
+            {/* DIVIDER */}
+
+            <div className={styles.divider} />
+
+            {/* FORM */}
+
+            <div className={styles.form}>
+
+              {/* NAME */}
+
+              <div className={styles.formGroup}>
+                <div className={styles.labelRow}>
+
+                  <label htmlFor="name">
+                    {t("fullName")}
+                  </label>
+
+                  <span className={styles.editText}>
+                    {t("editable")}
+                  </span>
+
+                </div>
+
+                <div className={styles.inputWrapper}>
+                  <UserIcon size={19} />
+
+                  <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={(event) =>
+                      setName(event.target.value)
+                    }
+                    maxLength={50}
+                  />
+                </div>
+
+                <p className={styles.helperText}>
+                  {t("nameHelper")}
+                </p>
+              </div>
+
+              {/* EMAIL */}
+
+              <div className={styles.formGroup}>
+                <div className={styles.labelRow}>
+
+                  <label htmlFor="email">
+                    {t("email")}
+                  </label>
+
+                  <span className={styles.readOnly}>
+                    {t("readOnly")}
+                  </span>
+
+                </div>
+
+                <div
+                  className={`${styles.inputWrapper} ${styles.disabledInput}`}
+                >
+                  <MailIcon />
+
+                  <input
+                    id="email"
+                    type="email"
+                    value="nau@gmail.com"
+                    readOnly
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* BOTTOM DIVIDER */}
+
+            <div className={styles.dividerBottom} />
+
+            {/* ACTION */}
+
+            <div className={styles.actions}>
+              <button
+                type="button"
+                className={styles.cancelButton}
+                onClick={handleCancel}
+              >
+                {t("cancel")}
+              </button>
+
+              <button
+                type="button"
+                className={styles.saveButton}
+                onClick={handleSave}
+              >
+                {t("saveChanges")}
+              </button>
+            </div>
+
+          </section>
+        </div>
+      </section>
+
+      {/* =========================
+          GLOBAL FOOTER
+      ========================= */}
+
+      <Footer />
+    </main>
+  );
+}

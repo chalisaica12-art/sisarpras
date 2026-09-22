@@ -1,0 +1,1108 @@
+.page {
+  min-height: 100vh;
+  background: #f7f8fd;
+  color: #172554;
+  padding-top: 24px;
+}
+
+/* BACK */
+.backContainer {
+  width: calc(100% - 52px);
+  max-width: 1280px;
+  margin: 0 auto 18px;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 5px 16px 5px 7px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: #142861;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: .2s ease;
+}
+
+.backButton:hover {
+  background: #edf2ff;
+  border-color: #dfe6fb;
+  transform: translateX(-2px);
+}
+
+.backIcon {
+  width: 38px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: #eaf0ff;
+  color: #17316e;
+  transition: .2s ease;
+}
+
+.backButton:hover .backIcon {
+  background: #dfe7ff;
+  transform: translateX(-2px);
+}
+
+/* HEADER */
+.reportHeader {
+  width: calc(100% - 52px);
+  max-width: 1280px;
+  margin: 0 auto 26px;
+  padding: 28px 26px 30px;
+  background: #fff;
+  border-radius: 13px;
+  box-shadow: 0 5px 18px rgba(20,35,80,.06);
+}
+
+.reportTitle {
+  display: flex;
+  align-items: flex-start;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.titleRow h1 {
+  margin: 0;
+  color: #101d50;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+}
+
+.reportTitle p {
+  margin: 5px 0 0;
+  color: #747b8d;
+  font-size: 12px;
+}
+
+.status {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: #e6edff;
+  color: #1e367b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.progressTitle {
+  margin-top: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  color: #697184;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .45px;
+}
+
+.stepCounter {
+  flex-shrink: 0;
+  white-space: nowrap;
+  color: #737c91;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.stepCounter strong {
+  color: #233c7b;
+  font-weight: 600;
+}
+
+.progress {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  margin-top: 12px;
+}
+
+.progressItem { min-width: 0; }
+
+.progressTop {
+  display: flex;
+  align-items: center;
+}
+
+.progressCircle {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.progressCircle svg {
+  width: 15px;
+  height: 15px;
+}
+
+.done { background: #55781d; color: #fff; }
+.active {
+  background: #13235f;
+  color: #fff;
+  box-shadow: 0 0 0 5px #dce4ff;
+}
+.waiting { background: #e8edf8; color: #9ca5b9; }
+
+.progressLine {
+  height: 3px;
+  flex: 1;
+  margin: 0 10px;
+  background: #d9e2fa;
+}
+
+.doneLine { background: #55781d; }
+
+.progressNumber {
+  display: block;
+  margin-top: 13px;
+  color: #587b1c;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.progressItem strong {
+  display: block;
+  margin-top: 3px;
+  color: #172554;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.progressItem small {
+  display: block;
+  margin-top: 2px;
+  color: #72798a;
+  font-size: 11px;
+}
+
+.waitingText { color: #9ca3af !important; }
+
+/* CONTENT */
+.content {
+  width: calc(100% - 52px);
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0,1.55fr) minmax(330px,1fr);
+  gap: 26px;
+  align-items: start;
+}
+
+.detailCard {
+  padding: 26px;
+  background: #fff;
+  border: 1px solid #182c68;
+  border-radius: 10px;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #112561;
+}
+
+.sectionTitle h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.infoBox {
+  margin-top: 26px;
+  padding: 19px 18px;
+  border: 1px solid #1b347b;
+  border-radius: 11px;
+}
+
+.infoRow {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: #626979;
+  font-size: 12px;
+}
+
+.infoRow strong {
+  color: #14245d;
+  font-weight: 600;
+  text-align: right;
+}
+
+.typeBadge {
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: #e5ecff;
+  color: #1e3475 !important;
+}
+
+.urgentBadge {
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: #e2ebff;
+  color: #ff7417 !important;
+}
+
+.description { margin-top: 26px; }
+
+.description h3,
+.photoSection h3 {
+  margin: 0 0 10px;
+  color: #505667;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+.description p {
+  margin: 0;
+  padding: 15px;
+  border-radius: 7px;
+  background: #edf1ff;
+  color: #28334d;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.photoSection { margin-top: 26px; }
+
+.photoBox {
+  position: relative;
+  overflow: hidden;
+  height: 190px;
+  border-radius: 10px;
+  background: #dfe5fa;
+  cursor: zoom-in;
+}
+
+.photoBox img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform .3s ease;
+}
+
+.photoBox:hover img { transform: scale(1.02); }
+
+.photoOverlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 28px 14px 12px;
+  background: linear-gradient(to top,rgba(9,20,58,.8),transparent);
+  color: #fff;
+}
+
+.photoOverlay > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.photoOverlay span { font-size: 11px; }
+
+.photoOverlay small {
+  display: block;
+  margin-top: 2px;
+  opacity: .8;
+}
+
+.photoOverlay button {
+  border: 0;
+  border-radius: 6px;
+  padding: 7px 11px;
+  background: rgba(255,255,255,.18);
+  color: #fff;
+  font-size: 10px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+/* IMAGE MODAL */
+.imageModal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 35px;
+  background: rgba(5,12,35,.82);
+  backdrop-filter: blur(5px);
+  cursor: zoom-out;
+}
+
+.largeImage {
+  max-width: min(1000px,92vw);
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 15px 50px rgba(0,0,0,.3);
+  cursor: default;
+}
+
+.closeImageButton {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  cursor: pointer;
+}
+
+/* CHAT */
+.chatCard {
+  position: relative;
+  min-height: 590px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 5px 20px rgba(25,35,70,.06);
+}
+
+.chatHeader {
+  min-height: 60px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px 10px 0 0;
+  background: #08175a;
+  color: #fff;
+}
+
+.chatProfile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.adminAvatar {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #263a7b;
+}
+
+.adminAvatar span {
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #82bf35;
+  border: 1px solid #08175a;
+}
+
+.chatHeader h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.chatHeader small {
+  color: #c5cce1;
+  font-size: 10px;
+}
+
+.deleteMenuWrap { position: relative; }
+
+.trashButton {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.trashButton:hover { background: rgba(255,255,255,.1); }
+
+.deleteMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  width: 165px;
+  padding: 6px;
+  border: 1px solid #e1e6f3;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(22,35,75,.16);
+}
+
+.deleteMenu button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #2c3550;
+  font-family: inherit;
+  font-size: 11px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.deleteMenu button:hover { background: #f0f3ff; }
+.deleteMenu button:first-child:hover { background: #fff1f1; color: #b42323; }
+.deleteMenu svg { width: 16px; height: 16px; }
+
+.selectionBar {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #e4e8f2;
+  background: #f6f8ff;
+  color: #35405c;
+  font-size: 10px;
+}
+
+.selectionBar > div {
+  display: flex;
+  gap: 5px;
+}
+
+.selectionBar button {
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #29427c;
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.selectionBar button:hover { background: #e7edff; }
+
+.deleteSelectedButton {
+  background: #fff0f0 !important;
+  color: #b52a2a !important;
+}
+
+.deleteSelectedButton:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.chatBody {
+  flex: 1;
+  min-height: 0;
+  padding: 16px 14px;
+  overflow-y: auto;
+  background: #fafbff;
+}
+
+.dateLabel {
+  width: fit-content;
+  margin: 0 auto 17px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #e8edff;
+  color: #65708a;
+  font-size: 9px;
+}
+
+.messageGroup {
+  position: relative;
+  margin-bottom: 17px;
+  padding: 3px;
+  border-radius: 9px;
+}
+
+.selectedMessage { background: #edf2ff; }
+
+.messageMetaRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px;
+}
+
+.messageMeta {
+  color: #8a8f9d;
+  font-size: 10px;
+}
+
+.adminMessage .messageMeta { margin-left: 40px; }
+.userMessage .messageMeta { margin-left: auto; }
+
+.messageCheckbox {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid #bcc6df;
+  border-radius: 5px;
+  background: #fff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.messageCheckbox.checked {
+  border-color: #193477;
+  background: #193477;
+}
+
+.messageCheckbox svg { width: 12px; height: 12px; }
+
+.messageRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.userMessage .messageRow { justify-content: flex-end; }
+
+.smallAvatar {
+  width: 25px;
+  height: 25px;
+  flex: 0 0 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #102361;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.messageContent {
+  max-width: 78%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.messageBubble {
+  width: fit-content;
+  max-width: 100%;
+  padding: 11px 12px;
+  border-radius: 9px;
+  background: #fff;
+  color: #2f374a;
+  font-size: 12px;
+  line-height: 1.55;
+  box-shadow: 0 1px 5px rgba(20,30,60,.04);
+}
+
+.userMessage .messageBubble {
+  margin-left: auto;
+  background: #07175c;
+  color: #fff;
+  border-radius: 10px 10px 3px 10px;
+}
+
+.readStatus {
+  display: block;
+  margin-top: 4px;
+  margin-right: 5px;
+  text-align: right;
+  color: #67802d;
+  font-size: 9px;
+}
+
+.chatImageButton {
+  width: 190px;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  overflow: hidden;
+  background: #e9edfa;
+  cursor: zoom-in;
+}
+
+.chatImage {
+  width: 100%;
+  max-height: 190px;
+  display: block;
+  object-fit: cover;
+}
+
+.typing {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.typingDots {
+  min-width: 42px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.typingDots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #53607b;
+}
+
+/* ATTACHMENT */
+.attachmentPreview {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 12px;
+  padding: 8px;
+  border: 1px solid #dce3f5;
+  border-radius: 8px;
+  background: #f7f9ff;
+}
+
+.attachmentImageWrap {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #e5eafa;
+}
+
+.attachmentImageWrap img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.attachmentInfo {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.attachmentInfo strong {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #26304a;
+  font-size: 10px;
+}
+
+.attachmentInfo small {
+  color: #858da0;
+  font-size: 9px;
+}
+
+.removeAttachment {
+  width: 25px;
+  height: 25px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: #e9edf8;
+  color: #596177;
+  cursor: pointer;
+}
+
+/* INPUT */
+.chatInput {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-top: 1px solid #edf0f7;
+  border-radius: 0 0 10px 10px;
+  background: #fff;
+}
+
+.chatInput > input[type="text"] {
+  min-width: 0;
+  flex: 1;
+  height: 48px;
+  border: 0;
+  outline: 0;
+  border-radius: 7px;
+  padding: 0 12px;
+  background: #eef2ff;
+  color: #172554;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.chatInput > input[type="text"]::placeholder { color: #9098ad; }
+
+.attachWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.attachButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #4e5669;
+  cursor: pointer;
+}
+
+.attachButton:hover {
+  background: #eef2ff;
+  color: #172b6e;
+}
+
+.sendButton {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 8px;
+  background: #07175c;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(7,23,92,.14);
+  transition: .2s ease;
+}
+
+.sendButton:hover {
+  background: #10256e;
+  transform: translateY(-1px);
+}
+
+.sendButton svg { width: 19px; height: 19px; }
+
+.attachmentMenu {
+  position: absolute;
+  left: -4px;
+  bottom: 43px;
+  z-index: 30;
+  width: 155px;
+  padding: 6px;
+  border: 1px solid #e0e5f2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(20,30,70,.15);
+}
+
+.attachmentMenu button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #273252;
+  font-family: inherit;
+  font-size: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.attachmentMenu button:hover { background: #eef2ff; }
+
+.hiddenFileInput { display: none; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .chatCard {
+    min-height: 560px;
+  }
+}
+
+@media (max-width: 650px) {
+  .page {
+    padding-top: 15px;
+  }
+
+  .sendButton {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+    border-radius: 8px;
+  }
+
+  .sendButton svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .backContainer {
+    width: calc(100% - 24px);
+    margin: 0 auto 12px;
+  }
+
+  .backButton {
+    min-height: 40px;
+    padding: 4px 13px 4px 6px;
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  .backIcon {
+    width: 29px;
+    height: 29px;
+  }
+
+  .reportHeader,
+  .content {
+    width: calc(100% - 24px);
+  }
+
+  .reportHeader {
+    padding: 20px 16px;
+  }
+
+  .titleRow h1 {
+    font-size: 18px;
+  }
+
+  /* =================================
+     PROGRESS MOBILE
+     TETAP HORIZONTAL
+  ================================= */
+
+  .progressTitle {
+    margin-top: 28px;
+  }
+
+  .progress {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    margin-top: 13px;
+    gap: 0;
+  }
+
+  .progressItem {
+    min-width: 0;
+  }
+
+  .progressTop {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .progressCircle {
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+  }
+
+  .progressCircle svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .progressLine {
+    display: block;
+    height: 2px;
+    flex: 1;
+    margin: 0 4px;
+  }
+
+  .progressNumber {
+    display: block;
+    margin-top: 9px;
+    font-size: 8px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .progressItem strong {
+    display: block;
+    margin-top: 3px;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+  }
+
+  .progressItem small {
+    display: block;
+    margin-top: 3px;
+    font-size: 7.5px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+  }
+
+  .active {
+    box-shadow:
+      0 0 0 4px #dce4ff;
+  }
+
+  .stepCounter {
+    font-size: 10px;
+  }
+
+  .detailCard {
+    padding: 18px;
+  }
+
+  .infoRow {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+    padding: 5px 0;
+  }
+
+  .infoRow strong {
+    text-align: left;
+  }
+
+  .chatImageButton {
+    width: 160px;
+  }
+
+  .messageContent {
+    max-width: 82%;
+  }
+
+  .attachmentInfo strong {
+    max-width: 145px;
+  }
+
+  .selectionBar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .selectionBar > div {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+
+
+@media (max-width: 650px) {
+  .sendButton {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+    border-radius: 8px;
+  }
+
+  .sendButton svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .chatInput {
+    gap: 8px;
+    padding: 9px 10px;
+  }
+
+  .chatInput > input[type="text"] {
+    height: 46px;
+    font-size: 11px;
+  }
+
+  .attachButton {
+    width: 34px;
+    height: 46px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .progressCircle {
+    width: 20px;
+    height: 20px;
+    flex-basis: 20px;
+  }
+
+  .progressCircle svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  .progressLine {
+    margin: 0 3px;
+  }
+
+  .progressNumber {
+    font-size: 7px;
+  }
+
+  .progressItem strong {
+    font-size: 8px;
+  }
+
+  .progressItem small {
+    font-size: 7px;
+  }
+}

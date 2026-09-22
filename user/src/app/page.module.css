@@ -1,0 +1,1640 @@
+/* =========================
+   PAGE
+========================= */
+
+.page {
+  min-height: 100vh;
+  background: #f7f8ff;
+  color: #102052;
+  overflow-x: hidden;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  padding: 48px 0 30px;
+}
+
+.heroContent {
+  width: min(1180px, calc(100% - 70px));
+
+  margin: auto;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 58px;
+
+  align-items: center;
+}
+
+.heroText {
+  padding-top: 5px;
+}
+
+
+/* =========================
+   BREADCRUMB
+========================= */
+
+.crumb {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  background: #eaf0ff;
+
+  color: #67728c;
+
+  border-radius: 20px;
+
+  padding: 7px 13px;
+
+  font-size: 11px;
+
+  margin-bottom: 22px;
+
+  max-width: 100%;
+}
+
+.crumb strong {
+  color: #1b347a;
+}
+
+
+/* =========================
+   HERO TITLE
+========================= */
+
+.heroText h1 {
+  margin: 0;
+
+  color: #10245d;
+
+  font-size: clamp(36px, 4vw, 48px);
+
+  line-height: 1.08;
+
+  letter-spacing: -1.5px;
+}
+
+
+/* =========================
+   HERO DESCRIPTION
+========================= */
+
+.heroText > p {
+  max-width: 590px;
+
+  margin: 20px 0 25px;
+
+  color: #646c80;
+
+  font-size: 15px;
+
+  line-height: 1.65;
+}
+
+
+/* =========================
+   HERO BUTTONS
+========================= */
+
+.heroButtons {
+  display: flex;
+
+  gap: 12px;
+}
+
+.primaryButton,
+.secondaryButton {
+  height: 43px;
+
+  padding: 0 20px;
+
+  border-radius: 9px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.primaryButton {
+  background: #111f62;
+
+  color: white;
+
+  box-shadow:
+    0 7px 15px rgba(20, 34, 100, 0.15);
+}
+
+.primaryButton:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 9px 18px rgba(20, 34, 100, 0.2);
+}
+
+.secondaryButton {
+  border: 1px solid #263a7e;
+
+  color: #172c69;
+
+  background: white;
+}
+
+.secondaryButton:hover {
+  transform: translateY(-1px);
+
+  background: #f8faff;
+}
+
+
+/* =========================
+   HERO VISUAL
+========================= */
+
+.heroVisual {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  min-width: 0;
+}
+
+.heroImageBox {
+  width: 100%;
+
+  height: 320px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 14px 28px rgba(36, 48, 91, 0.14);
+}
+
+
+/* =========================
+   HERO TRACK
+========================= */
+
+.heroTrack {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  transition:
+    transform 0.7s cubic-bezier(
+      0.4,
+      0,
+      0.2,
+      1
+    );
+}
+
+
+/* =========================
+   HERO IMAGE LINK
+========================= */
+
+.heroImageLink {
+  width: 100%;
+  height: 100%;
+
+  flex: 0 0 100%;
+
+  display: block;
+
+  cursor: pointer;
+
+  overflow: hidden;
+}
+
+
+/* =========================
+   HERO IMAGE
+========================= */
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  user-select: none;
+
+  transition:
+    transform 0.3s ease;
+}
+
+.heroImageLink:hover .heroImage {
+  transform: scale(1.015);
+}
+
+
+/* =========================
+   HERO ARROWS
+========================= */
+
+.heroArrow {
+  position: absolute;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 38px;
+  height: 38px;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.12);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  opacity: 0;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.heroImageBox:hover .heroArrow {
+  opacity: 1;
+}
+
+.heroArrow:hover {
+  background: white;
+
+  transform:
+    translateY(-50%)
+    scale(1.05);
+}
+
+.heroArrow:active {
+  transform:
+    translateY(-50%)
+    scale(0.96);
+}
+
+.heroArrow svg {
+  width: 20px;
+  height: 20px;
+
+  fill: none;
+
+  stroke: #152b67;
+
+  stroke-width: 2;
+}
+
+.heroArrowLeft {
+  left: 14px;
+}
+
+.heroArrowRight {
+  right: 14px;
+}
+
+
+/* =========================
+   HERO DOTS
+========================= */
+
+.heroDots {
+  display: flex;
+
+  gap: 6px;
+
+  margin-top: 13px;
+}
+
+.heroDots button,
+.infoDots button {
+  width: 7px;
+  height: 7px;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  background: #cbd3ea;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.heroDots button:hover,
+.infoDots button:hover {
+  transform: scale(1.15);
+}
+
+.heroDots button.dotActive,
+.infoDots button.dotActive {
+  background: #1f3f9d;
+
+  transform: scale(1.15);
+}
+
+
+/* =========================
+   INFORMATION SECTION
+========================= */
+
+.informationSection {
+  width: min(1240px, calc(100% - 30px));
+
+  margin: 15px auto 50px;
+
+  padding: 30px 20px 24px;
+
+  border: 1px solid #d6def3;
+
+  border-radius: 18px;
+
+  background: #f4f7ff;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================
+   INFORMATION HEADER
+========================= */
+
+.infoHeader {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  padding: 0 17px 20px;
+
+  border-bottom: 1px solid #e0e5f2;
+}
+
+.infoTitle {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.infoTitle svg {
+  width: 23px;
+  height: 23px;
+
+  flex-shrink: 0;
+
+  fill: none;
+
+  stroke: #132b69;
+
+  stroke-width: 1.8;
+}
+
+.infoTitle h2 {
+  margin: 0;
+
+  color: #152b68;
+
+  font-size: 23px;
+}
+
+.infoHeader p {
+  margin: 5px 0 0 35px;
+
+  color: #7a849a;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   INFORMATION CAROUSEL
+========================= */
+
+.infoCarousel {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 35px;
+
+  margin-top: 20px;
+
+  min-width: 0;
+}
+
+
+/* =========================
+   INFORMATION ARROW
+========================= */
+
+.carouselArrow {
+  flex: 0 0 38px;
+
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid #e0e4ed;
+
+  background: white;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 10px rgba(26, 42, 84, 0.08);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.carouselArrow:hover {
+  transform: scale(1.06);
+
+  background: #ffffff;
+
+  box-shadow:
+    0 6px 14px rgba(26, 42, 84, 0.13);
+}
+
+.carouselArrow:active {
+  transform: scale(0.96);
+}
+
+.carouselArrow svg {
+  width: 19px;
+  height: 19px;
+
+  fill: none;
+
+  stroke: #142b68;
+
+  stroke-width: 2;
+}
+
+
+/* =========================
+   INFORMATION CARDS
+========================= */
+
+.infoCards {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  padding: 10px 4px;
+
+  min-width: 0;
+}
+
+
+/* =========================
+   CARD DASAR
+========================= */
+
+.infoCard {
+  width: 250px;
+
+  min-height: 258px;
+
+  padding: 18px 16px;
+
+  border: 1px solid #e5e8f0;
+
+  border-radius: 13px;
+
+  background: white;
+
+  cursor: pointer;
+
+  transform-origin: center center;
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.3s cubic-bezier(
+      0.4,
+      0,
+      0.2,
+      1
+    ),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+
+/* =========================
+   CARD AKTIF
+========================= */
+
+.infoCardActive {
+  transform: scale(1.035);
+
+  border-color: #d8e1f4;
+
+  box-shadow:
+    0 12px 26px rgba(28, 42, 78, 0.14),
+    0 2px 6px rgba(28, 42, 78, 0.05);
+
+  z-index: 2;
+}
+
+
+/* =========================
+   CARD TIDAK AKTIF
+========================= */
+
+.infoCardInactive {
+  transform: scale(0.975);
+
+  border-color: #e7eaf1;
+
+  box-shadow:
+    0 2px 7px rgba(28, 42, 78, 0.035);
+
+  z-index: 1;
+}
+
+
+/* =========================
+   CARD TOP
+========================= */
+
+.cardTop {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+
+/* =========================
+   ICON BOX
+========================= */
+
+.iconBox {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 10px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.iconBox svg {
+  width: 22px;
+  height: 22px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 1.8;
+}
+
+.blue {
+  background: #e2ebff;
+
+  color: #2160d8;
+}
+
+.orange {
+  background: #ffead8;
+
+  color: #e87518;
+}
+
+
+/* =========================
+   BADGE
+========================= */
+
+.badge {
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+.activeBadge {
+  background: #eef3ff;
+
+  color: #2554c4;
+}
+
+.warningBadge {
+  background: #fff0e4;
+
+  color: #c76720;
+}
+
+
+/* =========================
+   CARD TYPE
+========================= */
+
+.cardType {
+  display: block;
+
+  margin-top: 14px;
+
+  color: #8590a6;
+
+  font-size: 9px;
+
+  font-weight: 700;
+}
+
+
+/* =========================
+   CARD TITLE
+========================= */
+
+.infoCard h3 {
+  margin: 5px 0 9px;
+
+  color: #14285f;
+
+  font-size: 16px;
+
+  line-height: 1.3;
+}
+
+
+/* =========================
+   TIME BOX
+========================= */
+
+.timeBox {
+  padding: 12px;
+
+  margin-top: 8px;
+
+  border-radius: 10px;
+
+  background: #edf3ff;
+}
+
+.timeBox span {
+  display: block;
+
+  color: #36415a;
+
+  font-size: 11px;
+}
+
+.timeBox strong {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #10265f;
+
+  font-size: 19px;
+}
+
+.timeBox small {
+  font-size: 10px;
+}
+
+
+/* =========================
+   CARD INFO
+========================= */
+
+.cardInfo {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 7px;
+
+  margin-top: 15px;
+
+  color: #667087;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+.cardInfo svg {
+  flex: 0 0 15px;
+
+  width: 15px;
+  height: 15px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 1.7;
+}
+
+
+/* =========================
+   CARD DESCRIPTION
+========================= */
+
+.cardDescription {
+  color: #667087;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================
+   INFORMATION BOTTOM
+========================= */
+
+.infoBottom {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 22px;
+}
+
+.infoDots {
+  display: flex;
+
+  gap: 9px;
+}
+
+
+/* =========================
+   BOTTOM SECTION
+========================= */
+
+.bottomSection {
+  width: min(1180px, calc(100% - 70px));
+
+  margin: 0 auto 65px;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1.35fr;
+
+  gap: 45px;
+}
+
+
+/* =========================
+   GUIDE
+========================= */
+
+.guideCard,
+.processCard {
+  border-radius: 18px;
+
+  padding: 28px 30px;
+
+  min-height: 410px;
+
+  box-sizing: border-box;
+}
+
+.guideCard {
+  background: white;
+
+  box-shadow:
+    0 8px 25px rgba(28, 42, 78, 0.05);
+}
+
+.processCard {
+  background: #07165c;
+
+  color: white;
+
+  box-shadow:
+    0 10px 25px rgba(8, 23, 90, 0.17);
+}
+
+
+/* =========================
+   SECTION BADGE
+========================= */
+
+.sectionBadge,
+.sectionBadgeDark {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border-radius: 15px;
+
+  padding: 6px 10px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+.sectionBadge {
+  color: #243a7b;
+
+  background: #eaf0ff;
+}
+
+.sectionBadgeDark {
+  color: #d7e0ff;
+
+  background: rgba(93, 119, 220, 0.25);
+}
+
+.sectionBadge svg,
+.sectionBadgeDark svg {
+  width: 13px;
+  height: 13px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 1.7;
+}
+
+
+/* =========================
+   SECTION TITLE
+========================= */
+
+.guideCard h2,
+.processCard h2 {
+  margin: 15px 0 4px;
+
+  font-size: 22px;
+
+  letter-spacing: -0.5px;
+}
+
+.guideCard h2 {
+  color: #142b67;
+}
+
+.processCard h2 {
+  color: white;
+}
+
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.guideCard > p,
+.processCard > p {
+  margin: 0;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+.guideCard > p {
+  color: #717a8c;
+}
+
+.processCard > p {
+  color: #b7c0df;
+}
+
+
+/* =========================
+   GUIDE LIST
+========================= */
+
+.guideList {
+  margin-top: 25px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 17px;
+}
+
+.guideList > div {
+  display: flex;
+
+  gap: 11px;
+}
+
+.check {
+  flex: 0 0 19px;
+
+  width: 19px;
+  height: 19px;
+
+  border-radius: 50%;
+
+  background: #c8f27a;
+
+  color: #3c7914;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.check svg {
+  width: 12px;
+  height: 12px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 2.5;
+}
+
+.guideList strong {
+  display: block;
+
+  color: #24345d;
+
+  font-size: 12px;
+}
+
+.guideList p {
+  margin: 3px 0 0;
+
+  color: #737c8d;
+
+  font-size: 11px;
+
+  line-height: 1.45;
+}
+
+
+/* =========================
+   PROCESS
+========================= */
+
+.processGrid {
+  margin-top: 23px;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 2px;
+}
+
+.processItem {
+  position: relative;
+
+  min-height: 130px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: #17296d;
+
+  box-sizing: border-box;
+}
+
+.processItem svg {
+  position: absolute;
+
+  top: 16px;
+  right: 15px;
+
+  width: 17px;
+  height: 17px;
+
+  fill: none;
+
+  stroke: #dbe2ff;
+
+  stroke-width: 1.6;
+}
+
+.number {
+  display: block;
+
+  color: #c8f267;
+
+  font-size: 27px;
+
+  line-height: 1;
+
+  font-weight: 500;
+}
+
+.processItem h3 {
+  margin: 9px 0 3px;
+
+  font-size: 13px;
+}
+
+.processItem p {
+  margin: 0;
+
+  color: #bbc4df;
+
+  font-size: 10px;
+
+  line-height: 1.45;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1000px) {
+
+  .heroContent {
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+  }
+
+  .heroText {
+    text-align: center;
+  }
+
+  .heroText > p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .crumb,
+  .heroButtons {
+    justify-content: center;
+  }
+
+  .heroVisual {
+    max-width: 700px;
+
+    width: 100%;
+
+    margin: auto;
+  }
+
+  .bottomSection {
+    grid-template-columns: 1fr;
+
+    gap: 25px;
+  }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+  /* =========================
+     GENERAL
+  ========================= */
+
+  .heroContent,
+  .bottomSection {
+    width: calc(100% - 30px);
+  }
+
+
+  /* =========================
+     HERO
+  ========================= */
+
+  .hero {
+    padding: 30px 0 22px;
+  }
+
+  .heroContent {
+    gap: 28px;
+  }
+
+  .heroText {
+    padding-top: 0;
+  }
+
+  .crumb {
+    max-width: 100%;
+
+    padding: 6px 11px;
+
+    gap: 7px;
+
+    font-size: 9px;
+
+    line-height: 1.3;
+  }
+
+  .heroText h1 {
+    font-size: clamp(30px, 8.5vw, 38px);
+
+    line-height: 1.1;
+
+    letter-spacing: -1px;
+  }
+
+  .heroText h1 br {
+    display: none;
+  }
+
+  .heroText > p {
+    margin: 16px auto 20px;
+
+    max-width: 500px;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+  }
+
+  .heroButtons {
+    width: 100%;
+
+    flex-direction: column;
+
+    gap: 9px;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+
+    height: 44px;
+
+    box-sizing: border-box;
+  }
+
+  .heroImageBox {
+    height: clamp(210px, 58vw, 270px);
+
+    border-radius: 14px;
+  }
+
+  .heroArrow {
+    width: 34px;
+    height: 34px;
+
+    opacity: 1;
+  }
+
+  .heroArrowLeft {
+    left: 10px;
+  }
+
+  .heroArrowRight {
+    right: 10px;
+  }
+
+  .heroArrow svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .heroDots {
+    margin-top: 10px;
+  }
+
+
+  /* =========================
+     INFORMATION
+  ========================= */
+
+  .informationSection {
+    width: calc(100% - 20px);
+
+    margin: 10px auto 35px;
+
+    padding: 22px 10px 20px;
+
+    border-radius: 15px;
+  }
+
+  .infoHeader {
+    padding: 0 7px 16px;
+  }
+
+  .infoTitle {
+    gap: 9px;
+  }
+
+  .infoTitle svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .infoTitle h2 {
+    font-size: 19px;
+  }
+
+  .infoHeader p {
+    margin: 5px 0 0 29px;
+
+    font-size: 10.5px;
+
+    line-height: 1.5;
+  }
+
+
+  /* CAROUSEL */
+
+  .infoCarousel {
+    position: relative;
+
+    display: block;
+
+    margin-top: 15px;
+
+    width: 100%;
+  }
+
+  .infoCards {
+    width: 100%;
+
+    padding: 10px 23px;
+
+    gap: 8px;
+
+    box-sizing: border-box;
+  }
+
+  .infoCard {
+    flex: 1 1 0;
+
+    width: auto;
+
+    min-width: 0;
+
+    min-height: 245px;
+
+    padding: 15px 11px;
+  }
+
+  .infoCardActive {
+    transform: scale(1.02);
+  }
+
+  .infoCardInactive {
+    transform: scale(0.985);
+  }
+
+
+  /* ARROW OVER CARD */
+
+  .carouselArrow {
+    position: absolute;
+
+    top: 50%;
+
+    width: 32px;
+    height: 32px;
+
+    z-index: 5;
+
+    transform: translateY(-50%);
+  }
+
+  .carouselArrow:first-child {
+    left: 0;
+  }
+
+  .carouselArrow:last-child {
+    right: 0;
+  }
+
+  .carouselArrow:hover {
+    transform:
+      translateY(-50%)
+      scale(1.04);
+  }
+
+  .carouselArrow:active {
+    transform:
+      translateY(-50%)
+      scale(0.96);
+  }
+
+  .carouselArrow svg {
+    width: 16px;
+    height: 16px;
+  }
+
+
+  /* CARD CONTENT */
+
+  .iconBox {
+    width: 35px;
+    height: 35px;
+
+    border-radius: 9px;
+  }
+
+  .iconBox svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .badge {
+    padding: 4px 7px;
+
+    font-size: 8px;
+  }
+
+  .cardType {
+    margin-top: 11px;
+
+    font-size: 7.5px;
+  }
+
+  .infoCard h3 {
+    margin: 5px 0 8px;
+
+    font-size: 14px;
+  }
+
+  .timeBox {
+    padding: 9px;
+
+    margin-top: 7px;
+  }
+
+  .timeBox span {
+    font-size: 9px;
+  }
+
+  .timeBox strong {
+    font-size: 14px;
+  }
+
+  .timeBox small {
+    font-size: 8px;
+  }
+
+  .cardInfo {
+    gap: 5px;
+
+    margin-top: 11px;
+
+    font-size: 9px;
+  }
+
+  .cardInfo svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .cardDescription {
+    font-size: 9.5px;
+
+    line-height: 1.5;
+  }
+
+  .infoBottom {
+    margin-top: 16px;
+  }
+
+
+  /* =========================
+     BOTTOM SECTION
+  ========================= */
+
+  .bottomSection {
+    margin-bottom: 40px;
+
+    gap: 20px;
+  }
+
+  .guideCard,
+  .processCard {
+    min-height: auto;
+
+    padding: 23px 18px;
+
+    border-radius: 15px;
+  }
+
+  .sectionBadge,
+  .sectionBadgeDark {
+    padding: 6px 9px;
+
+    font-size: 9px;
+  }
+
+  .sectionBadge svg,
+  .sectionBadgeDark svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .guideCard h2,
+  .processCard h2 {
+    margin-top: 13px;
+
+    font-size: 20px;
+  }
+
+  .guideCard > p,
+  .processCard > p {
+    font-size: 11px;
+
+    line-height: 1.55;
+  }
+
+
+  /* GUIDE LIST */
+
+  .guideList {
+    margin-top: 21px;
+
+    gap: 15px;
+  }
+
+  .guideList > div {
+    gap: 9px;
+  }
+
+  .check {
+    flex-basis: 18px;
+
+    width: 18px;
+    height: 18px;
+  }
+
+  .check svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  .guideList strong {
+    font-size: 11px;
+  }
+
+  .guideList p {
+    font-size: 10px;
+
+    line-height: 1.45;
+  }
+
+
+  /* PROCESS */
+
+  .processGrid {
+    margin-top: 19px;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 6px;
+  }
+
+  .processItem {
+    min-height: 135px;
+
+    padding: 12px;
+  }
+
+  .processItem svg {
+    top: 14px;
+    right: 12px;
+
+    width: 16px;
+    height: 16px;
+  }
+
+  .number {
+    font-size: 23px;
+  }
+
+  .processItem h3 {
+    margin-top: 8px;
+
+    font-size: 12px;
+  }
+
+  .processItem p {
+    font-size: 9px;
+
+    line-height: 1.45;
+  }
+}
+
+
+/* =========================
+   HP SANGAT KECIL
+========================= */
+
+@media (max-width: 380px) {
+
+  .heroText h1 {
+    font-size: 29px;
+  }
+
+  .crumb {
+    font-size: 8px;
+  }
+
+  .informationSection {
+    width: calc(100% - 16px);
+
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  .infoCards {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .infoCard {
+    padding-left: 9px;
+    padding-right: 9px;
+
+    min-height: 235px;
+  }
+
+  .infoCard h3 {
+    font-size: 13px;
+  }
+
+  .timeBox strong {
+    font-size: 13px;
+  }
+
+  .cardInfo {
+    font-size: 8.5px;
+  }
+
+  .processGrid {
+    grid-template-columns: 1fr;
+  }
+}

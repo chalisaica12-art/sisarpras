@@ -1,0 +1,948 @@
+.page {
+  min-height: 100vh;
+  padding: 0 38px 50px;
+  background: #f7f8fc;
+  color: #172554;
+}
+
+/* =========================
+   HEADER
+   MENGIKUTI DASBOR
+========================= */
+
+.topArea {
+  margin: 0 -38px 28px;
+  padding: 34px 38px 28px;
+
+  background: #edf3ff;
+
+  border-bottom: 1px solid #e0e8f8;
+}
+
+.header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 24px;
+}
+
+.headerText {
+  min-width: 0;
+}
+
+.header h1 {
+  margin: 0;
+
+  color: #172554;
+
+  font-size: 28px;
+  font-weight: 750;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+
+  color: #71809b;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+/* =========================
+   STATISTIC CARDS
+   INI DIAMBIL DARI DASBOR
+========================= */
+
+.statsGrid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 18px;
+}
+
+.statCard {
+  position: relative;
+
+  min-height: 148px;
+
+  padding: 20px;
+
+  background: white;
+
+  border: 1px solid #e4e7ed;
+
+  border-radius: 13px;
+
+  overflow: hidden;
+}
+
+/* =========================
+   GARIS WARNA
+========================= */
+
+.statCard::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 3px;
+}
+
+.blueCard::before {
+  background: #315fba;
+}
+
+.greenCard::before {
+  background: #20b968;
+}
+
+.yellowCard::before {
+  background: #f4c51c;
+}
+
+.redCard::before {
+  background: #ef4444;
+}
+
+/* =========================
+   BAGIAN ATAS CARD
+========================= */
+
+.statTop {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statLabel {
+  color: #70798d;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+/* =========================
+   ICON
+========================= */
+
+.statIcon {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 9px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.statIcon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.blueIcon {
+  color: #315fba;
+
+  background: #edf3ff;
+}
+
+.greenIcon {
+  color: #20b968;
+
+  background: #eafaf1;
+}
+
+.yellowIcon {
+  color: #d59f00;
+
+  background: #fff9df;
+}
+
+.redIcon {
+  color: #e33b3b;
+
+  background: #fff0f0;
+}
+
+/* =========================
+   ANGKA
+========================= */
+
+.statCard h2 {
+  margin: 15px 0 5px;
+
+  color: #182755;
+
+  font-size: 27px;
+
+  line-height: 1;
+
+  font-weight: 750;
+}
+
+/* =========================
+   DESKRIPSI
+========================= */
+
+.statInfo {
+  margin: 0;
+
+  color: #9aa1b0;
+
+  font-size: 10px;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.toolbar {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-bottom: 18px;
+}
+
+.toolbarLeft {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.secondaryButton,
+.primaryButton {
+  height: 42px;
+
+  padding: 0 15px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.secondaryButton {
+  color: #4b5563;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe3ea;
+}
+
+.secondaryButton:hover {
+  background: #f8fafc;
+
+  border-color: #cbd5e1;
+}
+
+.primaryButton {
+  color: #ffffff;
+
+  background: #2563eb;
+
+  border: 1px solid #2563eb;
+}
+
+.primaryButton:hover {
+  background: #1d4ed8;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.filterCard {
+  margin-bottom: 20px;
+
+  padding: 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #e8ebf1;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 3px 12px
+      rgba(28, 39, 60, 0.03);
+}
+
+.searchRow {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.searchBox {
+  flex: 1;
+
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 0 13px;
+
+  color: #8a93a5;
+
+  background: #f9fafc;
+
+  border: 1px solid #e1e5ec;
+
+  border-radius: 9px;
+}
+
+.searchBox:focus-within {
+  background: #ffffff;
+
+  border-color: #93c5fd;
+}
+
+.searchBox input {
+  width: 100%;
+
+  padding: 0;
+
+  outline: none;
+
+  border: none;
+
+  background: transparent;
+
+  color: #1f2937;
+
+  font-size: 13px;
+}
+
+.searchBox input::placeholder {
+  color: #9ca3af;
+}
+
+/* =========================
+   FILTER BUTTON
+========================= */
+
+.filterButton,
+.resetButton {
+  height: 42px;
+
+  padding: 0 14px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.filterButton {
+  color: #4b5563;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe3ea;
+}
+
+.filterButton:hover {
+  color: #2563eb;
+
+  background: #eff6ff;
+
+  border-color: #bfdbfe;
+}
+
+.resetButton {
+  color: #6b7280;
+
+  background: transparent;
+
+  border: none;
+}
+
+.resetButton:hover {
+  color: #2563eb;
+}
+
+/* =========================
+   FILTER GRID
+========================= */
+
+.filterGrid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 14px;
+
+  margin-top: 18px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #edf0f4;
+}
+
+.filterGrid select {
+  width: 100%;
+
+  height: 40px;
+
+  padding: 0 10px;
+
+  outline: none;
+
+  color: #4b5563;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe3ea;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+}
+
+.filterGrid select:focus {
+  border-color: #93c5fd;
+}
+
+/* =========================
+   TABLE CARD
+========================= */
+
+.tableCard {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e8ebf1;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 3px 12px
+      rgba(28, 39, 60, 0.03);
+}
+
+.tableHeader {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding: 20px 22px;
+
+  border-bottom: 1px solid #edf0f4;
+}
+
+.tableHeader h2 {
+  margin: 0 0 5px;
+
+  color: #1f2937;
+
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+.tableHeader p {
+  margin: 0;
+
+  color: #8a93a5;
+
+  font-size: 12px;
+}
+
+.tableHeader p strong {
+  color: #4b5563;
+}
+
+/* =========================
+   ROWS SELECT
+========================= */
+
+.rowsSelect {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #7b8495;
+
+  font-size: 12px;
+}
+
+.rowsSelect select {
+  height: 34px;
+
+  padding: 0 8px;
+
+  outline: none;
+
+  color: #4b5563;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe3ea;
+
+  border-radius: 7px;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.tableWrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+.tableWrapper table {
+  width: 100%;
+
+  min-width: 1150px;
+
+  border-collapse: collapse;
+}
+
+.tableWrapper th {
+  height: 48px;
+
+  padding: 0 15px;
+
+  color: #6b7280;
+
+  background: #fafbfc;
+
+  border-bottom: 1px solid #e9ecf2;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.tableWrapper td {
+  height: 58px;
+
+  padding: 0 15px;
+
+  color: #4b5563;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #f0f2f5;
+
+  white-space: nowrap;
+
+  font-size: 13px;
+}
+
+.tableWrapper tbody tr:hover td {
+  background: #fafcff;
+}
+
+/* =========================
+   TABLE TEXT
+========================= */
+
+.code {
+  color: #6b7280 !important;
+
+  font-family: monospace;
+
+  font-size: 12px !important;
+}
+
+.itemName {
+  color: #1f2937 !important;
+
+  font-weight: 600;
+}
+
+/* =========================
+   SORTING
+   TANPA PANAH
+========================= */
+
+.sortButton {
+  padding: 0;
+
+  color: #6b7280;
+
+  background: transparent;
+
+  border: none;
+
+  font: inherit;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-align: left;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+.sortButton:hover {
+  color: #2563eb;
+}
+
+.sortActive {
+  color: #2563eb;
+}
+
+/* =========================
+   BADGE
+========================= */
+
+.badge,
+.source {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 26px;
+
+  padding: 0 9px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+.baik {
+  color: #15803d;
+
+  background: #dcfce7;
+}
+
+.ringan {
+  color: #b45309;
+
+  background: #fef3c7;
+}
+
+.berat {
+  color: #b91c1c;
+
+  background: #fee2e2;
+}
+
+.source {
+  color: #2563eb;
+
+  background: #eff6ff;
+}
+
+/* =========================
+   ACTION
+========================= */
+
+.actionGroup {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+}
+
+.actionButton {
+  width: 30px;
+  height: 30px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  transition:
+    color 0.18s ease,
+    background 0.18s ease;
+}
+
+.actionView {
+  color: #64748b;
+}
+
+.actionView:hover {
+  color: #2563eb;
+
+  background: #eff6ff;
+}
+
+.actionEdit {
+  color: #64748b;
+}
+
+.actionEdit:hover {
+  color: #d97706;
+
+  background: #fffbeb;
+}
+
+.actionPrint {
+  color: #64748b;
+}
+
+.actionPrint:hover {
+  color: #16a34a;
+
+  background: #f0fdf4;
+}
+
+.actionDelete {
+  color: #64748b;
+}
+
+.actionDelete:hover {
+  color: #dc2626;
+
+  background: #fef2f2;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty {
+  height: 150px !important;
+
+  color: #9ca3af !important;
+
+  text-align: center !important;
+}
+
+/* =========================
+   PAGINATION
+========================= */
+
+.pagination {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 17px 22px;
+}
+
+.pagination > span {
+  color: #8a93a5;
+
+  font-size: 12px;
+}
+
+.pagination > span strong {
+  color: #4b5563;
+}
+
+.pageButtons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+}
+
+.pageButtons button {
+  min-width: 32px;
+
+  height: 32px;
+
+  padding: 0 8px;
+
+  color: #6b7280;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e5ec;
+
+  border-radius: 7px;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.pageButtons button:hover:not(:disabled) {
+  color: #2563eb;
+
+  background: #eff6ff;
+
+  border-color: #bfdbfe;
+}
+
+.pageButtons button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.4;
+}
+
+.pageButtons .activePage {
+  color: #ffffff;
+
+  background: #2563eb;
+
+  border-color: #2563eb;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+  .statsGrid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1000px) {
+  .filterGrid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .page {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .topArea {
+    margin-left: -20px;
+    margin-right: -20px;
+
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .header {
+    align-items: flex-start;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .toolbarLeft {
+    flex-wrap: wrap;
+  }
+
+  .searchRow {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+  .filterGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .tableHeader {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .pagination {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .pageButtons {
+    align-self: flex-end;
+  }
+}

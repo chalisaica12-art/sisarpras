@@ -1,0 +1,381 @@
+{
+  "Navbar": {
+  "subtitle": "School Facilities & Infrastructure Information System",
+  "home": "Home",
+  "report": "Report Form",
+  "reports": "Reports",
+  "language": "Language",
+  "login": "Sign In",
+  "profileMenu": "Profile Menu",
+  "myProfile": "My Profile",
+  "logout": "Log Out",
+  "openMenu": "Open menu",
+  "closeMenu": "Close menu"
+},
+
+  "Footer": {
+  "description": "SISARPRAS is a school facilities and infrastructure information system that helps simplify the process of reporting damage, monitoring report status, and managing facilities and infrastructure data in a more organized and accessible way.",
+  "linksTitle": "LINKS",
+  "home": "Home",
+  "report": "Report Form",
+  "reports": "Reports",
+  "addressTitle": "ADDRESS",
+  "addressLine1": "Jl. Tanimbar No.22",
+  "addressLine2": "Kasin, Klojen District, Malang",
+  "addressLine3": "East Java 65117",
+  "copyright": "© 2026 SISARPRAS",
+  "tagline": "SISARPRAS - School Facilities & Infrastructure Information System"
+},
+
+ "Home": {
+  "title": "SISARPRAS",
+  "description": "An integrated school facilities service for reporting damaged facilities and monitoring the handling process.",
+  "reportButton": "Report Damage",
+  "checkReportButton": "Check Report",
+
+  "crumb": "School Facilities & Infrastructure Reporting System",
+  "heroTitle1": "Report School Facilities &",
+  "heroTitle2": "Infrastructure Damage",
+  "heroDescription": "Report damaged school facilities and infrastructure easily and monitor the handling process. Every report will be processed and you can monitor it until completion.",
+
+  "previousPhoto": "Previous photo",
+  "nextPhoto": "Next photo",
+  "choosePhoto": "Choose photo",
+
+  "informationTitle": "Latest Sarpras Information",
+  "informationDescription": "Latest updates regarding services, maintenance, and school facilities and infrastructure announcements.",
+  "previousInformation": "Previous information",
+  "nextInformation": "Next information",
+
+  "active": "Active",
+  "important": "Important",
+  "complaintService": "COMPLAINT SERVICE",
+  "importantInformation": "IMPORTANT INFORMATION",
+
+  "operatingHours": "Operating Hours",
+  "mondayFriday": "Monday – Friday",
+  "selfReporting": "Reports can be submitted anytime through the web.",
+
+  "developmentTitle1": "Website Still Under",
+  "developmentTitle2": "Development",
+  "developmentDescription": "The SISARPRAS website is still under development. Some features may not yet be available or may still be undergoing improvements.",
+
+  "reportingGuide": "Reporting Guide",
+  "guideTitle": "Things to Know Before Reporting",
+  "guideDescription": "Complete your report so the Sarpras team can understand the damage and follow it up promptly.",
+
+  "fillReporterData": "Fill in Reporter Data",
+  "fillReporterDescription": "Enter the reporter's name, WhatsApp number, and email that can be contacted.",
+
+  "determineLocation": "Determine Location and Item",
+  "determineLocationDescription": "Select the location or room, then enter the name of the damaged item.",
+
+  "explainDamage": "Describe the Damage",
+  "explainDamageDescription": "Clearly describe the type and condition of the damage. Include a photo if available.",
+
+  "determineUrgency": "Determine Urgency and Submit the Report",
+  "determineUrgencyDescription": "Choose the urgency level according to the damage condition, then submit the report.",
+
+  "handlingProcess": "Handling Process",
+  "fourEasySteps": "4 Easy Steps",
+  "processDescription": "Your report will be processed from submission until completion.",
+
+  "report": "Report",
+  "reportDescription": "Fill out the form with data and information about the damaged item.",
+
+  "verified": "Verified",
+  "verifiedDescription": "The Sarpras team will review the report and ensure that the information provided is accurate.",
+
+  "processed": "Processed",
+  "processedDescription": "Verified reports will be followed up by the team for repair.",
+
+  "completed": "Completed",
+  "completedDescription": "Once the repair is completed, the report status will be updated and can be viewed by the reporter."
+},
+
+ "Report": {
+  "title": "Damage Report Form",
+  "subtitle": "Report damaged school facilities so they can be followed up promptly.",
+
+  "reporterData": "Reporter Data",
+  "reporterIdentity": "Reporter Identity",
+  "reporter": "Reporter",
+  "reporterPlaceholder": "Your full name",
+  "phone": "Phone / WhatsApp",
+  "phonePlaceholder": "Example: 0812345678",
+  "email": "Email",
+  "emailPlaceholder": "Enter email",
+
+  "damageDetail": "Damage Details",
+  "required": "* Required",
+  "location": "Location / Room",
+  "locationPlaceholder": "Choose Location",
+  "damagedItem": "Damaged Item Name",
+  "damagedItemPlaceholder": "Example: AC, Table, Chair, etc.",
+  "damageType": "Damage Type",
+  "broken": "Broken / Snapped",
+  "cracked": "Cracked / Physical",
+  "notWorking": "Not Functioning",
+  "other": "Other...",
+
+  "otherPlaceholder": "Describe another type of damage",
+
+  "urgency": "Urgency Level",
+  "urgencyHelper": "Priority determines the repair SLA",
+  "low": "Low",
+  "medium": "Medium",
+  "high": "High / Emergency",
+
+  "description": "Damage Description",
+  "characterCount": "characters",
+  "descriptionPlaceholder": "Describe the damage in detail...",
+
+  "photoEvidence": "Damage Photo Evidence",
+  "maxSize": "Max. 2 MB",
+  "uploadTitle": "Upload a photo of the damaged item",
+  "uploadDescription": "Use a clear photo that shows the condition of the damage",
+  "chooseFile": "Choose File",
+  "readyUpload": "Ready to Upload",
+  "deletePhoto": "Delete photo",
+
+  "cancelBack": "Cancel & Back",
+  "saveDraft": "Save as Draft",
+  "submit": "Submit Report",
+
+  "summary": "Report Summary",
+  "readyToSend": "Ready to Submit",
+  "incomplete": "Incomplete",
+  "noValue": "Not filled in",
+  "phoneSummary": "Phone / WhatsApp",
+  "locationSummary": "Location / Room",
+  "itemSummary": "Damaged Item Name",
+  "typeSummary": "Type",
+  "urgencySummary": "Urgency",
+  "photoSummary": "Damage Photo Evidence",
+  "photoAttached": "1 Photo Attached",
+  "noPhoto": "No photo",
+  "formCompleteness": "Form Completeness",
+
+  "guide": "Reporting Guide",
+  "guideReporter": "Fill in reporter data: Enter your name, WhatsApp number, and active email.",
+  "guideLocation": "Determine the location of the damaged facility clearly.",
+  "guideDamage": "Clearly describe the type and condition of the damage. Include a photo if available.",
+  "guideUrgency": "Determine the urgency level according to the damage condition, then submit the report."
+},
+
+  "Reports": {
+    "title": "My Reports",
+    "subtitle": "Monitor the status and progress of your damage reports.",
+    "searchPlaceholder": "Search report number or item name",
+    "newReport": "Create New Report",
+    "all": "All",
+    "submitted": "Submitted",
+    "verified": "Verified",
+    "processed": "Processed",
+    "completed": "Completed",
+    "draft": "Draft",
+    "photo": "Photo",
+    "status": "Status:",
+    "currentProgress": "Current Progress:",
+    "notSent": "Not submitted",
+    "viewDraft": "View Draft",
+    "viewDetail": "View Details",
+    "emptyTitle": "Report not found",
+    "emptyDescription": "No reports match the selected search or category.",
+    "showing": "Showing",
+    "from": "of",
+    "reports": "facility and infrastructure reports",
+    "previous": "Previous",
+    "next": "Next"
+  },
+
+  "Detail": {
+    "backToReports": "Back to My Reports",
+    "reportTitle": "Report #SR-2026-00128",
+    "statusProcessing": "In Progress",
+    "createdAt": "Created on September 6, 2026, 13:20 WIB",
+    "progressTitle": "HANDLING PROGRESS",
+    "stepCounter": "Step {current} of {total}",
+
+    "submitted": "SUBMITTED",
+    "verified": "VERIFIED",
+    "processed": "IN PROGRESS",
+    "completed": "COMPLETED",
+
+    "submittedTitle": "Report Submitted",
+    "verifiedTitle": "Verified by Admin",
+    "processedTitle": "Being Processed",
+    "completedTitle": "Completed & Tested",
+    "waitingAction": "Waiting for Action",
+
+    "reportDetails": "Report Information Details",
+    "reporter": "Reporter:",
+    "reporterValue": "Budi Prasetyo, S.Pd. (Teacher)",
+    "phone": "Phone/WhatsApp",
+    "email": "Email",
+    "location": "Location/Room:",
+    "itemName": "Damaged Item",
+    "itemValue": "Table",
+    "type": "Type:",
+    "typeValue": "Not Functioning",
+    "urgency": "Urgency:",
+    "urgencyValue": "Medium",
+
+    "descriptionTitle": "FULL DAMAGE DESCRIPTION",
+    "description": "The optical indicator light blinks red and does not emit light during the class XI programming practical session. The HDMI port and power cable have been replaced, but the device still does not respond. The cooling fan runs with a loud buzzing sound for 10 seconds before suddenly stopping.",
+
+    "photoTitle": "PHOTO OF DAMAGED ITEM",
+    "photoAlt": "Photo of damaged item",
+    "enlarge": "Enlarge",
+
+    "chatTitle": "Facilities Team Chat",
+    "active": "Active",
+    "manageMessages": "Manage messages",
+    "deleteAll": "Delete all",
+    "selectMessages": "Select messages",
+    "selectedCount": "{count} messages selected",
+    "selectAll": "Select all",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "selectMessage": "Select message",
+
+    "yesterday": "Yesterday • September 6, 2026",
+    "today": "Today • September 7, 2026",
+    "read": "Read",
+
+    "chatImageAlt": "Photo in chat",
+    "attachmentPreview": "Photo preview",
+    "removePhoto": "Remove photo",
+    "attachPhoto": "Attach photo",
+    "camera": "Camera",
+    "gallery": "Gallery / File",
+    "messagePlaceholder": "Write a message to the facilities team...",
+    "sendMessage": "Send message",
+    "closePhoto": "Close photo",
+    "largePhotoAlt": "Enlarged photo",
+
+    "adminName": "Facilities Admin",
+    "userName": "You (Budi Prasetyo)",
+    "now": "Now",
+
+    "message1": "Good afternoon Mr. Budi. We have received and verified the Lab Computer 2 projector report. Technician Jo is scheduled to inspect the unit this morning.",
+    "message2": "Thank you, Admin. Please prioritize it because the lab will be used tomorrow morning for the grade XI RPL school assessment.",
+    "message3": "Alright Mr. Budi. Mr. Joko has picked up the replacement module from the workshop and will immediately proceed to the building for the repair.",
+
+    "imageTooLarge": "The maximum photo size is 2 MB.",
+    "imageOnly": "The selected file must be an image.",
+    "imageProcessError": "The photo could not be processed. Please try again.",
+    "deleteAllConfirm": "Delete all messages in this conversation?",
+    "deleteSelectedConfirm": "Delete {count} selected messages?"
+  },
+
+  "Login": {
+    "title": "Sign in to SISARPRAS",
+    "subtitle": "Enter your email and account password",
+    "schoolImageAlt": "School building",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "emailRequired": "Email is required",
+    "invalidEmail": "Invalid email format",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordRequired": "Password is required",
+    "forgotPassword": "Forgot Password?",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "rememberMe": "Remember me on this device",
+    "loginButton": "Sign In",
+    "or": "OR",
+    "googleButton": "Continue with Google",
+    "noAccount": "Don't have a registered account?",
+    "registerButton": "Register Now"
+  },
+
+  "Register": {
+  "title": "Create a SISARPRAS Account",
+  "subtitleLine1": "Create an account to make reporting easier and save",
+  "subtitleLine2": "your report history.",
+  "schoolImageAlt": "School building",
+
+  "name": "Full Name",
+  "namePlaceholder": "Enter full name",
+  "nameRequired": "Full name is required",
+
+  "email": "Email",
+  "emailPlaceholder": "Enter email",
+  "emailRequired": "Email is required",
+  "invalidEmail": "Invalid email format",
+
+  "password": "Password",
+  "passwordPlaceholder": "Enter password",
+  "passwordRequired": "Password is required",
+  "passwordMinLength": "Password must be at least 8 characters",
+
+  "confirmPassword": "Confirm Password",
+  "confirmPasswordPlaceholder": "Repeat password",
+  "confirmPasswordRequired": "Password confirmation is required",
+  "confirmPasswordMismatch": "Password confirmation does not match",
+
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+
+  "passwordInfo": "Use at least 8 characters for your password",
+
+  "registerButton": "Create Account",
+  "or": "OR",
+  "googleButton": "Sign up with Google",
+
+  "alreadyHaveAccount": "Already have an account?",
+  "loginButton": "Sign In"
+},
+
+  "ForgotPassword": {
+    "brandSubtitle": "School Facilities & Infrastructure Information System",
+    "title": "Forgot Password?",
+    "subtitle": "Enter the email registered to your account",
+    "email": "Registered Email",
+    "emailPlaceholder": "Enter your registered email",
+    "emailRequired": "Email is required",
+    "invalidEmail": "Invalid email format",
+    "infoTitle": "Delivery Information",
+    "infoText": "Make sure the email you entered is active",
+    "sendButton": "Send Recovery Link",
+    "backButton": "Back to Sign In"
+  },
+
+  "ResetPassword": {
+  "brandSubtitle": "School Facilities & Infrastructure Information System",
+  "title": "Update Password",
+  "subtitle": "Create a new password to secure your SISARPRAS account.",
+  "password": "New Password",
+  "passwordPlaceholder": "Enter your new password",
+  "passwordRequired": "Password is required",
+  "passwordMinLength": "Password must be at least 8 characters",
+  "confirmPassword": "Confirm Password",
+  "confirmPasswordPlaceholder": "Repeat your new password",
+  "confirmPasswordRequired": "Password confirmation is required",
+  "confirmPasswordMismatch": "Password confirmation does not match",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "passwordInfo": "Use at least 8 characters.",
+  "successMessage": "Password updated successfully. Redirecting to the sign-in page...",
+  "updateButton": "Update Password",
+  "backButton": "Back to Sign In"
+},
+
+"Profile": {
+  "title": "My Profile",
+  "subtitle": "Manage your name and profile photo.",
+  "profilePhotoAlt": "Profile photo",
+  "changePhoto": "Change Photo",
+  "fullName": "FULL NAME",
+  "editable": "Editable",
+  "nameHelper": "This name can be used on the reporting form.",
+  "email": "EMAIL",
+  "readOnly": "Read Only",
+  "cancel": "Cancel",
+  "saveChanges": "Save Changes",
+  "photoSizeError": "Photo size must not exceed 2 MB.",
+  "saveSuccess": "Profile changes have been saved successfully."
+}
+}

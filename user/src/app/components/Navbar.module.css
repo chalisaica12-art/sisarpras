@@ -1,0 +1,938 @@
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+  width: 100%;
+  height: 72px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8ebf4;
+
+  position: sticky;
+  top: 0;
+
+  z-index: 100;
+}
+
+.navInner {
+  width: min(1180px, calc(100% - 70px));
+  height: 100%;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logo img {
+  width: 44px;
+  height: 44px;
+
+  display: block;
+
+  object-fit: contain;
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  line-height: 1;
+}
+
+.logoText strong {
+  color: #10245d;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  letter-spacing: -0.4px;
+}
+
+.logoText span {
+  margin-top: 4px;
+
+  color: #68738b;
+
+  font-size: 9px;
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+.navMenu {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 27px;
+}
+
+.navMenu > a {
+  height: 100%;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  color: #4c5365;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navMenu > a:hover {
+  color: #162b70;
+}
+
+
+/* =========================
+   MENU AKTIF
+========================= */
+
+.navMenu > a.active {
+  color: #162b70;
+  font-weight: 700;
+}
+
+.navMenu > a.active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  bottom: 16px;
+
+  height: 2px;
+
+  border-radius: 4px;
+
+  background: #233577;
+}
+
+
+/* =========================
+   BAHASA
+========================= */
+
+.languageWrap {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+}
+
+.languageButton {
+  height: 34px;
+
+  padding: 0 11px;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: #f4f6fc;
+
+  color: #3f4860;
+
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.languageButton:hover {
+  background: #edf0f8;
+}
+
+.languageButton svg {
+  width: 14px;
+  height: 14px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+
+/* =========================
+   DROPDOWN BAHASA
+========================= */
+
+.languageDropdown {
+  position: absolute;
+
+  top: 43px;
+  right: 0;
+
+  width: 145px;
+
+  padding: 7px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e6ef;
+  border-radius: 11px;
+
+  box-shadow:
+    0 12px 30px rgba(30, 42, 85, 0.14);
+
+  z-index: 120;
+}
+
+.languageDropdown button {
+  width: 100%;
+  height: 39px;
+
+  padding: 0 10px;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: #26304a;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  cursor: pointer;
+  text-align: left;
+}
+
+.languageDropdown button:hover {
+  background: #f3f5fc;
+}
+
+.languageDropdown button b {
+  color: #183274;
+}
+
+
+/* =========================
+   MASUK
+========================= */
+
+.loginButton {
+  height: 35px !important;
+  padding: 0 17px;
+  border-radius: 8px;
+  background: #c7f06e;
+  color: #172b5d !important;
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.loginButton:hover {
+  background: #bde968;
+  transform: translateY(-1px);
+}
+
+.loginButton::after {
+  display: none !important;
+}
+
+
+/* =========================
+   PROFILE - TOMBOL BULAT
+========================= */
+
+.profileWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profileAvatarButton {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: #101f52;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.profileAvatarButton:hover {
+  background: #182e70;
+  transform: translateY(-1px);
+}
+
+.userIcon {
+  width: 19px;
+  height: 19px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* =========================
+   PROFILE - DROPDOWN CARD
+========================= */
+
+.profileDropdown {
+  position: absolute;
+
+  top: 50px;
+  right: 0;
+
+  width: 235px;
+
+  padding: 8px;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 16px 36px rgba(18, 28, 62, 0.18);
+
+  z-index: 130;
+}
+
+.profileDropdownHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 5px 6px 12px;
+}
+
+.profileAvatarLarge {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+
+  border-radius: 50%;
+
+  background: #eef1f6;
+  color: #172b5d;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profileAvatarIcon {
+  width: 18px;
+  height: 18px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.profileInfo {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profileInfo strong {
+  color: #0f1c47;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profileInfo span {
+  color: #98a0b3;
+  font-size: 11px;
+  font-weight: 400;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profileDivider {
+  height: 1px;
+  margin: 0 4px 8px;
+  background: #edeff4;
+}
+
+
+/* =========================
+   PROFILE - ITEM MENU
+========================= */
+
+.profileMenuItem {
+  position: relative;
+
+  width: 100%;
+  height: 40px;
+
+  padding: 0 12px 0 16px;
+  margin-bottom: 3px;
+
+  border-radius: 10px;
+
+  background: #eef1fb;
+  color: #101a42;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.profileMenuItem::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 50%;
+
+  width: 3px;
+  height: 50%;
+
+  transform: translateY(-50%);
+
+  background: #1c3fae;
+}
+
+.profileMenuItem:hover {
+  background: #e6eafb;
+}
+
+.profileMenuIcon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* =========================
+   PROFILE - KELUAR
+========================= */
+
+.logoutMenuItem {
+  width: 100%;
+  height: 40px;
+
+  padding: 0 12px 0 16px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background: transparent;
+  color: #ff3b5c;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.logoutMenuItem:hover {
+  background: #fdedf0;
+}
+
+.logoutIcon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* =========================
+   DEFAULT MOBILE ELEMENTS
+========================= */
+
+.mobileMenuButton,
+.mobileCloseButton,
+.navOverlay {
+  display: none;
+}
+
+
+/* =========================
+   RESPONSIVE MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+  .navbar {
+    height: 64px;
+  }
+
+
+  .navInner {
+    width: calc(100% - 30px);
+  }
+
+
+  /* =========================
+     LOGO MOBILE
+  ========================= */
+
+  .logoText span {
+    display: none;
+  }
+
+  .logoText strong {
+    font-size: 16px;
+  }
+
+  .logo img {
+    width: 36px;
+    height: 36px;
+  }
+
+
+  /* =========================
+     HAMBURGER
+  ========================= */
+
+  .mobileMenuButton {
+    width: 40px;
+    height: 40px;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 9px;
+
+    background: #f4f6fc;
+
+    color: #172b5d;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+  }
+
+  .mobileMenuButton:hover {
+    background: #edf0f8;
+  }
+
+  .mobileMenuButton svg {
+    width: 21px;
+    height: 21px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+  }
+
+
+  /* =========================
+     OVERLAY
+  ========================= */
+
+  .navOverlay {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+
+    border: 0;
+
+    background: rgba(20, 29, 55, 0.28);
+
+    z-index: 150;
+
+    cursor: pointer;
+  }
+
+  .navOverlayOpen {
+    display: block;
+  }
+
+
+  /* =========================
+     SIDEBAR DARI KIRI
+  ========================= */
+
+  .navMenu {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: min(320px, 82vw);
+    height: 100dvh;
+
+    padding: 78px 20px 25px;
+
+    background: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 5px;
+
+    box-shadow:
+      10px 0 35px rgba(24, 38, 80, 0.14);
+
+    overflow-y: auto;
+
+    z-index: 200;
+
+    transform: translateX(-100%);
+
+    transition:
+      transform 0.25s ease;
+  }
+
+  .navMenuOpen {
+    transform: translateX(0);
+  }
+
+
+  /* =========================
+     TOMBOL CLOSE
+  ========================= */
+
+  .mobileCloseButton {
+    position: absolute;
+
+    top: 19px;
+    right: 18px;
+
+    width: 38px;
+    height: 38px;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 9px;
+
+    background: #f4f6fc;
+
+    color: #172b5d;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+  }
+
+  .mobileCloseButton:hover {
+    background: #edf0f8;
+  }
+
+  .mobileCloseButton svg {
+    width: 19px;
+    height: 19px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+  }
+
+
+  /* =========================
+     MENU LINK MOBILE
+  ========================= */
+
+  .navMenu > a {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 13px;
+
+    border-radius: 9px;
+
+    display: flex;
+    align-items: center;
+
+    box-sizing: border-box;
+
+    color: #4c5365;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .navMenu > a:hover {
+    background: #f4f6fc;
+
+    color: #162b70;
+  }
+
+
+  /* =========================
+     MENU AKTIF MOBILE
+  ========================= */
+
+  .navMenu > a.active {
+    background: #eef2ff;
+
+    color: #162b70;
+
+    font-weight: 700;
+  }
+
+  .navMenu > a.active::after {
+    display: none;
+  }
+
+
+  /* =========================
+     BAHASA MOBILE
+  ========================= */
+
+  .languageWrap {
+    width: 100%;
+
+    display: block;
+
+    margin-top: 2px;
+  }
+
+  .languageButton {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 13px;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: #4c5365;
+
+    justify-content: space-between;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .languageButton:hover {
+    background: #f4f6fc;
+  }
+
+
+  /* =========================
+     DROPDOWN BAHASA MOBILE
+  ========================= */
+
+  .languageDropdown {
+    position: static;
+
+    width: 100%;
+
+    margin-top: 3px;
+
+    padding: 5px;
+
+    border: 0;
+    border-radius: 9px;
+
+    background: #f7f8fc;
+
+    box-shadow: none;
+
+    box-sizing: border-box;
+  }
+
+  .languageDropdown button {
+    height: 40px;
+
+    font-size: 12px;
+  }
+
+
+  /* =========================
+     MASUK MOBILE
+  ========================= */
+
+  .loginButton {
+    width: 100%;
+
+    height: 44px !important;
+
+    margin-top: 8px;
+
+    padding: 0 15px;
+
+    border-radius: 9px;
+
+    font-size: 13px !important;
+  }
+
+
+  /* =========================
+     PROFILE MOBILE
+  ========================= */
+
+  .profileWrap {
+    width: 100%;
+
+    display: block;
+
+    margin-top: 8px;
+  }
+
+  .profileAvatarButton {
+    width: 100%;
+    height: 46px;
+
+    border-radius: 9px;
+
+    flex: none;
+
+    justify-content: flex-start;
+    gap: 10px;
+
+    padding: 0 13px;
+  }
+
+  .profileAvatarButton::after {
+    content: "Profil";
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .profileDropdown {
+    position: static;
+
+    width: 100%;
+
+    margin-top: 6px;
+
+    box-shadow: none;
+
+    border: 1px solid #e2e6ef;
+  }
+
+}
+
+
+/* =========================
+   HP KECIL
+========================= */
+
+@media (max-width: 380px) {
+
+  .navMenu {
+    width: 86vw;
+
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .logoText strong {
+    font-size: 15px;
+  }
+
+  .logo img {
+    width: 34px;
+    height: 34px;
+  }
+
+}

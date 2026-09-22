@@ -1,0 +1,775 @@
+/* =========================
+   PAGE
+========================= */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f7f8fc;
+  color: #17233f;
+}
+
+.container {
+  width: min(100% - 48px, 1120px);
+  margin: 0 auto;
+  padding: 48px 0 80px;
+  flex: 1;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.pageHeader {
+  margin-bottom: 26px;
+}
+
+.pageHeader h1 {
+  margin: 0 0 5px;
+  color: #182967;
+  font-size: 26px;
+  line-height: 1.25;
+  font-weight: 750;
+  letter-spacing: -0.6px;
+}
+
+.pageHeader p {
+  margin: 0;
+  color: #71809b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.searchBox {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid #dce3ef;
+  border-radius: 11px;
+  box-shadow: 0 3px 8px rgba(27, 43, 84, 0.03);
+}
+
+.searchInput {
+  width: 315px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  background: #f7f9fd;
+  border: 1px solid #dce4f0;
+  border-radius: 7px;
+  color: #9aabc4;
+}
+
+.searchInput:focus-within {
+  border-color: #879bd0;
+  background: #ffffff;
+}
+
+.searchInput input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #26345a;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.searchInput input::placeholder {
+  color: #9aabc4;
+}
+
+.newReportButton {
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 15px;
+  border-radius: 8px;
+  background: #b9e85f;
+  color: #172b66;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.newReportButton:hover {
+  background: #aee04f;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   TABS
+========================= */
+
+.tabs {
+  height: 45px;
+  display: flex;
+  align-items: stretch;
+  margin-top: 20px;
+  background: #ffffff;
+  border: 1px solid #dce3ef;
+  border-radius: 11px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  position: relative;
+  min-width: 145px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 17px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: #ffffff;
+  color: #60708b;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.tab:hover {
+  color: #1e2f69;
+  background: #fafbfe;
+}
+
+.activeTab {
+  color: #182967;
+  font-weight: 700;
+  border-bottom-color: #1e2e6b;
+}
+
+.tabCount {
+  min-width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  border-radius: 20px;
+  background: #edf1f8;
+  color: #71809b;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.activeTabCount {
+  background: #233373;
+  color: #ffffff;
+}
+
+/* =========================
+   REPORT LIST
+========================= */
+
+.reportList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+/* =========================
+   REPORT CARD
+========================= */
+
+.reportCard {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #dce3ef;
+  border-radius: 11px;
+  box-shadow: 0 3px 8px rgba(27, 43, 84, 0.025);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.reportCard:hover {
+  transform: translateY(-1px);
+  border-color: #cbd5e5;
+  box-shadow: 0 7px 18px rgba(27, 43, 84, 0.06);
+}
+
+.draftCard {
+  border-color: #e3dba9;
+  background: #fffef8;
+}
+
+/* =========================
+   CARD TOP
+========================= */
+
+.cardTop {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 17px;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.reportMeta {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #7c8aa3;
+  font-size: 11px;
+}
+
+.reportId {
+  flex-shrink: 0;
+  padding: 5px 9px;
+  border-radius: 5px;
+  background: #f1f4fa;
+  color: #27376f;
+  font-family: monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.draftId {
+  background: #f7f0ca;
+  color: #6f601c;
+}
+
+.dot {
+  color: #aab3c2;
+}
+
+/* =========================
+   DRAFT BADGE
+========================= */
+
+.draftBadge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #fff1b7;
+  color: #756218;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* =========================
+   CARD MAIN
+========================= */
+
+.cardMain {
+  min-height: 91px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 17px;
+}
+
+.photoBox {
+  position: relative;
+  width: 65px;
+  height: 65px;
+  flex: 0 0 65px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #dfe3fa;
+  color: #7568dc;
+}
+
+.photoBox img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.photoBox span {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  background: rgba(44, 44, 55, 0.65);
+  color: #ffffff;
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.reportContent {
+  min-width: 0;
+  flex: 1;
+}
+
+.reportContent h2 {
+  margin: 0 0 4px;
+  color: #1c2e6d;
+  font-size: 15px;
+  line-height: 1.3;
+  font-weight: 750;
+}
+
+.location {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  color: #7a88a0;
+  font-size: 10px;
+}
+
+.location span {
+  min-width: 0;
+}
+
+.reportContent p {
+  max-width: 850px;
+  margin: 0;
+  color: #62718b;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+/* =========================
+   CARD BOTTOM
+========================= */
+
+.cardBottom {
+  min-height: 43px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 0 17px;
+  border-top: 1px solid #edf0f5;
+  background: #fcfdff;
+}
+
+.progress {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #74829a;
+  font-size: 11px;
+}
+
+.statusIcon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eaf2ff;
+  color: #4281e8;
+}
+
+.completeStatus {
+  background: #d8f8e9;
+  color: #28ad78;
+}
+
+.draftStatus {
+  background: #fff1c8;
+  color: #b28d22;
+}
+
+.progressLabel {
+  color: #71809a;
+}
+
+.progress strong {
+  color: #26334e;
+  font-weight: 700;
+}
+
+.draftText {
+  color: #907820 !important;
+}
+
+/* =========================
+   DETAIL BUTTON
+========================= */
+
+.detailButton {
+  height: 27px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border-radius: 7px;
+  background: #202f6d;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.detailButton:hover {
+  background: #18265d;
+}
+
+.continueButton {
+  background: #b9e85f;
+  color: #253467;
+}
+
+.continueButton:hover {
+  background: #aee04f;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.emptyState {
+  padding: 60px 20px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #dce3ef;
+  border-radius: 11px;
+}
+
+.emptyIcon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: #eef2fa;
+  color: #7c8daf;
+}
+
+.emptyState h3 {
+  margin: 0 0 5px;
+  color: #243568;
+  font-size: 15px;
+}
+
+.emptyState p {
+  margin: 0;
+  color: #7b879d;
+  font-size: 12px;
+}
+
+/* =========================
+   BOTTOM AREA
+========================= */
+
+.bottomArea {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.bottomArea p {
+  margin: 0;
+  color: #7a88a0;
+  font-size: 11px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pagination button {
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid #dbe3ef;
+  border-radius: 6px;
+  background: #f4f7fb;
+  color: #9aabc2;
+  font-family: inherit;
+  font-size: 10px;
+}
+
+.pagination .currentPage {
+  min-width: 28px;
+  background: #202f6d;
+  border-color: #202f6d;
+  color: #ffffff;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .container {
+    width: min(calc(100% - 32px), 700px);
+    padding-top: 35px;
+    padding-bottom: 60px;
+  }
+
+  .tabs {
+    overflow-x: auto;
+  }
+
+  .tab {
+    min-width: 125px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+  .container {
+    width: calc(100% - 24px);
+    padding-top: 28px;
+    padding-bottom: 45px;
+  }
+
+  /* HEADER */
+
+  .pageHeader {
+    margin-bottom: 20px;
+  }
+
+  .pageHeader h1 {
+    font-size: 22px;
+    letter-spacing: -0.4px;
+  }
+
+  .pageHeader p {
+    font-size: 12px;
+  }
+
+  /* SEARCH */
+
+  .searchBox {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .searchInput {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .newReportButton {
+    width: 100%;
+  }
+
+  /* TABS */
+
+  .tabs {
+    height: 45px;
+    margin-top: 14px;
+    border-radius: 9px;
+  }
+
+  .tab {
+    min-width: 110px;
+    padding: 0 13px;
+    font-size: 11px;
+  }
+
+  /* LIST */
+
+  .reportList {
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  /* CARD TOP */
+
+  .cardTop {
+    min-height: 44px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .reportMeta {
+    gap: 6px;
+    font-size: 9px;
+  }
+
+  .reportId {
+    padding: 4px 7px;
+    font-size: 9px;
+  }
+
+  .draftBadge {
+    padding: 4px 7px;
+    font-size: 9px;
+  }
+
+  /* CARD MAIN */
+
+  .cardMain {
+    min-height: 0;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 12px;
+  }
+
+  .photoBox {
+    width: 58px;
+    height: 58px;
+    flex: 0 0 58px;
+  }
+
+  .reportContent h2 {
+    margin-bottom: 4px;
+    font-size: 14px;
+  }
+
+  .location {
+    align-items: flex-start;
+    font-size: 9px;
+    line-height: 1.35;
+  }
+
+  .reportContent p {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-top: 3px;
+    font-size: 10px;
+    line-height: 1.45;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  /* CARD BOTTOM */
+
+  .cardBottom {
+    min-height: 0;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 9px;
+    padding: 10px 12px 12px;
+  }
+
+  .progress {
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 10px;
+  }
+
+  .statusIcon {
+    width: 16px;
+    height: 16px;
+    flex-basis: 16px;
+  }
+
+  .detailButton {
+    width: 100%;
+    height: 34px;
+    font-size: 10px;
+  }
+
+  /* BOTTOM */
+
+  .bottomArea {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .bottomArea p {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+
+  .pagination {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .pagination button {
+    height: 32px;
+    font-size: 10px;
+  }
+
+  /* EMPTY */
+
+  .emptyState {
+    padding: 45px 18px;
+  }
+}
+
+/* =========================
+   VERY SMALL SCREEN
+========================= */
+
+@media (max-width: 380px) {
+  .container {
+    width: calc(100% - 20px);
+  }
+
+  .pageHeader h1 {
+    font-size: 20px;
+  }
+
+  .cardMain {
+    gap: 9px;
+  }
+
+  .photoBox {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+  }
+
+  .reportContent h2 {
+    font-size: 13px;
+  }
+
+  .reportContent p {
+    font-size: 9px;
+  }
+
+  .tab {
+    min-width: 105px;
+  }
+}

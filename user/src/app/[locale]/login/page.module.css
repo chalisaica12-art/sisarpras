@@ -1,0 +1,590 @@
+/* =========================
+   LOGIN PAGE
+========================= */
+
+.loginPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.loginCard {
+  width: min(90%, 1100px);
+  min-height: 650px;
+  display: grid;
+  grid-template-columns: 426px 1fr;
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 18px 35px rgba(25, 35, 70, 0.13);
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.loginImage {
+  width: 100%;
+  height: 100%;
+  min-height: 645px;
+  overflow: hidden;
+}
+
+.loginImage img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.loginForm {
+  padding: 77px 64px 55px;
+}
+
+.loginHeading {
+  margin-bottom: 34px;
+}
+
+.loginHeading h1 {
+  margin: 0 0 6px;
+  font-size: 29px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  color: #172033;
+}
+
+.loginHeading p {
+  margin: 0;
+  font-size: 14px;
+  color: #555b6c;
+}
+
+/* =========================
+   FORM GROUP
+========================= */
+
+.formGroup {
+  margin-bottom: 13px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #172033;
+}
+
+.inputWrapper {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 13px;
+  border-radius: 9px;
+  background: #f0f2ff;
+  color: #596071;
+  border: 1px solid transparent;
+  transition: 0.2s ease;
+}
+
+.inputWrapper:focus-within {
+  border-color: #263577;
+  background: #f5f6ff;
+}
+
+.inputWrapper input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #172033;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.inputWrapper input::placeholder {
+  color: #858998;
+}
+
+/* =========================
+   PASSWORD
+========================= */
+
+.passwordGroup {
+  margin-bottom: 9px;
+}
+
+.passwordLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.passwordLabel label {
+  margin-bottom: 8px;
+}
+
+.passwordLabel a {
+  margin-bottom: 8px;
+  color: #1f3275;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.passwordLabel a:hover {
+  text-decoration: underline;
+}
+
+.eyeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  color: #596071;
+  cursor: pointer;
+}
+
+/* =========================
+   REMEMBER
+========================= */
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 5px 0 17px;
+  cursor: pointer;
+  color: #303747;
+  font-size: 14px;
+}
+
+.remember input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #202e6c;
+}
+
+/* =========================
+   LOGIN BUTTON
+========================= */
+
+.loginButton {
+  width: 100%;
+  height: 49px;
+  border: 0;
+  border-radius: 9px;
+  background: #222f6d;
+  color: white;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.loginButton:hover {
+  background: #1b285e;
+}
+
+/* =========================
+   DIVIDER
+========================= */
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 14px 0;
+}
+
+.divider span {
+  height: 1px;
+  flex: 1;
+  background: #dfe2ed;
+}
+
+.divider p {
+  margin: 0;
+  color: #656b79;
+  font-size: 12px;
+}
+
+/* =========================
+   GOOGLE
+========================= */
+
+.googleButton {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid #dce0eb;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #172033;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.googleButton:hover {
+  background: #f8f9fd;
+}
+
+/* =========================
+   REGISTER
+========================= */
+
+.registerText {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  text-align: center;
+}
+
+.registerText span {
+  color: #555b6c;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.registerText a {
+  color: #213375;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.registerText a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   VALIDATION ERROR
+========================= */
+
+.inputError {
+  border-color: #ef4444;
+  background: #fffafa;
+}
+
+.inputError:focus-within {
+  border-color: #ef4444;
+  background: #fffafa;
+}
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 7px;
+  color: #e34a4a;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.errorIcon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.8px solid #ef4444;
+  border-radius: 50%;
+  color: #ef4444;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .loginPage {
+    min-height: 100vh;
+    padding: 30px 20px;
+    align-items: center;
+  }
+
+  .loginCard {
+    width: 100%;
+    max-width: 520px;
+    min-height: 0;
+    grid-template-columns: 1fr;
+    border-radius: 14px;
+  }
+
+  .loginImage {
+    display: none;
+  }
+
+  .loginForm {
+    padding: 48px 40px 42px;
+  }
+
+  .loginHeading {
+    margin-bottom: 30px;
+  }
+
+  .loginHeading h1 {
+    font-size: 27px;
+  }
+
+  .loginHeading p {
+    font-size: 13px;
+  }
+
+  .registerText {
+    margin-top: 17px;
+    gap: 6px;
+  }
+
+  .registerText span {
+    font-size: 12px;
+  }
+
+  .registerText a {
+    font-size: 13px;
+  }
+}
+
+/* =========================
+   TABLET KECIL
+========================= */
+
+@media (max-width: 650px) {
+  .loginPage {
+    padding: 24px 16px;
+  }
+
+  .loginCard {
+    max-width: 500px;
+    border-radius: 13px;
+  }
+
+  .loginForm {
+    padding: 40px 30px 34px;
+  }
+
+  .loginHeading {
+    margin-bottom: 27px;
+  }
+
+  .loginHeading h1 {
+    font-size: 25px;
+  }
+
+  .loginHeading p {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .formGroup {
+    margin-bottom: 14px;
+  }
+
+  .formGroup label {
+    font-size: 13px;
+  }
+
+  .inputWrapper {
+    height: 45px;
+    gap: 12px;
+  }
+
+  .inputWrapper input {
+    font-size: 13px;
+  }
+
+  .passwordLabel a {
+    font-size: 12px;
+  }
+
+  .remember {
+    font-size: 13px;
+    gap: 9px;
+  }
+
+  .loginButton {
+    height: 47px;
+  }
+
+  .googleButton {
+    height: 47px;
+  }
+}
+
+/* =========================
+   HP
+========================= */
+
+@media (max-width: 480px) {
+  .loginPage {
+    padding: 15px 12px;
+    align-items: flex-start;
+  }
+
+  .loginCard {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(25, 35, 70, 0.10);
+  }
+
+  .loginForm {
+    padding: 34px 22px 28px;
+  }
+
+  .loginHeading {
+    margin-bottom: 25px;
+  }
+
+  .loginHeading h1 {
+    font-size: 23px;
+    letter-spacing: -0.4px;
+  }
+
+  .loginHeading p {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .formGroup {
+    margin-bottom: 13px;
+  }
+
+  .formGroup label {
+    margin-bottom: 7px;
+    font-size: 13px;
+  }
+
+  .inputWrapper {
+    height: 44px;
+    padding: 0 12px;
+    gap: 11px;
+    border-radius: 8px;
+  }
+
+  .inputWrapper input {
+    font-size: 13px;
+  }
+
+  .passwordLabel {
+    gap: 10px;
+  }
+
+  .passwordLabel a {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .remember {
+    margin: 5px 0 16px;
+    font-size: 12px;
+  }
+
+  .remember input {
+    width: 15px;
+    height: 15px;
+  }
+
+  .loginButton {
+    height: 46px;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+
+  .divider {
+    gap: 12px;
+    margin: 13px 0;
+  }
+
+  .divider p {
+    font-size: 11px;
+  }
+
+  .googleButton {
+    height: 45px;
+    gap: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+
+  .googleButton svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .registerText {
+    margin-top: 15px;
+    gap: 5px;
+  }
+
+  .registerText span {
+    font-size: 11px;
+  }
+
+  .registerText a {
+    font-size: 12px;
+  }
+}
+
+/* =========================
+   HP SANGAT KECIL
+========================= */
+
+@media (max-width: 360px) {
+  .loginPage {
+    padding: 10px 8px;
+  }
+
+  .loginForm {
+    padding: 30px 18px 24px;
+  }
+
+  .loginHeading h1 {
+    font-size: 21px;
+  }
+
+  .loginHeading p {
+    font-size: 11px;
+  }
+
+  .passwordLabel a {
+    font-size: 10px;
+  }
+
+  .remember {
+    font-size: 11px;
+  }
+
+  .loginButton,
+  .googleButton {
+    font-size: 12px;
+  }
+}

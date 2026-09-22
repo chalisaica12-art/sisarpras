@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import styles from "./page.module.css";
 
 /* =========================================================
@@ -553,14 +554,52 @@ function getIconName(
 }
 
 /* =========================================================
+   SUPABASE MAPPING
+========================================================= */
+
+const TEMPLATE_TO_DB = {
+  "Layanan Pengaduan": "layanan_pengaduan",
+  "Pengumuman Terjadwal": "pengumuman_terjadwal",
+  "Bantuan Cepat": "bantuan_cepat",
+  "Informasi Penting": "informasi_penting",
+  "Informasi Layanan": "informasi_layanan",
+} as const;
+
+const DB_TO_TEMPLATE: Record<string, TemplateType> = {
+  layanan_pengaduan: "Layanan Pengaduan",
+  pengumuman_terjadwal: "Pengumuman Terjadwal",
+  bantuan_cepat: "Bantuan Cepat",
+  informasi_penting: "Informasi Penting",
+  informasi_layanan: "Informasi Layanan",
+};
+
+function dbStatus(status: Status) {
+  return status === "Aktif" ? "aktif" : "nonaktif";
+}
+
+function uiStatus(status: string): Status {
+  return status === "aktif" ? "Aktif" : "Nonaktif";
+}
+
+function getErrorMessage(error: any) {
+  return [
+    error?.code ? `Code: ${error.code}` : "",
+    error?.message ? `Message: ${error.message}` : "",
+    error?.details ? `Details: ${error.details}` : "",
+    error?.hint ? `Hint: ${error.hint}` : "",
+  ].filter(Boolean).join("\n");
+}
+
+/* =========================================================
    PAGE
 ========================================================= */
 
 export default function InformasiHomePage() {
   const [information, setInformation] =
-    useState<Information[]>(
-      initialInformation
-    );
+    useState<Information[]>([]);
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   const [selectedTemplate, setSelectedTemplate] =
     useState<TemplateType | null>(null);
@@ -614,6 +653,148 @@ export default function InformasiHomePage() {
     useState<Information>(
       emptyForm
     );
+
+  /* =======================================================
+     LOAD FROM SUPABASE
+  ======================================================= */
+
+  async function loadInformation() {
+    setLoading(true);
+
+    try {
+      const { data: mainData, error: mainError } = await supabase
+        .from("informasi")
+        .select("*")
+        .order("urutan_tampil", { ascending: true })
+        .order("created_at", { ascending: true });
+
+      if (mainError) throw mainError;
+
+      const [
+        layananPengaduan,
+        pengumuman,
+        bantuanCepat,
+        informasiPenting,
+        layanan,
+      ] = await Promise.all([
+        supabase.from("informasi_layanan_pengaduan").select("*"),
+        supabase.from("informasi_pengumuman_terjadwal").select("*"),
+        supabase.from("informasi_bantuan_cepat").select("*"),
+        supabase.from("informasi_penting_detail").select("*"),
+        supabase.from("informasi_layanan").select("*"),
+      ]);
+
+      const detailResults = [
+        layananPengaduan,
+        pengumuman,
+        bantuanCepat,
+        informasiPenting,
+        layanan,
+      ];
+
+      const failedDetail = detailResults.find((result) => result.error);
+      if (failedDetail?.error) throw failedDetail.error;
+
+      const detailMap = new Map<number, any>();
+      detailResults.forEach((result) => {
+        (result.data ?? []).forEach((item: any) => {
+          detailMap.set(item.informasi_id, item);
+        });
+      });
+
+      const merged: Information[] = (mainData ?? []).map((item: any, index: number) => {
+        const detail = detailMap.get(item.id) ?? {};
+        const template = DB_TO_TEMPLATE[item.template] ?? item.template as TemplateType;
+
+        return {
+          id: item.id,
+          template,
+          judul: item.judul ?? "",
+          badge: detail.badge ?? "",
+          isi: detail.isi_informasi ?? detail.isi_pengumuman ?? "",
+          hari: detail.hari_operasional ?? "",
+          jam: detail.jam_operasional ?? detail.jam_layanan ?? "",
+          lokasi: detail.lokasi ?? "",
+          periode: detail.periode ?? "",
+          telepon: detail.nomor_telepon ?? "",
+          whatsapp: detail.whatsapp ?? "",
+          teksTombol: detail.teks_tombol ?? "",
+          link: detail.link_tujuan ?? "",
+          status: uiStatus(item.status),
+          urutan: item.urutan_tampil ?? index + 1,
+        };
+      });
+
+      setInformation(merged);
+    } catch (error: any) {
+      console.error("Gagal mengambil informasi:", error);
+      alert(
+        `Gagal mengambil data Informasi Home dari Supabase.\n\n${getErrorMessage(error)}`
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadInformation();
+  }, []);
+
+  /* =======================================================
+     SAVE DETAIL TO SUPABASE
+  ======================================================= */
+
+  async function saveDetail(informationId: number, data: Information) {
+    const table = `informasi_${TEMPLATE_TO_DB[data.template]}`;
+
+    let payload: Record<string, any>;
+
+    if (data.template === "Layanan Pengaduan") {
+      payload = {
+        informasi_id: informationId,
+        hari_operasional: data.hari.trim(),
+        jam_operasional: data.jam.trim(),
+        keterangan_tambahan: data.isi.trim(),
+      };
+    } else if (data.template === "Pengumuman Terjadwal") {
+      payload = {
+        informasi_id: informationId,
+        badge: data.badge.trim() || null,
+        isi_pengumuman: data.isi.trim(),
+        lokasi: data.lokasi.trim() || null,
+        periode: data.periode.trim() || null,
+      };
+    } else if (data.template === "Bantuan Cepat") {
+      payload = {
+        informasi_id: informationId,
+        isi_informasi: data.isi.trim(),
+        nomor_telepon: data.telepon.trim() || null,
+        whatsapp: data.whatsapp.trim() || null,
+        jam_layanan: data.jam.trim() || null,
+      };
+    } else if (data.template === "Informasi Penting") {
+      payload = {
+        informasi_id: informationId,
+        badge: data.badge.trim() || null,
+        isi_informasi: data.isi.trim(),
+        lokasi: data.lokasi.trim() || null,
+        periode: data.periode.trim() || null,
+      };
+    } else {
+      payload = {
+        informasi_id: informationId,
+        isi_informasi: data.isi.trim(),
+        teks_tombol: data.teksTombol.trim() || null,
+        link_tujuan: data.link.trim() || null,
+      };
+    }
+
+    const { error } = await supabase
+      .from(table)
+      .upsert(payload, { onConflict: "informasi_id" });
+
+    if (error) throw error;
+  }
 
   /* =======================================================
      TEMPLATE SELECTION
@@ -689,79 +870,111 @@ export default function InformasiHomePage() {
      DELETE
   ======================================================= */
 
-  function deleteInformation(
+  async function deleteInformation(
     item: Information
   ) {
-    const confirmed =
-      window.confirm(
-        `Hapus informasi "${item.judul}"?`
-      );
+    const confirmed = window.confirm(
+      `Hapus informasi "${item.judul}"?`
+    );
 
     if (!confirmed) return;
 
-    setInformation((previous) =>
-      previous
-        .filter(
-          (data) =>
-            data.id !== item.id
-        )
-        .map((data, index) => ({
-          ...data,
-          urutan: index + 1,
-        }))
-    );
+    try {
+      const { error } = await supabase
+        .from("informasi")
+        .delete()
+        .eq("id", item.id);
 
-    setCurrentPage(1);
+      if (error) throw error;
+
+      await loadInformation();
+      setCurrentPage(1);
+    } catch (error: any) {
+      console.error("Gagal menghapus informasi:", error);
+      alert(
+        `Gagal menghapus informasi dari Supabase.\n\n${getErrorMessage(error)}`
+      );
+    }
   }
 
   /* =======================================================
      SAVE
   ======================================================= */
 
-  function saveInformation() {
+  async function saveInformation() {
     if (!form.judul.trim()) {
-      alert(
-        "Judul informasi wajib diisi."
-      );
+      alert("Judul informasi wajib diisi.");
       return;
     }
 
     if (!form.isi.trim()) {
-      alert(
-        "Isi informasi wajib diisi."
-      );
+      alert("Isi informasi wajib diisi.");
       return;
     }
 
-    if (editingId !== null) {
-      setInformation((previous) =>
-        previous.map((item) =>
-          item.id === editingId
-            ? {
-                ...form,
-                judul:
-                  form.judul.trim(),
-                isi:
-                  form.isi.trim(),
-              }
-            : item
-        )
-      );
-    } else {
-      setInformation((previous) => [
-        ...previous,
-        {
-          ...form,
-          id: Date.now(),
-          urutan:
-            previous.length + 1,
-        },
-      ]);
+    if (form.template === "Layanan Pengaduan") {
+      if (!form.hari.trim() || !form.jam.trim()) {
+        alert("Hari dan jam operasional wajib diisi.");
+        return;
+      }
     }
 
-    setSelectedTemplate(null);
-    setEditingId(null);
-    setCurrentPage(1);
+    setSaving(true);
+
+    try {
+      const mainPayload = {
+        template: TEMPLATE_TO_DB[form.template],
+        judul: form.judul.trim(),
+        status: dbStatus(form.status),
+        urutan_tampil: Number(form.urutan) || information.length + 1,
+      };
+
+      let informationId = editingId;
+
+      if (editingId !== null) {
+        const { error } = await supabase
+          .from("informasi")
+          .update(mainPayload)
+          .eq("id", editingId);
+
+        if (error) throw error;
+        informationId = editingId;
+      } else {
+        const { data, error } = await supabase
+          .from("informasi")
+          .insert(mainPayload)
+          .select("id")
+          .single();
+
+        if (error) throw error;
+        informationId = data.id;
+      }
+
+      if (!informationId) {
+        throw new Error("ID informasi tidak ditemukan setelah penyimpanan.");
+      }
+
+      try {
+        await saveDetail(informationId, form);
+      } catch (detailError) {
+        if (editingId === null) {
+          await supabase.from("informasi").delete().eq("id", informationId);
+        }
+        throw detailError;
+      }
+
+      await loadInformation();
+      setSelectedTemplate(null);
+      setEditingId(null);
+      setCurrentPage(1);
+    } catch (error: any) {
+      console.error("Gagal menyimpan informasi:", error);
+      alert(
+        `Gagal menyimpan informasi ke Supabase.\n\n${getErrorMessage(error)}`
+      );
+    } finally {
+      setSaving(false);
+    }
   }
 
   /* =======================================================
@@ -1180,8 +1393,13 @@ export default function InformasiHomePage() {
         {/* LIST */}
 
         <div className={styles.uploadedList}>
-          {visibleInformation.length >
-          0 ? (
+          {loading ? (
+            <div className={styles.emptyUploaded}>
+              <InfoIcon />
+              <strong>Memuat informasi...</strong>
+              <span>Mengambil data dari Supabase.</span>
+            </div>
+          ) : visibleInformation.length > 0 ? (
             visibleInformation.map(
               (item) => (
                 <UploadedCard
@@ -2363,13 +2581,14 @@ export default function InformasiHomePage() {
                 className={
                   styles.saveButton
                 }
-                onClick={
-                  saveInformation
-                }
+                onClick={saveInformation}
+                disabled={saving}
               >
-                {editingId
-                  ? "Simpan Perubahan"
-                  : "Simpan Informasi"}
+                {saving
+                  ? "Menyimpan..."
+                  : editingId
+                    ? "Simpan Perubahan"
+                    : "Simpan Informasi"}
               </button>
             </div>
           </div>

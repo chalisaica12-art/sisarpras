@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import styles from "./page.module.css";
 
 function MailIcon() {
@@ -103,11 +104,7 @@ function GoogleIcon() {
 }
 
 function ErrorIcon() {
-  return (
-    <span className={styles.errorIcon}>
-      !
-    </span>
-  );
+  return <span className={styles.errorIcon}>!</span>;
 }
 
 export default function LoginPage() {
@@ -115,18 +112,19 @@ export default function LoginPage() {
   const locale = useLocale();
   const t = useTranslations("Login");
 
-  const [showPassword, setShowPassword] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [errors, setErrors] = useState<{
     email?: string;
     password?: string;
   }>({});
 
-  const handleSubmit = (
+  const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
@@ -165,22 +163,43 @@ export default function LoginPage() {
     }
 
     /* =========================
-       LOGIN SEMENTARA
-
-       Nanti diganti Supabase Auth
+       LOGIN SUPABASE
     ========================= */
 
-    localStorage.setItem(
-      "sisarpras-is-logged-in",
-      "true"
-    );
+    try {
+      setIsLoading(true);
 
-    /* =========================
-       SETELAH LOGIN
-       LANGSUNG KE HOME
-    ========================= */
+      const { error } =
+        await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
 
-    router.push(`/${locale}`);
+      if (error) {
+        console.error("Login error:", error);
+
+        setErrors({
+          password: "Email atau password salah.",
+        });
+
+        return;
+      }
+
+      /* =========================
+         LOGIN BERHASIL
+      ========================= */
+
+      router.push(`/${locale}`);
+      router.refresh();
+    } catch (error) {
+      console.error("Login error:", error);
+
+      setErrors({
+        password: "Terjadi kesalahan saat login.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -201,13 +220,9 @@ export default function LoginPage() {
         <div className={styles.loginForm}>
 
           <div className={styles.loginHeading}>
-            <h1>
-              {t("title")}
-            </h1>
+            <h1>{t("title")}</h1>
 
-            <p>
-              {t("subtitle")}
-            </p>
+            <p>{t("subtitle")}</p>
           </div>
 
           <form onSubmit={handleSubmit}>
@@ -241,9 +256,7 @@ export default function LoginPage() {
                   )}
                   value={email}
                   onChange={(event) => {
-                    setEmail(
-                      event.target.value
-                    );
+                    setEmail(event.target.value);
 
                     if (errors.email) {
                       setErrors((prev) => ({
@@ -399,8 +412,11 @@ export default function LoginPage() {
             <button
               type="submit"
               className={styles.loginButton}
+              disabled={isLoading}
             >
-              {t("loginButton")}
+              {isLoading
+                ? "Memproses..."
+                : t("loginButton")}
             </button>
 
             {/* =========================
@@ -412,9 +428,7 @@ export default function LoginPage() {
             >
               <span></span>
 
-              <p>
-                {t("or")}
-              </p>
+              <p>{t("or")}</p>
 
               <span></span>
             </div>

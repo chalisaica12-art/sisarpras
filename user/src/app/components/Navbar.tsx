@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import { supabase } from "@/lib/supabase";
 import styles from "./Navbar.module.css";
 
 /* =========================
@@ -84,14 +85,12 @@ export default function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
 
   /* =========================
-     LOGIN
+     USER
   ========================= */
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [userName, setUserName] = useState(
-    "Pengguna"
-  );
+  const [userName, setUserName] = useState("Pengguna");
 
   const [userEmail, setUserEmail] = useState(
     "pengguna@gmail.com"
@@ -101,43 +100,74 @@ export default function Navbar() {
     useRef<HTMLDivElement>(null);
 
   /* =========================
-     CEK STATUS LOGIN
+     CEK LOGIN SUPABASE
   ========================= */
 
   useEffect(() => {
-    const checkLoginStatus = () => {
-      const loggedIn =
-        localStorage.getItem(
-          "sisarpras-is-logged-in"
-        ) === "true";
+    let mounted = true;
 
-      setIsLoggedIn(loggedIn);
+    const loadUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!mounted) return;
+
+      if (!user) {
+        setIsLoggedIn(false);
+        setUserName("Pengguna");
+        setUserEmail("pengguna@gmail.com");
+        return;
+      }
+
+      setIsLoggedIn(true);
+
+      setUserEmail(
+        user.email || "pengguna@gmail.com"
+      );
+
+      /* =========================
+         AMBIL DATA PROFILE
+      ========================= */
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("nama, email")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (!mounted) return;
 
       setUserName(
-        localStorage.getItem(
-          "sisarpras-user-name"
-        ) || "Pengguna"
+        profile?.nama ||
+          user.user_metadata?.nama ||
+          "Pengguna"
       );
 
       setUserEmail(
-        localStorage.getItem(
-          "sisarpras-user-email"
-        ) || "pengguna@gmail.com"
+        profile?.email ||
+          user.email ||
+          "pengguna@gmail.com"
       );
     };
 
-    checkLoginStatus();
+    loadUser();
 
-    window.addEventListener(
-      "storage",
-      checkLoginStatus
+    /* =========================
+       DENGARKAN PERUBAHAN AUTH
+    ========================= */
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      () => {
+        loadUser();
+      }
     );
 
     return () => {
-      window.removeEventListener(
-        "storage",
-        checkLoginStatus
-      );
+      mounted = false;
+      subscription.unsubscribe();
     };
   }, []);
 
@@ -194,16 +224,6 @@ export default function Navbar() {
     setMenuOpen(false);
     setProfileOpen(false);
 
-    /*
-      Ambil bagian path setelah locale.
-
-      Contoh:
-      /id        -> /
-      /en        -> /
-      /id/lapor  -> /lapor
-      /en/lapor  -> /lapor
-    */
-
     const pathWithoutLocale =
       pathname.replace(
         new RegExp(`^/${locale}`),
@@ -220,15 +240,16 @@ export default function Navbar() {
   };
 
   /* =========================
-     LOGOUT
+     LOGOUT SUPABASE
   ========================= */
 
-  const handleLogout = () => {
-    localStorage.removeItem(
-      "sisarpras-is-logged-in"
-    );
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
 
     setIsLoggedIn(false);
+    setUserName("Pengguna");
+    setUserEmail("pengguna@gmail.com");
+
     setProfileOpen(false);
     setMenuOpen(false);
 
@@ -303,9 +324,7 @@ export default function Navbar() {
           }`}
         >
 
-          {/* =========================
-              CLOSE - MOBILE
-          ========================= */}
+          {/* CLOSE MOBILE */}
 
           <button
             type="button"
@@ -316,9 +335,7 @@ export default function Navbar() {
             <CloseIcon />
           </button>
 
-          {/* =========================
-              BERANDA / HOME
-          ========================= */}
+          {/* BERANDA */}
 
           <Link
             href={`/${locale}`}
@@ -333,9 +350,7 @@ export default function Navbar() {
             {t("home")}
           </Link>
 
-          {/* =========================
-              FORM PELAPORAN
-          ========================= */}
+          {/* FORM PELAPORAN */}
 
           <Link
             href={`/${locale}/lapor`}
@@ -352,9 +367,7 @@ export default function Navbar() {
             {t("report")}
           </Link>
 
-          {/* =========================
-              DAFTAR LAPORAN
-          ========================= */}
+          {/* DAFTAR LAPORAN */}
 
           <Link
             href={`/${locale}/laporan`}
@@ -371,9 +384,7 @@ export default function Navbar() {
             {t("reports")}
           </Link>
 
-          {/* =========================
-              BAHASA
-          ========================= */}
+          {/* BAHASA */}
 
           <div className={styles.languageWrap}>
             <button
@@ -394,17 +405,12 @@ export default function Navbar() {
               <ChevronDown />
             </button>
 
-            {/* LANGUAGE DROPDOWN */}
-
             {languageOpen && (
               <div
                 className={
                   styles.languageDropdown
                 }
               >
-
-                {/* INDONESIA */}
-
                 <button
                   type="button"
                   onClick={() =>
@@ -420,8 +426,6 @@ export default function Navbar() {
                   )}
                 </button>
 
-                {/* ENGLISH */}
-
                 <button
                   type="button"
                   onClick={() =>
@@ -436,17 +440,15 @@ export default function Navbar() {
                     <b>✓</b>
                   )}
                 </button>
-
               </div>
             )}
           </div>
 
           {/* =========================
-              AUTH BUTTON
+              AUTH
           ========================= */}
 
           {!isLoggedIn ? (
-
             <Link
               href={`/${locale}/login`}
               className={styles.loginButton}
@@ -454,14 +456,11 @@ export default function Navbar() {
             >
               {t("login")}
             </Link>
-
           ) : (
-
             <div
               className={styles.profileWrap}
               ref={profileWrapRef}
             >
-
               {/* PROFILE BUTTON */}
 
               <button
@@ -491,7 +490,6 @@ export default function Navbar() {
                     styles.profileDropdown
                   }
                 >
-
                   {/* USER INFO */}
 
                   <div
@@ -569,13 +567,10 @@ export default function Navbar() {
                       {t("logout")}
                     </span>
                   </button>
-
                 </div>
               )}
-
             </div>
           )}
-
         </nav>
       </div>
     </header>

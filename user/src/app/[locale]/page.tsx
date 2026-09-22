@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import {
   useLocale,
@@ -129,6 +130,22 @@ const heroImages = [
   "/foto3.jpeg",
 ];
 
+type Information = {
+  id: number;
+  template: string;
+  judul: string;
+  badge?: string | null;
+  isi?: string | null;
+  hari?: string | null;
+  jam?: string | null;
+  lokasi?: string | null;
+  periode?: string | null;
+  telepon?: string | null;
+  whatsapp?: string | null;
+  teksTombol?: string | null;
+  link?: string | null;
+};
+
 /* =========================
    HOME
 ========================= */
@@ -139,6 +156,7 @@ export default function HomePage() {
 
   const [heroIndex, setHeroIndex] = useState(0);
   const [infoIndex, setInfoIndex] = useState(0);
+  const [information, setInformation] = useState<Information[]>([]);
 
   /* =========================
      HERO AUTO SLIDE
@@ -156,18 +174,83 @@ export default function HomePage() {
   }, []);
 
   /* =========================
-     INFORMATION AUTO FOCUS
+     LOAD INFORMATION FROM SUPABASE
   ========================= */
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setInfoIndex(
-        (current) =>
-          (current + 1) % 2
-      );
-    }, 7000);
+    async function loadInformation() {
+      const { data: mainData, error: mainError } = await supabase
+        .from("informasi")
+        .select("*")
+        .eq("status", "aktif")
+        .order("urutan_tampil", { ascending: true })
+        .order("created_at", { ascending: false });
 
-    return () => clearInterval(timer);
+      if (mainError) {
+        console.error("Gagal mengambil informasi:", mainError);
+        return;
+      }
+
+      if (!mainData || mainData.length === 0) {
+        setInformation([]);
+        setInfoIndex(0);
+        return;
+      }
+
+      const [
+        layananPengaduan,
+        pengumuman,
+        bantuanCepat,
+        informasiPenting,
+        layanan,
+      ] = await Promise.all([
+        supabase.from("informasi_layanan_pengaduan").select("*"),
+        supabase.from("informasi_pengumuman_terjadwal").select("*"),
+        supabase.from("informasi_bantuan_cepat").select("*"),
+        supabase.from("informasi_penting_detail").select("*"),
+        supabase.from("informasi_layanan").select("*"),
+      ]);
+
+      const detailMap = new Map<number, any>();
+
+      [
+        ...(layananPengaduan.data ?? []),
+        ...(pengumuman.data ?? []),
+        ...(bantuanCepat.data ?? []),
+        ...(informasiPenting.data ?? []),
+        ...(layanan.data ?? []),
+      ].forEach((item) => {
+        detailMap.set(item.informasi_id, item);
+      });
+
+      const merged: Information[] = mainData.map((item) => {
+        const detail = detailMap.get(item.id);
+
+        return {
+          id: item.id,
+          template: item.template,
+          judul: item.judul,
+          badge: detail?.badge ?? null,
+          isi:
+            detail?.isi_informasi ??
+            detail?.isi_pengumuman ??
+            null,
+          hari: detail?.hari_operasional ?? null,
+          jam: detail?.jam_operasional ?? null,
+          lokasi: detail?.lokasi ?? null,
+          periode: detail?.periode ?? null,
+          telepon: detail?.nomor_telepon ?? null,
+          whatsapp: detail?.whatsapp ?? null,
+          teksTombol: detail?.teks_tombol ?? null,
+          link: detail?.link_tujuan ?? null,
+        };
+      });
+
+      setInformation(merged);
+      setInfoIndex(0);
+    }
+
+    loadInformation();
   }, []);
 
   /* =========================
@@ -194,17 +277,16 @@ export default function HomePage() {
   ========================= */
 
   function nextInfo() {
-    setInfoIndex(
-      (current) =>
-        (current + 1) % 2
-    );
+    if (information.length <= 4) return;
+
+    setInfoIndex((current) => {
+      const maxIndex = information.length - 4;
+      return Math.min(current + 1, maxIndex);
+    });
   }
 
   function previousInfo() {
-    setInfoIndex(
-      (current) =>
-        (current - 1 + 2) % 2
-    );
+    setInfoIndex((current) => Math.max(current - 1, 0));
   }
 
   return (
@@ -408,6 +490,7 @@ export default function HomePage() {
             type="button"
             className={styles.carouselArrow}
             onClick={previousInfo}
+            disabled={infoIndex === 0}
             aria-label={
               t("previousInformation")
             }
@@ -417,120 +500,75 @@ export default function HomePage() {
 
           <div className={styles.infoCards}>
 
-            {/* CARD 1 */}
-
-            <article
-              className={`${styles.infoCard} ${
-                infoIndex === 0
-                  ? styles.infoCardActive
-                  : styles.infoCardInactive
-              }`}
-              onClick={() =>
-                setInfoIndex(0)
-              }
-            >
-
-              <div className={styles.cardTop}>
-
-                <div
-                  className={`${styles.iconBox} ${styles.blue}`}
-                >
-                  <ClockIcon />
-                </div>
-
-                <span
-                  className={`${styles.badge} ${styles.activeBadge}`}
-                >
-                  {t("active")}
-                </span>
-
+            {information.length === 0 ? (
+              <div className={styles.infoEmpty}>
+                Belum ada informasi aktif.
               </div>
+            ) : (
+              information
+                .slice(infoIndex, infoIndex + 4)
+                .map((item) => (
+                  <article
+                    key={item.id}
+                    className={styles.infoCard}
+                  >
+                    <div className={styles.cardTop}>
+                      <div
+                        className={`${styles.iconBox} ${
+                          item.template === "Informasi Penting"
+                            ? styles.orange
+                            : styles.blue
+                        }`}
+                      >
+                        {item.template === "Informasi Penting" ? (
+                          <AlertIcon />
+                        ) : (
+                          <InfoIcon />
+                        )}
+                      </div>
 
-              <span
-                className={styles.cardType}
-              >
-                {t("complaintService")}
-              </span>
+                      <span
+                        className={`${styles.badge} ${styles.activeBadge}`}
+                      >
+                        {item.badge || "Aktif"}
+                      </span>
+                    </div>
 
-              <h3>
-                {t("operatingHours")}
-              </h3>
+                    <span className={styles.cardType}>
+                      {item.template}
+                    </span>
 
-              <div className={styles.timeBox}>
+                    <h3>{item.judul}</h3>
 
-                <span>
-                  {t("mondayFriday")}
-                </span>
+                    {item.hari || item.jam ? (
+                      <div className={styles.timeBox}>
+                        <span>{item.hari || "Jam layanan"}</span>
+                        <strong>{item.jam || "-"}</strong>
+                      </div>
+                    ) : null}
 
-                <strong>
-                  07.00 – 15.00{" "}
-                  <small>WIB</small>
-                </strong>
+                    {item.isi ? (
+                      <div className={styles.cardDescription}>
+                        {item.isi}
+                      </div>
+                    ) : null}
 
-              </div>
+                    {item.lokasi ? (
+                      <div className={styles.cardInfo}>
+                        <InfoIcon />
+                        <span>{item.lokasi}</span>
+                      </div>
+                    ) : null}
 
-              <div className={styles.cardInfo}>
-
-                <InfoIcon />
-
-                <span>
-                  {t("selfReporting")}
-                </span>
-
-              </div>
-
-            </article>
-
-            {/* CARD 2 */}
-
-            <article
-              className={`${styles.infoCard} ${
-                infoIndex === 1
-                  ? styles.infoCardActive
-                  : styles.infoCardInactive
-              }`}
-              onClick={() =>
-                setInfoIndex(1)
-              }
-            >
-
-              <div className={styles.cardTop}>
-
-                <div
-                  className={`${styles.iconBox} ${styles.orange}`}
-                >
-                  <AlertIcon />
-                </div>
-
-                <span
-                  className={`${styles.badge} ${styles.warningBadge}`}
-                >
-                  {t("important")}
-                </span>
-
-              </div>
-
-              <span
-                className={styles.cardType}
-              >
-                {t("importantInformation")}
-              </span>
-
-              <h3>
-                {t("developmentTitle1")}
-                <br />
-                {t("developmentTitle2")}
-              </h3>
-
-              <div
-                className={
-                  styles.cardDescription
-                }
-              >
-                {t("developmentDescription")}
-              </div>
-
-            </article>
+                    {item.periode ? (
+                      <div className={styles.cardInfo}>
+                        <InfoIcon />
+                        <span>{item.periode}</span>
+                      </div>
+                    ) : null}
+                  </article>
+                ))
+            )}
 
           </div>
 
@@ -538,6 +576,7 @@ export default function HomePage() {
             type="button"
             className={styles.carouselArrow}
             onClick={nextInfo}
+            disabled={infoIndex >= Math.max(information.length - 4, 0)}
             aria-label={
               t("nextInformation")
             }
@@ -547,43 +586,7 @@ export default function HomePage() {
 
         </div>
 
-        <div className={styles.infoBottom}>
 
-          <div className={styles.infoDots}>
-
-            <button
-              type="button"
-              onClick={() =>
-                setInfoIndex(0)
-              }
-              aria-label={
-                `${t("choosePhoto")} 1`
-              }
-              className={
-                infoIndex === 0
-                  ? styles.dotActive
-                  : ""
-              }
-            />
-
-            <button
-              type="button"
-              onClick={() =>
-                setInfoIndex(1)
-              }
-              aria-label={
-                `${t("choosePhoto")} 2`
-              }
-              className={
-                infoIndex === 1
-                  ? styles.dotActive
-                  : ""
-              }
-            />
-
-          </div>
-
-        </div>
 
       </section>
 

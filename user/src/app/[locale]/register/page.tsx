@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import styles from "./page.module.css";
 
 function MailIcon() {
@@ -103,11 +104,7 @@ function GoogleIcon() {
 }
 
 function ErrorIcon() {
-  return (
-    <span className={styles.errorIcon}>
-      !
-    </span>
-  );
+  return <span className={styles.errorIcon}>!</span>;
 }
 
 type Errors = {
@@ -133,8 +130,9 @@ export default function RegisterPage() {
     useState("");
 
   const [errors, setErrors] = useState<Errors>({});
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (
+  const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
@@ -194,20 +192,36 @@ export default function RegisterPage() {
     }
 
     /* =========================
-       REGISTER SEMENTARA
-
-       Nanti diganti Supabase Auth
+       REGISTER SUPABASE
     ========================= */
 
-    localStorage.setItem(
-      "sisarpras-is-logged-in",
-      "true"
-    );
+    setIsLoading(true);
+
+    const { error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: {
+        data: {
+          nama: name.trim(),
+        },
+      },
+    });
+
+    if (error) {
+      setIsLoading(false);
+
+      setErrors({
+        email: error.message,
+      });
+
+      return;
+    }
 
     /* =========================
-       SETELAH REGISTER
-       LANGSUNG KE HOME
+       REGISTER BERHASIL
     ========================= */
+
+    setIsLoading(false);
 
     router.push(`/${locale}`);
   };
@@ -246,9 +260,7 @@ export default function RegisterPage() {
             noValidate
           >
 
-            {/* =========================
-                NAMA LENGKAP
-            ========================= */}
+            {/* NAMA LENGKAP */}
 
             <div className={styles.formGroup}>
               <label htmlFor="name">
@@ -291,9 +303,7 @@ export default function RegisterPage() {
               )}
             </div>
 
-            {/* =========================
-                EMAIL
-            ========================= */}
+            {/* EMAIL */}
 
             <div className={styles.formGroup}>
               <label htmlFor="email">
@@ -338,9 +348,7 @@ export default function RegisterPage() {
               )}
             </div>
 
-            {/* =========================
-                PASSWORD
-            ========================= */}
+            {/* PASSWORD */}
 
             <div className={styles.formGroup}>
               <label htmlFor="password">
@@ -404,9 +412,7 @@ export default function RegisterPage() {
               )}
             </div>
 
-            {/* =========================
-                KONFIRMASI PASSWORD
-            ========================= */}
+            {/* KONFIRMASI PASSWORD */}
 
             <div className={styles.formGroup}>
               <label htmlFor="confirmPassword">
@@ -479,28 +485,25 @@ export default function RegisterPage() {
               )}
             </div>
 
-            {/* =========================
-                INFO PASSWORD
-            ========================= */}
+            {/* INFO PASSWORD */}
 
             <div className={styles.passwordInfo}>
               {t("passwordInfo")}
             </div>
 
-            {/* =========================
-                DAFTAR
-            ========================= */}
+            {/* DAFTAR */}
 
             <button
               type="submit"
               className={styles.registerButton}
+              disabled={isLoading}
             >
-              {t("registerButton")}
+              {isLoading
+                ? "Mendaftarkan..."
+                : t("registerButton")}
             </button>
 
-            {/* =========================
-                DIVIDER
-            ========================= */}
+            {/* DIVIDER */}
 
             <div className={styles.divider}>
               <span></span>
@@ -508,9 +511,7 @@ export default function RegisterPage() {
               <span></span>
             </div>
 
-            {/* =========================
-                GOOGLE
-            ========================= */}
+            {/* GOOGLE */}
 
             <button
               type="button"
@@ -523,9 +524,7 @@ export default function RegisterPage() {
               </span>
             </button>
 
-            {/* =========================
-                LOGIN
-            ========================= */}
+            {/* LOGIN */}
 
             <div className={styles.loginLink}>
               <span>

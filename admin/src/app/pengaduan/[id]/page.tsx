@@ -9,17 +9,31 @@ import {
 } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { supabase } from "../../../lib/supabase";
 import styles from "./page.module.css";
 
 /* =========================================================
    TYPE
 ========================================================= */
 
-type Status =
-  | "Pending"
-  | "Diverifikasi Admin"
-  | "Sedang Diproses"
-  | "Selesai & Diuji";
+type Status = "Pending" | "Diverifikasi" | "Diproses" | "Selesai";
+
+type ReportData = {
+  id: string;
+  pelapor: string;
+  telepon: string;
+  email: string;
+  lokasi: string;
+  barang: string;
+  jenis: string;
+  urgensi: string;
+  createdAt: string;
+  updatedAt: string;
+  description: string;
+  photo: string | null;
+  photoName: string;
+  photoSize: string;
+};
 
 type ChatMessage = {
   id: string;
@@ -40,37 +54,6 @@ type AttachedImage = {
 /* =========================================================
    DATA LAPORAN
 ========================================================= */
-
-const reportData = {
-  id: "SR-2026-00128",
-
-  pelapor: "Budi Prasetyo, S.Pd. (Guru)",
-  telepon: "012345678910",
-  email: "hna@gmail.com",
-
-  lokasi: "Lab RPL",
-  barang: "Meja",
-  jenis: "Tidak Berfungsi",
-  urgensi: "Sedang",
-
-  createdAt: "6 September 2026, 13:20 WIB",
-
-  description:
-    "Lampu indikator optik berkedip merah dan tidak mengeluarkan cahaya saat sesi praktikum pemrograman kelas XI. Port HDMI dan kabel power sudah diganti, tetapi perangkat masih tidak merespons. Kipas pendingin berbunyi cukup keras selama 10 detik sebelum tiba-tiba berhenti.",
-
-  /*
-   * FOTO DUMMY UNTUK TESTING FITUR PERBESAR
-   *
-   * Nanti ketika sudah pakai Supabase,
-   * bagian ini diganti dengan URL foto laporan
-   * yang berasal dari database/storage.
-   */
-  photo:
-    "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=1400&q=85",
-
-  photoName: "lampu_proyektor_lab.jpg",
-  photoSize: "1.8 MB",
-};
 
 /* =========================================================
    ICON
@@ -320,8 +303,37 @@ function normalizeMessages(data: unknown): ChatMessage[] {
 }
 
 /* =========================================================
+   PROGRESS STEP
+========================================================= */
+
+function getCurrentStep(status: Status): number {
+  if (status === "Pending") return 1;
+  if (status === "Diverifikasi") return 2;
+  if (status === "Diproses") return 3;
+  return 4;
+}
+
+/* =========================================================
    PAGE
 ========================================================= */
+
+function formatDateTime(value: string | null | undefined) {
+  if (!value) return "-";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "-";
+
+  return (
+    new Intl.DateTimeFormat("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(date) + " WIB"
+  );
+}
 
 export default function DetailPengaduanPage() {
   const params = useParams();
@@ -329,17 +341,33 @@ export default function DetailPengaduanPage() {
   const reportId =
     typeof params.id === "string"
       ? params.id
-      : reportData.id;
+      : "";
+
+  /* =======================================================
+     DATA LAPORAN DARI SUPABASE
+  ======================================================= */
+
+  const [reportData, setReportData] =
+    useState<ReportData | null>(null);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [loadError, setLoadError] =
+    useState("");
 
   /* =======================================================
      STATUS
   ======================================================= */
 
   const [status, setStatus] =
-    useState<Status>("Sedang Diproses");
+    useState<Status>("Pending");
 
   const [savedStatus, setSavedStatus] =
-    useState<Status>("Sedang Diproses");
+    useState<Status>("Pending");
+
+  const [savingStatus, setSavingStatus] =
+    useState(false);
 
   /* =======================================================
      CHAT
@@ -411,6 +439,89 @@ export default function DetailPengaduanPage() {
 
   const storageKey =
     `sisarpras-chat-${reportId}`;
+
+  /* =======================================================
+     LOAD LAPORAN DARI SUPABASE + REALTIME
+  ======================================================= */
+
+  useEffect(() => {
+    if (!reportId) {
+      setLoadError("Nomor laporan tidak ditemukan.");
+      setLoading(false);
+      return;
+    }
+
+    let active = true;
+
+    async function loadReport() {
+      const { data, error } = await supabase
+        .from("pengaduan")
+        .select("*")
+        .eq("nomor", reportId)
+        .maybeSingle();
+
+      if (!active) return;
+
+      if (error) {
+        console.error("Gagal mengambil laporan:", error);
+        setLoadError(error.message);
+        setLoading(false);
+        return;
+      }
+
+      if (!data) {
+        setLoadError("Laporan tidak ditemukan.");
+        setLoading(false);
+        return;
+      }
+
+      const mapped: ReportData = {
+        id: data.nomor,
+        pelapor: data.pelapor ?? "-",
+        telepon: data.kontak ?? "-",
+        email: data.email ?? "-",
+        lokasi: data.lokasi ?? "-",
+        barang: data.barang ?? "-",
+        jenis: data.jenis ?? "-",
+        urgensi: data.prioritas ?? "-",
+        createdAt: formatDateTime(data.created_at),
+        updatedAt: formatDateTime(data.updated_at ?? data.created_at),
+        description: data.deskripsi ?? "-",
+        photo: data.foto_url ?? null,
+        photoName: data.foto_url ? "Foto laporan" : "Tidak ada foto laporan",
+        photoSize: data.foto_url ? "Tersimpan di Supabase Storage" : "-",
+      };
+
+      setReportData(mapped);
+      setStatus(data.status as Status);
+      setSavedStatus(data.status as Status);
+      setLoading(false);
+    }
+
+    setLoading(true);
+    loadReport();
+
+    const channel = supabase
+      .channel(`admin-pengaduan-${reportId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "pengaduan",
+          filter: `nomor=eq.${reportId}`,
+        },
+        () => {
+          loadReport();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      active = false;
+      supabase.removeChannel(channel);
+    };
+  }, [reportId]);
 
   /* =======================================================
      LOAD CHAT
@@ -569,26 +680,39 @@ export default function DetailPengaduanPage() {
   }, []);
 
   /* =======================================================
-     CURRENT STEP
+     SAVE STATUS KE SUPABASE
   ======================================================= */
 
-  const currentStep =
-    savedStatus === "Pending"
-      ? 1
-      : savedStatus ===
-          "Diverifikasi Admin"
-        ? 2
-        : savedStatus ===
-            "Sedang Diproses"
-          ? 3
-          : 4;
+  async function saveStatus() {
+    if (!reportId || !reportData || status === savedStatus) {
+      return;
+    }
 
-  /* =======================================================
-     SAVE STATUS
-  ======================================================= */
+    setSavingStatus(true);
 
-  function saveStatus() {
-    setSavedStatus(status);
+    const { data, error } = await supabase
+      .from("pengaduan")
+      .update({
+        status,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("nomor", reportId)
+      .select("*")
+      .maybeSingle();
+
+    if (error) {
+      console.error("Gagal mengubah status:", error);
+      alert(`Gagal mengubah status: ${error.message}`);
+      setSavingStatus(false);
+      return;
+    }
+
+    if (data) {
+      setSavedStatus(data.status as Status);
+      setStatus(data.status as Status);
+    }
+
+    setSavingStatus(false);
   }
 
   /* =======================================================
@@ -890,6 +1014,47 @@ export default function DetailPengaduanPage() {
      RENDER
   ======================================================= */
 
+  /* =====================================================
+     LOADING / ERROR
+  ===================================================== */
+
+  if (loading) {
+    return (
+      <main className={styles.page}>
+        <div className={styles.backContainer}>
+          <Link href="/pengaduan" className={styles.backButton}>
+            <span className={styles.backIcon}>
+              <ArrowLeftIcon />
+            </span>
+            Kembali ke Pengaduan Kerusakan
+          </Link>
+        </div>
+        <section className={styles.reportHeader}>
+          <p>Memuat detail laporan...</p>
+        </section>
+      </main>
+    );
+  }
+
+  if (loadError || !reportData) {
+    return (
+      <main className={styles.page}>
+        <div className={styles.backContainer}>
+          <Link href="/pengaduan" className={styles.backButton}>
+            <span className={styles.backIcon}>
+              <ArrowLeftIcon />
+            </span>
+            Kembali ke Pengaduan Kerusakan
+          </Link>
+        </div>
+        <section className={styles.reportHeader}>
+          <h1>Laporan tidak ditemukan</h1>
+          <p>{loadError || "Data laporan tidak tersedia."}</p>
+        </section>
+      </main>
+    );
+  }
+
   return (
     <>
       <main className={styles.page}>
@@ -994,7 +1159,7 @@ export default function DetailPengaduanPage() {
               }
             >
               Langkah{" "}
-              {currentStep} dari 4
+              {getCurrentStep(savedStatus)} dari 4
             </span>
           </div>
 
@@ -1007,7 +1172,7 @@ export default function DetailPengaduanPage() {
               number="01"
               label="TERKIRIM"
               title="Laporan Terkirim"
-              date="06 Sep 2026, 13:20 WIB"
+              date={reportData.createdAt}
               done
             />
 
@@ -1016,18 +1181,18 @@ export default function DetailPengaduanPage() {
               label="DIVERIFIKASI"
               title="Diverifikasi Admin"
               date={
-                currentStep >= 2
-                  ? "06 Sep 2026, 14:05 WIB"
+                getCurrentStep(savedStatus) >= 2
+                  ? reportData.updatedAt
                   : "Menunggu Tindakan"
               }
               done={
-                currentStep > 2
+                getCurrentStep(savedStatus) > 2
               }
               active={
-                currentStep === 2
+                getCurrentStep(savedStatus) === 2
               }
               waiting={
-                currentStep < 2
+                getCurrentStep(savedStatus) < 2
               }
             />
 
@@ -1036,18 +1201,18 @@ export default function DetailPengaduanPage() {
               label="DIPROSES"
               title="Sedang Diproses"
               date={
-                currentStep >= 3
-                  ? "07 Sep 2026, 09:10 WIB"
+                getCurrentStep(savedStatus) >= 3
+                  ? reportData.updatedAt
                   : "Menunggu Tindakan"
               }
               done={
-                currentStep > 3
+                getCurrentStep(savedStatus) > 3
               }
               active={
-                currentStep === 3
+                getCurrentStep(savedStatus) === 3
               }
               waiting={
-                currentStep < 3
+                getCurrentStep(savedStatus) < 3
               }
             />
 
@@ -1056,15 +1221,15 @@ export default function DetailPengaduanPage() {
               label="SELESAI"
               title="Selesai & Diuji"
               date={
-                currentStep === 4
-                  ? "Penanganan selesai"
+                getCurrentStep(savedStatus) === 4
+                  ? reportData.updatedAt
                   : "Menunggu Tindakan"
               }
               done={
-                currentStep === 4
+                getCurrentStep(savedStatus) === 4
               }
               waiting={
-                currentStep < 4
+                getCurrentStep(savedStatus) < 4
               }
             />
           </div>
@@ -1107,26 +1272,25 @@ export default function DetailPengaduanPage() {
                   Pending
                 </option>
 
-                <option value="Diverifikasi Admin">
-                  Diverifikasi Admin
+                <option value="Diverifikasi">
+                  Diverifikasi
                 </option>
 
-                <option value="Sedang Diproses">
-                  Sedang Diproses
+                <option value="Diproses">
+                  Diproses
                 </option>
 
-                <option value="Selesai & Diuji">
-                  Selesai & Diuji
+                <option value="Selesai">
+                  Selesai
                 </option>
               </select>
 
               <button
                 type="button"
-                onClick={
-                  saveStatus
-                }
+                onClick={saveStatus}
+                disabled={savingStatus || status === savedStatus}
               >
-                Simpan
+                {savingStatus ? "Menyimpan..." : "Simpan"}
               </button>
             </div>
           </div>

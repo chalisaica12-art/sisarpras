@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import styles from "./page.module.css";
+import { supabase } from "../../lib/supabase";
 
 /* =========================================================
    TYPE
@@ -16,6 +16,31 @@ type TemplateType =
   | "Informasi Layanan";
 
 type Status = "Aktif" | "Nonaktif";
+
+const TEMPLATE_TO_DB: Record<TemplateType, string> = {
+  "Layanan Pengaduan": "layanan_pengaduan",
+  "Pengumuman Terjadwal": "pengumuman_terjadwal",
+  "Bantuan Cepat": "bantuan_cepat",
+  "Informasi Penting": "informasi_penting",
+  "Informasi Layanan": "informasi_layanan",
+};
+
+const TEMPLATE_FROM_DB: Record<string, TemplateType> = {
+  layanan_pengaduan: "Layanan Pengaduan",
+  pengumuman_terjadwal: "Pengumuman Terjadwal",
+  bantuan_cepat: "Bantuan Cepat",
+  informasi_penting: "Informasi Penting",
+  informasi_layanan: "Informasi Layanan",
+};
+
+function templateToDb(template: TemplateType) {
+  return TEMPLATE_TO_DB[template];
+}
+
+function templateFromDb(value: string): TemplateType {
+  return TEMPLATE_FROM_DB[value] ?? "Layanan Pengaduan";
+}
+
 
 type Information = {
   id: number;
@@ -554,43 +579,6 @@ function getIconName(
 }
 
 /* =========================================================
-   SUPABASE MAPPING
-========================================================= */
-
-const TEMPLATE_TO_DB = {
-  "Layanan Pengaduan": "layanan_pengaduan",
-  "Pengumuman Terjadwal": "pengumuman_terjadwal",
-  "Bantuan Cepat": "bantuan_cepat",
-  "Informasi Penting": "informasi_penting",
-  "Informasi Layanan": "informasi_layanan",
-} as const;
-
-const DB_TO_TEMPLATE: Record<string, TemplateType> = {
-  layanan_pengaduan: "Layanan Pengaduan",
-  pengumuman_terjadwal: "Pengumuman Terjadwal",
-  bantuan_cepat: "Bantuan Cepat",
-  informasi_penting: "Informasi Penting",
-  informasi_layanan: "Informasi Layanan",
-};
-
-function dbStatus(status: Status) {
-  return status === "Aktif" ? "aktif" : "nonaktif";
-}
-
-function uiStatus(status: string): Status {
-  return status === "aktif" ? "Aktif" : "Nonaktif";
-}
-
-function getErrorMessage(error: any) {
-  return [
-    error?.code ? `Code: ${error.code}` : "",
-    error?.message ? `Message: ${error.message}` : "",
-    error?.details ? `Details: ${error.details}` : "",
-    error?.hint ? `Hint: ${error.hint}` : "",
-  ].filter(Boolean).join("\n");
-}
-
-/* =========================================================
    PAGE
 ========================================================= */
 
@@ -598,8 +586,8 @@ export default function InformasiHomePage() {
   const [information, setInformation] =
     useState<Information[]>([]);
 
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const [loadingInformation, setLoadingInformation] =
+    useState(true);
 
   const [selectedTemplate, setSelectedTemplate] =
     useState<TemplateType | null>(null);
@@ -653,148 +641,6 @@ export default function InformasiHomePage() {
     useState<Information>(
       emptyForm
     );
-
-  /* =======================================================
-     LOAD FROM SUPABASE
-  ======================================================= */
-
-  async function loadInformation() {
-    setLoading(true);
-
-    try {
-      const { data: mainData, error: mainError } = await supabase
-        .from("informasi")
-        .select("*")
-        .order("urutan_tampil", { ascending: true })
-        .order("created_at", { ascending: true });
-
-      if (mainError) throw mainError;
-
-      const [
-        layananPengaduan,
-        pengumuman,
-        bantuanCepat,
-        informasiPenting,
-        layanan,
-      ] = await Promise.all([
-        supabase.from("informasi_layanan_pengaduan").select("*"),
-        supabase.from("informasi_pengumuman_terjadwal").select("*"),
-        supabase.from("informasi_bantuan_cepat").select("*"),
-        supabase.from("informasi_penting_detail").select("*"),
-        supabase.from("informasi_layanan").select("*"),
-      ]);
-
-      const detailResults = [
-        layananPengaduan,
-        pengumuman,
-        bantuanCepat,
-        informasiPenting,
-        layanan,
-      ];
-
-      const failedDetail = detailResults.find((result) => result.error);
-      if (failedDetail?.error) throw failedDetail.error;
-
-      const detailMap = new Map<number, any>();
-      detailResults.forEach((result) => {
-        (result.data ?? []).forEach((item: any) => {
-          detailMap.set(item.informasi_id, item);
-        });
-      });
-
-      const merged: Information[] = (mainData ?? []).map((item: any, index: number) => {
-        const detail = detailMap.get(item.id) ?? {};
-        const template = DB_TO_TEMPLATE[item.template] ?? item.template as TemplateType;
-
-        return {
-          id: item.id,
-          template,
-          judul: item.judul ?? "",
-          badge: detail.badge ?? "",
-          isi: detail.isi_informasi ?? detail.isi_pengumuman ?? "",
-          hari: detail.hari_operasional ?? "",
-          jam: detail.jam_operasional ?? detail.jam_layanan ?? "",
-          lokasi: detail.lokasi ?? "",
-          periode: detail.periode ?? "",
-          telepon: detail.nomor_telepon ?? "",
-          whatsapp: detail.whatsapp ?? "",
-          teksTombol: detail.teks_tombol ?? "",
-          link: detail.link_tujuan ?? "",
-          status: uiStatus(item.status),
-          urutan: item.urutan_tampil ?? index + 1,
-        };
-      });
-
-      setInformation(merged);
-    } catch (error: any) {
-      console.error("Gagal mengambil informasi:", error);
-      alert(
-        `Gagal mengambil data Informasi Home dari Supabase.\n\n${getErrorMessage(error)}`
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadInformation();
-  }, []);
-
-  /* =======================================================
-     SAVE DETAIL TO SUPABASE
-  ======================================================= */
-
-  async function saveDetail(informationId: number, data: Information) {
-    const table = `informasi_${TEMPLATE_TO_DB[data.template]}`;
-
-    let payload: Record<string, any>;
-
-    if (data.template === "Layanan Pengaduan") {
-      payload = {
-        informasi_id: informationId,
-        hari_operasional: data.hari.trim(),
-        jam_operasional: data.jam.trim(),
-        keterangan_tambahan: data.isi.trim(),
-      };
-    } else if (data.template === "Pengumuman Terjadwal") {
-      payload = {
-        informasi_id: informationId,
-        badge: data.badge.trim() || null,
-        isi_pengumuman: data.isi.trim(),
-        lokasi: data.lokasi.trim() || null,
-        periode: data.periode.trim() || null,
-      };
-    } else if (data.template === "Bantuan Cepat") {
-      payload = {
-        informasi_id: informationId,
-        isi_informasi: data.isi.trim(),
-        nomor_telepon: data.telepon.trim() || null,
-        whatsapp: data.whatsapp.trim() || null,
-        jam_layanan: data.jam.trim() || null,
-      };
-    } else if (data.template === "Informasi Penting") {
-      payload = {
-        informasi_id: informationId,
-        badge: data.badge.trim() || null,
-        isi_informasi: data.isi.trim(),
-        lokasi: data.lokasi.trim() || null,
-        periode: data.periode.trim() || null,
-      };
-    } else {
-      payload = {
-        informasi_id: informationId,
-        isi_informasi: data.isi.trim(),
-        teks_tombol: data.teksTombol.trim() || null,
-        link_tujuan: data.link.trim() || null,
-      };
-    }
-
-    const { error } = await supabase
-      .from(table)
-      .upsert(payload, { onConflict: "informasi_id" });
-
-    if (error) throw error;
-  }
 
   /* =======================================================
      TEMPLATE SELECTION
@@ -867,34 +713,225 @@ export default function InformasiHomePage() {
   }
 
   /* =======================================================
+     LOAD DARI SUPABASE + REALTIME
+  ======================================================= */
+
+  async function loadInformation() {
+    setLoadingInformation(true);
+
+    const { data: mainRows, error: mainError } = await supabase
+      .from("informasi")
+      .select("*")
+      .order("urutan_tampil", { ascending: true });
+
+    if (mainError) {
+      console.error("Gagal memuat informasi:", mainError.message, mainError.details, mainError.hint);
+      alert(`Gagal memuat informasi dari Supabase.\n\n${mainError.message}`);
+      setInformation([]);
+      setLoadingInformation(false);
+      return;
+    }
+
+    const rows = mainRows ?? [];
+
+    const [layanan, pengumuman, bantuan, penting, layananUmum] =
+      await Promise.all([
+        supabase.from("informasi_layanan_pengaduan").select("*"),
+        supabase.from("informasi_pengumuman_terjadwal").select("*"),
+        supabase.from("informasi_bantuan_cepat").select("*"),
+        supabase.from("informasi_penting_detail").select("*"),
+        supabase.from("informasi_layanan").select("*"),
+      ]);
+
+    const detailErrors = [
+      layanan.error,
+      pengumuman.error,
+      bantuan.error,
+      penting.error,
+      layananUmum.error,
+    ].filter(Boolean);
+
+    if (detailErrors.length > 0) {
+      console.error("Gagal memuat detail informasi:", detailErrors.map((e: any) => ({ message: e?.message, details: e?.details, hint: e?.hint })));
+      alert(
+        `Gagal memuat detail informasi dari Supabase.\n\n${
+          detailErrors[0]?.message ?? "Terjadi kesalahan."
+        }`
+      );
+      setInformation([]);
+      setLoadingInformation(false);
+      return;
+    }
+
+    const layananMap = new Map(
+      (layanan.data ?? []).map((item: any) => [item.informasi_id, item])
+    );
+    const pengumumanMap = new Map(
+      (pengumuman.data ?? []).map((item: any) => [item.informasi_id, item])
+    );
+    const bantuanMap = new Map(
+      (bantuan.data ?? []).map((item: any) => [item.informasi_id, item])
+    );
+    const pentingMap = new Map(
+      (penting.data ?? []).map((item: any) => [item.informasi_id, item])
+    );
+    const layananUmumMap = new Map(
+      (layananUmum.data ?? []).map((item: any) => [item.informasi_id, item])
+    );
+
+    const mapped: Information[] = rows.map((row: any) => {
+      const template = templateFromDb(String(row.template ?? ""));
+      const detail =
+        template === "Layanan Pengaduan"
+          ? layananMap.get(row.id)
+          : template === "Pengumuman Terjadwal"
+            ? pengumumanMap.get(row.id)
+            : template === "Bantuan Cepat"
+              ? bantuanMap.get(row.id)
+              : template === "Informasi Penting"
+                ? pentingMap.get(row.id)
+                : layananUmumMap.get(row.id);
+
+      return {
+        id: Number(row.id),
+        template,
+        judul: row.judul ?? "",
+        badge: detail?.badge ?? "",
+        isi:
+          template === "Layanan Pengaduan"
+            ? detail?.keterangan_tambahan ?? ""
+            : template === "Pengumuman Terjadwal"
+              ? detail?.isi_pengumuman ?? ""
+              : detail?.isi_informasi ?? "",
+        hari: detail?.hari_operasional ?? "",
+        jam:
+          template === "Layanan Pengaduan"
+            ? detail?.jam_operasional ?? ""
+            : template === "Bantuan Cepat"
+              ? detail?.jam_layanan ?? ""
+              : "",
+        lokasi: detail?.lokasi ?? "",
+        periode: detail?.periode ?? "",
+        telepon: detail?.nomor_telepon ?? "",
+        whatsapp: detail?.whatsapp ?? "",
+        teksTombol: detail?.teks_tombol ?? "",
+        link: detail?.link_tujuan ?? "",
+        status: row.status === "nonaktif" ? "Nonaktif" : "Aktif",
+        urutan: Number(row.urutan_tampil ?? 0),
+      };
+    });
+
+    setInformation(mapped);
+    setLoadingInformation(false);
+  }
+
+  useEffect(() => {
+    loadInformation();
+
+    const channel = supabase
+      .channel("admin-informasi-home")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "informasi" },
+        () => loadInformation()
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "informasi_layanan_pengaduan",
+        },
+        () => loadInformation()
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "informasi_pengumuman_terjadwal",
+        },
+        () => loadInformation()
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "informasi_bantuan_cepat",
+        },
+        () => loadInformation()
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "informasi_penting_detail",
+        },
+        () => loadInformation()
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "informasi_layanan",
+        },
+        () => loadInformation()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  /* =======================================================
      DELETE
   ======================================================= */
 
-  async function deleteInformation(
-    item: Information
-  ) {
+  async function deleteInformation(item: Information) {
     const confirmed = window.confirm(
       `Hapus informasi "${item.judul}"?`
     );
 
     if (!confirmed) return;
 
-    try {
+    const detailTables = [
+      "informasi_layanan_pengaduan",
+      "informasi_pengumuman_terjadwal",
+      "informasi_bantuan_cepat",
+      "informasi_penting_detail",
+      "informasi_layanan",
+    ];
+
+    for (const table of detailTables) {
       const { error } = await supabase
-        .from("informasi")
+        .from(table)
         .delete()
-        .eq("id", item.id);
+        .eq("informasi_id", item.id);
 
-      if (error) throw error;
-
-      await loadInformation();
-      setCurrentPage(1);
-    } catch (error: any) {
-      console.error("Gagal menghapus informasi:", error);
-      alert(
-        `Gagal menghapus informasi dari Supabase.\n\n${getErrorMessage(error)}`
-      );
+      if (error) {
+        console.error(`Gagal menghapus ${table}:`, error);
+        alert(`Gagal menghapus informasi.\n\n${error.message}`);
+        return;
+      }
     }
+
+    const { error } = await supabase
+      .from("informasi")
+      .delete()
+      .eq("id", item.id);
+
+    if (error) {
+      console.error("Gagal menghapus informasi:", error);
+      alert(`Gagal menghapus informasi.\n\n${error.message}`);
+      return;
+    }
+
+    await loadInformation();
+    setCurrentPage(1);
   }
 
   /* =======================================================
@@ -912,69 +949,136 @@ export default function InformasiHomePage() {
       return;
     }
 
-    if (form.template === "Layanan Pengaduan") {
-      if (!form.hari.trim() || !form.jam.trim()) {
-        alert("Hari dan jam operasional wajib diisi.");
+    const isEditing = editingId !== null;
+    const mainPayload = {
+      template: templateToDb(form.template),
+      judul: form.judul.trim(),
+      status: form.status === "Aktif" ? "aktif" : "nonaktif",
+      urutan_tampil: Number(form.urutan) || 1,
+    };
+
+    let informationId = editingId;
+
+    if (isEditing) {
+      const { error } = await supabase
+        .from("informasi")
+        .update(mainPayload)
+        .eq("id", editingId);
+
+      if (error) {
+        console.error("Gagal memperbarui informasi:", error);
+        alert(`Gagal menyimpan informasi ke Supabase.\n\n${error.message}`);
+        return;
+      }
+    } else {
+      const { data, error } = await supabase
+        .from("informasi")
+        .insert(mainPayload)
+        .select("id")
+        .single();
+
+      if (error || !data) {
+        console.error("Gagal menambahkan informasi:", error);
+        alert(
+          `Gagal menyimpan informasi ke Supabase.\n\n${
+            error?.message ?? "ID informasi tidak diterima."
+          }`
+        );
+        return;
+      }
+
+      informationId = Number(data.id);
+    }
+
+    if (!informationId) {
+      alert("ID informasi tidak ditemukan.");
+      return;
+    }
+
+    // Hapus detail lama terlebih dahulu agar edit tidak meninggalkan data template sebelumnya.
+    const detailTables = [
+      "informasi_layanan_pengaduan",
+      "informasi_pengumuman_terjadwal",
+      "informasi_bantuan_cepat",
+      "informasi_penting_detail",
+      "informasi_layanan",
+    ];
+
+    for (const table of detailTables) {
+      const { error } = await supabase
+        .from(table)
+        .delete()
+        .eq("informasi_id", informationId);
+
+      if (error) {
+        console.error(`Gagal membersihkan ${table}:`, error);
+        alert(`Gagal menyimpan detail informasi.\n\n${error.message}`);
         return;
       }
     }
 
-    setSaving(true);
+    let detailTable = "";
+    let detailPayload: Record<string, unknown> = {};
 
-    try {
-      const mainPayload = {
-        template: TEMPLATE_TO_DB[form.template],
-        judul: form.judul.trim(),
-        status: dbStatus(form.status),
-        urutan_tampil: Number(form.urutan) || information.length + 1,
+    if (form.template === "Layanan Pengaduan") {
+      detailTable = "informasi_layanan_pengaduan";
+      detailPayload = {
+        informasi_id: informationId,
+        hari_operasional: form.hari.trim(),
+        jam_operasional: form.jam.trim(),
+        keterangan_tambahan: form.isi.trim(),
       };
-
-      let informationId = editingId;
-
-      if (editingId !== null) {
-        const { error } = await supabase
-          .from("informasi")
-          .update(mainPayload)
-          .eq("id", editingId);
-
-        if (error) throw error;
-        informationId = editingId;
-      } else {
-        const { data, error } = await supabase
-          .from("informasi")
-          .insert(mainPayload)
-          .select("id")
-          .single();
-
-        if (error) throw error;
-        informationId = data.id;
-      }
-
-      if (!informationId) {
-        throw new Error("ID informasi tidak ditemukan setelah penyimpanan.");
-      }
-
-      try {
-        await saveDetail(informationId, form);
-      } catch (detailError) {
-        if (editingId === null) {
-          await supabase.from("informasi").delete().eq("id", informationId);
-        }
-        throw detailError;
-      }
-
-      await loadInformation();
-      setSelectedTemplate(null);
-      setEditingId(null);
-      setCurrentPage(1);
-    } catch (error: any) {
-      console.error("Gagal menyimpan informasi:", error);
-      alert(
-        `Gagal menyimpan informasi ke Supabase.\n\n${getErrorMessage(error)}`
-      );
-    } finally {
-      setSaving(false);
+    } else if (form.template === "Pengumuman Terjadwal") {
+      detailTable = "informasi_pengumuman_terjadwal";
+      detailPayload = {
+        informasi_id: informationId,
+        badge: form.badge.trim(),
+        isi_pengumuman: form.isi.trim(),
+        lokasi: form.lokasi.trim(),
+        periode: form.periode.trim(),
+      };
+    } else if (form.template === "Bantuan Cepat") {
+      detailTable = "informasi_bantuan_cepat";
+      detailPayload = {
+        informasi_id: informationId,
+        isi_informasi: form.isi.trim(),
+        nomor_telepon: form.telepon.trim(),
+        whatsapp: form.whatsapp.trim(),
+        jam_layanan: form.jam.trim(),
+      };
+    } else if (form.template === "Informasi Penting") {
+      detailTable = "informasi_penting_detail";
+      detailPayload = {
+        informasi_id: informationId,
+        badge: form.badge.trim(),
+        isi_informasi: form.isi.trim(),
+        lokasi: form.lokasi.trim(),
+        periode: form.periode.trim(),
+      };
+    } else {
+      detailTable = "informasi_layanan";
+      detailPayload = {
+        informasi_id: informationId,
+        isi_informasi: form.isi.trim(),
+        teks_tombol: form.teksTombol.trim(),
+        link_tujuan: form.link.trim(),
+      };
     }
+
+    const { error: detailError } = await supabase
+      .from(detailTable)
+      .insert(detailPayload);
+
+    if (detailError) {
+      console.error("Gagal menyimpan detail informasi:", detailError);
+      alert(`Gagal menyimpan informasi ke Supabase.\n\n${detailError.message}`);
+      return;
+    }
+
+    await loadInformation();
+    setSelectedTemplate(null);
+    setEditingId(null);
+    setCurrentPage(1);
   }
 
   /* =======================================================
@@ -1393,13 +1497,14 @@ export default function InformasiHomePage() {
         {/* LIST */}
 
         <div className={styles.uploadedList}>
-          {loading ? (
+          {loadingInformation ? (
             <div className={styles.emptyUploaded}>
               <InfoIcon />
               <strong>Memuat informasi...</strong>
               <span>Mengambil data dari Supabase.</span>
             </div>
-          ) : visibleInformation.length > 0 ? (
+          ) : visibleInformation.length >
+          0 ? (
             visibleInformation.map(
               (item) => (
                 <UploadedCard
@@ -2581,14 +2686,13 @@ export default function InformasiHomePage() {
                 className={
                   styles.saveButton
                 }
-                onClick={saveInformation}
-                disabled={saving}
+                onClick={
+                  saveInformation
+                }
               >
-                {saving
-                  ? "Menyimpan..."
-                  : editingId
-                    ? "Simpan Perubahan"
-                    : "Simpan Informasi"}
+                {editingId
+                  ? "Simpan Perubahan"
+                  : "Simpan Informasi"}
               </button>
             </div>
           </div>

@@ -120,6 +120,15 @@ function VerifyIcon() {
   );
 }
 
+
+const TEMPLATE_FROM_DB: Record<string, string> = {
+  layanan_pengaduan: "Layanan Pengaduan",
+  pengumuman_terjadwal: "Pengumuman Terjadwal",
+  bantuan_cepat: "Bantuan Cepat",
+  informasi_penting: "Informasi Penting",
+  informasi_layanan: "Informasi Layanan",
+};
+
 /* =========================
    HERO DATA
 ========================= */
@@ -179,23 +188,45 @@ export default function HomePage() {
 
   useEffect(() => {
     async function loadInformation() {
-      const { data: mainData, error: mainError } = await supabase
+      // Ambil semua data terlebih dahulu, lalu filter status di sisi user.
+      // Ini dibuat fleksibel untuk database yang menyimpan status sebagai
+      // "aktif"/"nonaktif" maupun "Aktif"/"Nonaktif".
+      const { data: allMainData, error: mainError } = await supabase
         .from("informasi")
         .select("*")
-        .eq("status", "aktif")
         .order("urutan_tampil", { ascending: true })
         .order("created_at", { ascending: false });
 
       if (mainError) {
-        console.error("Gagal mengambil informasi:", mainError);
-        return;
-      }
+        console.error("Gagal mengambil informasi:", {
+          message: mainError.message,
+          details: mainError.details,
+          hint: mainError.hint,
+          code: mainError.code,
+        });
 
-      if (!mainData || mainData.length === 0) {
+        // Jangan pertahankan data lama jika Supabase gagal.
         setInformation([]);
         setInfoIndex(0);
         return;
       }
+
+      // HANYA informasi aktif yang boleh tampil di Home user.
+      const mainData = (allMainData ?? []).filter((item: any) => {
+        const status = String(item.status ?? "")
+          .trim()
+          .toLowerCase();
+
+        return status === "aktif";
+      });
+
+      if (mainData.length === 0) {
+        setInformation([]);
+        setInfoIndex(0);
+        return;
+      }
+
+      const activeIds = mainData.map((item: any) => item.id);
 
       const [
         layananPengaduan,
@@ -204,39 +235,83 @@ export default function HomePage() {
         informasiPenting,
         layanan,
       ] = await Promise.all([
-        supabase.from("informasi_layanan_pengaduan").select("*"),
-        supabase.from("informasi_pengumuman_terjadwal").select("*"),
-        supabase.from("informasi_bantuan_cepat").select("*"),
-        supabase.from("informasi_penting_detail").select("*"),
-        supabase.from("informasi_layanan").select("*"),
+        supabase.from("informasi_layanan_pengaduan").select("*").in("informasi_id", activeIds),
+        supabase.from("informasi_pengumuman_terjadwal").select("*").in("informasi_id", activeIds),
+        supabase.from("informasi_bantuan_cepat").select("*").in("informasi_id", activeIds),
+        supabase.from("informasi_penting_detail").select("*").in("informasi_id", activeIds),
+        supabase.from("informasi_layanan").select("*").in("informasi_id", activeIds),
       ]);
 
-      const detailMap = new Map<number, any>();
+      const detailErrors = [
+        layananPengaduan.error,
+        pengumuman.error,
+        bantuanCepat.error,
+        informasiPenting.error,
+        layanan.error,
+      ].filter(Boolean);
 
-      [
-        ...(layananPengaduan.data ?? []),
-        ...(pengumuman.data ?? []),
-        ...(bantuanCepat.data ?? []),
-        ...(informasiPenting.data ?? []),
-        ...(layanan.data ?? []),
-      ].forEach((item) => {
-        detailMap.set(item.informasi_id, item);
-      });
+      if (detailErrors.length > 0) {
+        console.error(
+          "Gagal mengambil detail informasi:",
+          detailErrors.map((error: any) => ({
+            message: error?.message,
+            details: error?.details,
+            hint: error?.hint,
+            code: error?.code,
+          }))
+        );
+      }
+
+      // Setiap template mengambil detail dari tabelnya sendiri.
+      // Jangan digabung menjadi satu Map karena satu informasi_id
+      // bisa memiliki bentuk detail yang berbeda.
+      const layananMap = new Map(
+        (layananPengaduan.data ?? []).map((item: any) => [item.informasi_id, item])
+      );
+      const pengumumanMap = new Map(
+        (pengumuman.data ?? []).map((item: any) => [item.informasi_id, item])
+      );
+      const bantuanMap = new Map(
+        (bantuanCepat.data ?? []).map((item: any) => [item.informasi_id, item])
+      );
+      const pentingMap = new Map(
+        (informasiPenting.data ?? []).map((item: any) => [item.informasi_id, item])
+      );
+      const layananUmumMap = new Map(
+        (layanan.data ?? []).map((item: any) => [item.informasi_id, item])
+      );
 
       const merged: Information[] = mainData.map((item) => {
-        const detail = detailMap.get(item.id);
+        const template = TEMPLATE_FROM_DB[String(item.template)] ?? String(item.template);
+        const detail =
+          template === "Layanan Pengaduan"
+            ? layananMap.get(item.id)
+            : template === "Pengumuman Terjadwal"
+              ? pengumumanMap.get(item.id)
+              : template === "Bantuan Cepat"
+                ? bantuanMap.get(item.id)
+                : template === "Informasi Penting"
+                  ? pentingMap.get(item.id)
+                  : layananUmumMap.get(item.id);
 
         return {
           id: item.id,
-          template: item.template,
+          template,
           judul: item.judul,
           badge: detail?.badge ?? null,
           isi:
-            detail?.isi_informasi ??
-            detail?.isi_pengumuman ??
-            null,
+            template === "Layanan Pengaduan"
+              ? detail?.keterangan_tambahan ?? null
+              : template === "Pengumuman Terjadwal"
+                ? detail?.isi_pengumuman ?? null
+                : detail?.isi_informasi ?? null,
           hari: detail?.hari_operasional ?? null,
-          jam: detail?.jam_operasional ?? null,
+          jam:
+            template === "Layanan Pengaduan"
+              ? detail?.jam_operasional ?? null
+              : template === "Bantuan Cepat"
+                ? detail?.jam_layanan ?? null
+                : null,
           lokasi: detail?.lokasi ?? null,
           periode: detail?.periode ?? null,
           telepon: detail?.nomor_telepon ?? null,
@@ -251,6 +326,44 @@ export default function HomePage() {
     }
 
     loadInformation();
+
+    const channel = supabase
+      .channel("home-informasi-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "informasi" },
+        () => loadInformation()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "informasi_layanan_pengaduan" },
+        () => loadInformation()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "informasi_pengumuman_terjadwal" },
+        () => loadInformation()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "informasi_bantuan_cepat" },
+        () => loadInformation()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "informasi_penting_detail" },
+        () => loadInformation()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "informasi_layanan" },
+        () => loadInformation()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   /* =========================
@@ -540,32 +653,120 @@ export default function HomePage() {
 
                     <h3>{item.judul}</h3>
 
-                    {item.hari || item.jam ? (
-                      <div className={styles.timeBox}>
-                        <span>{item.hari || "Jam layanan"}</span>
-                        <strong>{item.jam || "-"}</strong>
-                      </div>
-                    ) : null}
+                    {item.template === "Layanan Pengaduan" && (
+                      <>
+                        {(item.hari || item.jam) && (
+                          <div className={styles.timeBox}>
+                            <span>{item.hari || "Jam layanan"}</span>
+                            <strong>{item.jam || "-"}</strong>
+                          </div>
+                        )}
 
-                    {item.isi ? (
-                      <div className={styles.cardDescription}>
-                        {item.isi}
-                      </div>
-                    ) : null}
+                        {item.isi && (
+                          <div className={styles.cardDescription}>
+                            {item.isi}
+                          </div>
+                        )}
+                      </>
+                    )}
 
-                    {item.lokasi ? (
-                      <div className={styles.cardInfo}>
-                        <InfoIcon />
-                        <span>{item.lokasi}</span>
-                      </div>
-                    ) : null}
+                    {item.template === "Pengumuman Terjadwal" && (
+                      <>
+                        {item.isi && (
+                          <div className={styles.cardDescription}>
+                            {item.isi}
+                          </div>
+                        )}
 
-                    {item.periode ? (
-                      <div className={styles.cardInfo}>
-                        <InfoIcon />
-                        <span>{item.periode}</span>
-                      </div>
-                    ) : null}
+                        {item.lokasi && (
+                          <div className={styles.cardInfo}>
+                            <InfoIcon />
+                            <span>{item.lokasi}</span>
+                          </div>
+                        )}
+
+                        {item.periode && (
+                          <div className={styles.cardInfo}>
+                            <InfoIcon />
+                            <span>{item.periode}</span>
+                          </div>
+                        )}
+                      </>
+                    )}
+
+                    {item.template === "Bantuan Cepat" && (
+                      <>
+                        {item.isi && (
+                          <div className={styles.cardDescription}>
+                            {item.isi}
+                          </div>
+                        )}
+
+                        {item.telepon && (
+                          <div className={styles.cardInfo}>
+                            <InfoIcon />
+                            <span>{item.telepon}</span>
+                          </div>
+                        )}
+
+                        {item.whatsapp && (
+                          <div className={styles.cardInfo}>
+                            <InfoIcon />
+                            <span>{item.whatsapp}</span>
+                          </div>
+                        )}
+
+                        {item.jam && (
+                          <div className={styles.cardInfo}>
+                            <ClockIcon />
+                            <span>{item.jam}</span>
+                          </div>
+                        )}
+                      </>
+                    )}
+
+                    {item.template === "Informasi Penting" && (
+                      <>
+                        {item.isi && (
+                          <div className={styles.cardDescription}>
+                            {item.isi}
+                          </div>
+                        )}
+
+                        {item.lokasi && (
+                          <div className={styles.cardInfo}>
+                            <InfoIcon />
+                            <span>{item.lokasi}</span>
+                          </div>
+                        )}
+
+                        {item.periode && (
+                          <div className={styles.cardInfo}>
+                            <InfoIcon />
+                            <span>{item.periode}</span>
+                          </div>
+                        )}
+                      </>
+                    )}
+
+                    {item.template === "Informasi Layanan" && (
+                      <>
+                        {item.isi && (
+                          <div className={styles.cardDescription}>
+                            {item.isi}
+                          </div>
+                        )}
+
+                        {item.teksTombol && (
+                          <Link
+                            href={item.link || `/${locale}/lapor`}
+                            className={styles.cardInfo}
+                          >
+                            <span>{item.teksTombol} →</span>
+                          </Link>
+                        )}
+                      </>
+                    )}
                   </article>
                 ))
             )}

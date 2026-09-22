@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "../../lib/supabase";
 import styles from "./page.module.css";
 
 type Priority = "Tinggi" | "Sedang" | "Rendah";
@@ -32,140 +33,6 @@ type SortKey =
 type SortDirection = "asc" | "desc";
 
 const STORAGE_KEY = "sisarpras_pengaduan_dibaca";
-
-const initialData: Pengaduan[] = [
-  {
-    id: "LPR-2026-001",
-    nomor: "LPR-2026-001",
-    pelapor: "Muhammad Satriyo Prijambodo",
-    kontak: "085755122267",
-    lokasi: "Ruang Mekatronika",
-    barang: "AC di ruang guru mekatronika lt1",
-    deskripsi: "Keluar tetesan air",
-    prioritas: "Tinggi",
-    status: "Pending",
-    tanggal: "09/06/2026 14:40",
-    unread: true,
-  },
-  {
-    id: "LPR-2026-002",
-    nomor: "LPR-2026-002",
-    pelapor: "Ines Rheynata Amalia",
-    kontak: "087766712862",
-    lokasi: "Ruang DKV 1",
-    barang: "TV",
-    deskripsi: "Tidak Berfungsi",
-    prioritas: "Tinggi",
-    status: "Pending",
-    tanggal: "04/06/2026 10:46",
-    unread: true,
-  },
-  {
-    id: "LPR-2026-003",
-    nomor: "LPR-2026-003",
-    pelapor: "Rindi",
-    kontak: "-",
-    lokasi: "Ruang Teori 4",
-    barang: "Kursi koyah",
-    deskripsi: "Baut kendor pada kursi",
-    prioritas: "Tinggi",
-    status: "Selesai",
-    tanggal: "03/06/2026 11:19",
-    unread: false,
-  },
-  {
-    id: "LPR-2026-004",
-    nomor: "LPR-2026-004",
-    pelapor: "Rindi Andika",
-    kontak: "-",
-    lokasi: "Ruang Tata Usaha",
-    barang: "Pintu",
-    deskripsi: "Engsel pintu bermasalah",
-    prioritas: "Sedang",
-    status: "Selesai",
-    tanggal: "29/05/2026 11:40",
-    unread: true,
-  },
-  {
-    id: "LPR-2026-005",
-    nomor: "LPR-2026-005",
-    pelapor: "Suci Lestari",
-    kontak: "085736953980",
-    lokasi: "STUDIO ANIMASI",
-    barang: "Lampu",
-    deskripsi: "Mati total",
-    prioritas: "Tinggi",
-    status: "Selesai",
-    tanggal: "22/05/2026 09:10",
-    unread: false,
-  },
-  {
-    id: "LPR-2026-006",
-    nomor: "LPR-2026-006",
-    pelapor: "Aldilah rahma",
-    kontak: "085282287766",
-    lokasi: "LAB TG",
-    barang: "Ac",
-    deskripsi: "Tidak berfungsi",
-    prioritas: "Tinggi",
-    status: "Pending",
-    tanggal: "22/05/2026 08:08",
-    unread: false,
-  },
-  {
-    id: "LPR-2026-007",
-    nomor: "LPR-2026-007",
-    pelapor: "Aldilah rahma",
-    kontak: "085282287766",
-    lokasi: "Ruang Desain 2",
-    barang: "Ac",
-    deskripsi: "Tidak berfungsi",
-    prioritas: "Tinggi",
-    status: "Pending",
-    tanggal: "21/05/2026 08:06",
-    unread: false,
-  },
-  {
-    id: "LPR-2026-008",
-    nomor: "LPR-2026-008",
-    pelapor: "Maulana Ikhsan",
-    kontak: "08583928775",
-    lokasi: "Ruang Teori 8",
-    barang: "Kipas angin, pintu, tong sampah",
-    deskripsi:
-      "Kipas angin tidak bisa menyala, pintu tidak bisa ditutup, tong sampah terlalu kecil",
-    prioritas: "Tinggi",
-    status: "Pending",
-    tanggal: "21/05/2026 13:39",
-    unread: true,
-  },
-  {
-    id: "LPR-2026-009",
-    nomor: "LPR-2026-009",
-    pelapor: "Septi Retno Desi Purnoningsyas",
-    kontak: "085735258725",
-    lokasi: "Lab 4 RPL",
-    barang: "Tirai",
-    deskripsi: "Dipindah",
-    prioritas: "Sedang",
-    status: "Selesai",
-    tanggal: "20/05/2026 14:38",
-    unread: false,
-  },
-  {
-    id: "LPR-2026-010",
-    nomor: "LPR-2026-010",
-    pelapor: "Harijono Mochammad",
-    kontak: "085812324609",
-    lokasi: "OFFSET",
-    barang: "Akses Point",
-    deskripsi: "Tidak fungsi",
-    prioritas: "Tinggi",
-    status: "Selesai",
-    tanggal: "20/05/2026 13:11",
-    unread: false,
-  },
-];
 
 function Icon({
   children,
@@ -251,7 +118,7 @@ export default function PengaduanPage() {
   const router = useRouter();
 
   const [data, setData] =
-    useState<Pengaduan[]>(initialData);
+    useState<Pengaduan[]>([]);
 
   const [readIds, setReadIds] =
     useState<string[]>([]);
@@ -273,6 +140,83 @@ export default function PengaduanPage() {
 
   const [currentPage, setCurrentPage] =
     useState(1);
+
+  /* =======================================================
+     LOAD DATA LAPORAN DARI SUPABASE + REALTIME
+  ======================================================= */
+
+  useEffect(() => {
+    let active = true;
+
+    function formatTanggal(value: string) {
+      if (!value) return "-";
+
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "-";
+
+      return new Intl.DateTimeFormat("id-ID", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      }).format(date).replace(",", "");
+    }
+
+    async function loadReports() {
+      const { data: rows, error } = await supabase
+        .from("pengaduan")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (!active) return;
+
+      if (error) {
+        console.error("Gagal mengambil laporan:", error);
+        alert(`Gagal mengambil laporan: ${error.message}`);
+        return;
+      }
+
+      const mapped: Pengaduan[] = (rows ?? []).map((row) => ({
+        id: row.nomor,
+        nomor: row.nomor,
+        pelapor: row.pelapor ?? "-",
+        kontak: row.kontak ?? "-",
+        lokasi: row.lokasi ?? "-",
+        barang: row.barang ?? "-",
+        deskripsi: row.deskripsi ?? "-",
+        prioritas: row.prioritas as Priority,
+        status: row.status as Status,
+        tanggal: formatTanggal(row.created_at),
+        unread: true,
+      }));
+
+      setData(mapped);
+    }
+
+    loadReports();
+
+    const channel = supabase
+      .channel("admin-pengaduan-list")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "pengaduan",
+        },
+        () => {
+          loadReports();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      active = false;
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   useEffect(() => {
     const saved =
@@ -447,7 +391,7 @@ export default function PengaduanPage() {
     router.push(`/pengaduan/${id}`);
   }
 
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
     const confirmed =
       window.confirm(
         "Apakah kamu yakin ingin menghapus laporan ini?"
@@ -455,10 +399,19 @@ export default function PengaduanPage() {
 
     if (!confirmed) return;
 
+    const { error } = await supabase
+      .from("pengaduan")
+      .delete()
+      .eq("nomor", id);
+
+    if (error) {
+      console.error("Gagal menghapus laporan:", error);
+      alert(`Gagal menghapus laporan: ${error.message}`);
+      return;
+    }
+
     setData((current) =>
-      current.filter(
-        (item) => item.id !== id
-      )
+      current.filter((item) => item.id !== id)
     );
   }
 

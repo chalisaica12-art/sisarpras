@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import styles from "./page.module.css";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { supabase } from "../../../lib/supabase";
 
 /* =========================
    ICONS
@@ -176,6 +177,8 @@ type ReportStatus =
   | "Completed"
   | "Draft";
 
+type DatabaseStatus = "Pending" | "Diproses" | "Selesai";
+
 type Report = {
   id: string;
   date: string;
@@ -189,132 +192,38 @@ type Report = {
 };
 
 /* =========================
-   DATA
+   STATUS MAPPING
 ========================= */
 
-const reports: Report[] = [
-  {
-    id: "LPR-2026-001",
-    date: "8 September 2026",
+function mapDatabaseStatus(status: DatabaseStatus): ReportStatus {
+  switch (status) {
+    case "Pending":
+      return "Submitted";
+    case "Diproses":
+      return "Processed";
+    case "Selesai":
+      return "Completed";
+    default:
+      return "Submitted";
+  }
+}
 
-    title: {
-      id: "AC Ruang 10",
-      en: "Classroom AC – Room 10",
-    },
+function formatReportDate(date: string, locale: string) {
+  const parsedDate = new Date(date);
 
-    location: {
-      id: "Ruang 10 (Gedung B – Kelas 10 MIPA 2)",
-      en: "Room 10 (Building B – Class 10 MIPA 2)",
-    },
+  if (Number.isNaN(parsedDate.getTime())) {
+    return date;
+  }
 
-    description: {
-      id: "AC tidak berfungsi dan tidak mengeluarkan udara dingin sejak jam pelajaran pertama. Mengeluarkan dengung pada blower indoor.",
-      en: "The AC is not functioning and does not produce cold air since the first class period. The indoor blower makes a buzzing sound.",
-    },
-
-    status: "Submitted",
-  },
-
-  {
-    id: "LPR-2026-002",
-    date: "9 September 2026",
-
-    title: {
-      id: "Proyektor LCD Epson EB-X400",
-      en: "Epson EB-X400 LCD Projector",
-    },
-
-    location: {
-      id: "Laboratorium Komputer 1 (Lantai 2)",
-      en: "Computer Laboratory 1 (2nd Floor)",
-    },
-
-    description: {
-      id: "Lampu indikator berkedip merah dan proyektor mati mendadak setelah 5 menit pemakaian. Diduga lampu overheat atau filter debu tersumbat.",
-      en: "The indicator light blinks red and the projector suddenly shuts down after 5 minutes of use. The lamp may be overheating or the dust filter may be clogged.",
-    },
-
-    status: "Submitted",
-  },
-
-  {
-    id: "LPR-2026-003",
-    date: "7 September 2026",
-
-    title: {
-      id: "Kran Wastafel & Pipa Saluran",
-      en: "Sink Faucet & Drain Pipe",
-    },
-
-    location: {
-      id: "Toilet Siswa Lantai 2 (Sayap Timur)",
-      en: "Student Restroom – 2nd Floor (East Wing)",
-    },
-
-    description: {
-      id: "Pipa pembuangan wastafel bocor dan air merembes ke lantai selasar sehingga menimbulkan genangan air licin membahayakan siswa.",
-      en: "The sink drain pipe is leaking and water is spreading onto the hallway floor, creating a slippery puddle that may endanger students.",
-    },
-
-    status: "Submitted",
-  },
-
-  {
-    id: "LPR-2026-004",
-    date: "4 September 2026",
-
-    title: {
-      id: "Pintu & Gagang Lemari Alat Olahraga",
-      en: "Sports Equipment Cabinet Door & Handle",
-    },
-
-    location: {
-      id: "Gedung Olahraga / Ruang Senam",
-      en: "Sports Hall / Gymnastics Room",
-    },
-
-    description: {
-      id: "Engsel pintu lemari patah dan gagang kunci lepas saat inventarisasi bola basket mingguan oleh guru PJOK.",
-      en: "The cabinet door hinge is broken and the lock handle came off during the weekly basketball equipment inventory conducted by the PE teacher.",
-    },
-
-    status: "Completed",
-  },
-
-  {
-    id: "DRAFT",
-    date: "15 September 2026",
-
-    title: {
-      id: "Kursi Ruang Kelas 11",
-      en: "Classroom Chair – Room 11",
-    },
-
-    location: {
-      id: "Ruang 11 IPS 1",
-      en: "Room 11 IPS 1",
-    },
-
-    description: {
-      id: "Beberapa bagian kursi terlihat rusak dan perlu diperiksa kembali sebelum laporan dikirim.",
-      en: "Several parts of the chair appear to be damaged and need to be checked again before the report is submitted.",
-    },
-
-    status: "Draft",
-  },
-];
-
-const tabs: {
-  label: ReportStatus;
-  count?: number;
-}[] = [
-  { label: "All", count: 5 },
-  { label: "Submitted", count: 3 },
-  { label: "Verified", count: 0 },
-  { label: "Processed", count: 0 },
-  { label: "Completed", count: 1 },
-  { label: "Draft", count: 1 },
-];
+  return parsedDate.toLocaleDateString(
+    locale === "id" ? "id-ID" : "en-US",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }
+  );
+}
 
 /* =========================
    PAGE
@@ -331,6 +240,122 @@ export default function ReportsPage() {
     useState<ReportStatus>("All");
 
   const [search, setSearch] = useState("");
+  const [reports, setReports] = useState<Report[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  async function loadReports() {
+    setLoading(true);
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      setReports([]);
+      setLoading(false);
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("pengaduan")
+      .select(
+        "id, nomor, lokasi, barang, deskripsi, status, foto_url, created_at, user_id"
+      )
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Gagal mengambil daftar laporan:", error);
+      setReports([]);
+      setLoading(false);
+      return;
+    }
+
+    const mappedReports: Report[] = (data ?? []).map((item) => ({
+      id: item.nomor,
+      date: formatReportDate(item.created_at, locale),
+      title: {
+        id: item.barang,
+        en: item.barang,
+      },
+      location: {
+        id: item.lokasi,
+        en: item.lokasi,
+      },
+      description: {
+        id: item.deskripsi || "-",
+        en: item.deskripsi || "-",
+      },
+      status: mapDatabaseStatus(item.status as DatabaseStatus),
+      image: item.foto_url || undefined,
+    }));
+
+    setReports(mappedReports);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadReports();
+
+    const channel = supabase
+      .channel("user-pengaduan-list")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "pengaduan",
+        },
+        () => {
+          loadReports();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [locale]);
+
+  const tabs: {
+    label: ReportStatus;
+    count: number;
+  }[] = [
+    {
+      label: "All",
+      count: reports.length,
+    },
+    {
+      label: "Submitted",
+      count: reports.filter(
+        (report) => report.status === "Submitted"
+      ).length,
+    },
+    {
+      label: "Verified",
+      count: reports.filter(
+        (report) => report.status === "Verified"
+      ).length,
+    },
+    {
+      label: "Processed",
+      count: reports.filter(
+        (report) => report.status === "Processed"
+      ).length,
+    },
+    {
+      label: "Completed",
+      count: reports.filter(
+        (report) => report.status === "Completed"
+      ).length,
+    },
+    {
+      label: "Draft",
+      count: reports.filter(
+        (report) => report.status === "Draft"
+      ).length,
+    },
+  ];
 
   const filteredReports = useMemo(() => {
     return reports.filter((report) => {
@@ -357,7 +382,7 @@ export default function ReportsPage() {
 
       return matchesTab && matchesSearch;
     });
-  }, [activeTab, search, language]);
+  }, [activeTab, search, language, reports]);
 
   function getTabLabel(status: ReportStatus) {
     switch (status) {
@@ -469,7 +494,15 @@ export default function ReportsPage() {
         ========================= */}
 
         <section className={styles.reportList}>
-          {filteredReports.length > 0 ? (
+          {loading ? (
+            <div className={styles.emptyState}>
+              <div className={styles.emptyIcon}>
+                <ClockIcon />
+              </div>
+              <h3>Memuat laporan...</h3>
+              <p>Data laporan sedang diambil dari sistem.</p>
+            </div>
+          ) : filteredReports.length > 0 ? (
             filteredReports.map((report) => (
               <ReportCard
                 key={report.id}

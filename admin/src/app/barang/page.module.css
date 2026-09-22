@@ -946,3 +946,169 @@
     align-self: flex-end;
   }
 }
+
+/* =========================
+   MODAL FORM CRUD
+   TAMBAHAN - TIDAK MENGUBAH
+   STYLE UTAMA HALAMAN
+========================= */
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.42);
+}
+
+.modalCard {
+  width: min(680px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modalHeader p {
+  margin: 5px 0 0;
+  color: #8a93a5;
+  font-size: 12px;
+}
+
+.modalClose {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 7px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modalClose:hover {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 22px;
+}
+
+.formGrid label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.formGrid label > span {
+  color: #4b5563;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.formGrid label b {
+  color: #dc2626;
+}
+
+.formGrid input,
+.formGrid select {
+  width: 100%;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 0 11px;
+  outline: none;
+  color: #374151;
+  background: #ffffff;
+  border: 1px solid #dfe3ea;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.formGrid input:focus,
+.formGrid select:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.15);
+}
+
+.formActions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 4px;
+  padding-top: 18px;
+  border-top: 1px solid #edf0f4;
+}
+
+.modalCancel,
+.modalSave {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.modalCancel {
+  color: #4b5563;
+  background: #ffffff;
+  border: 1px solid #dfe3ea;
+}
+
+.modalCancel:hover {
+  background: #f8fafc;
+}
+
+.modalSave {
+  color: #ffffff;
+  background: #2563eb;
+  border: 1px solid #2563eb;
+}
+
+.modalSave:hover {
+  background: #1d4ed8;
+}
+
+.modalCancel:disabled,
+.modalSave:disabled,
+.modalClose:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 700px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formActions {
+    grid-column: auto;
+  }
+}

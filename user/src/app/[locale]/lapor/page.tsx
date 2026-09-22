@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   useLocale,
   useTranslations,
@@ -13,6 +14,7 @@ import {
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { supabase } from "../../../lib/supabase";
 
 import styles from "./page.module.css";
 
@@ -125,6 +127,7 @@ function CheckSmall() {
 export default function LaporPage() {
   const locale = useLocale();
   const t = useTranslations("Report");
+  const router = useRouter();
 
   const [nama, setNama] = useState("");
   const [telepon, setTelepon] = useState("");
@@ -214,6 +217,107 @@ export default function LaporPage() {
   const removeFile = () => {
     setFile(null);
     setPreview("");
+  };
+
+  /* =========================
+     KIRIM LAPORAN
+  ========================= */
+
+  const handleSubmit = async () => {
+    // Validasi data utama.
+    // Foto belum disimpan ke Storage pada tahap CRUD dasar.
+    if (
+      !nama.trim() ||
+      !lokasi.trim() ||
+      !barang.trim() ||
+      !deskripsi.trim()
+    ) {
+      alert("Mohon lengkapi data pelaporan terlebih dahulu.");
+      return;
+    }
+
+    try {
+      // Ambil user yang sedang login jika tersedia.
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      // Cari nomor laporan terakhir agar nomor baru otomatis berurutan.
+      const { data: lastReport, error: lastReportError } =
+        await supabase
+          .from("pengaduan")
+          .select("nomor")
+          .order("id", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+      if (lastReportError) {
+        console.error(lastReportError);
+        alert("Gagal membaca nomor laporan terakhir.");
+        return;
+      }
+
+      let nextNumber = 1;
+
+      if (lastReport?.nomor) {
+        const match = lastReport.nomor.match(/(\d+)$/);
+
+        if (match) {
+          nextNumber = Number(match[1]) + 1;
+        }
+      }
+
+      const nomor = `LPR-2026-${String(nextNumber).padStart(3, "0")}`;
+
+      // "Tinggi / Darurat" dari form disimpan sebagai "Tinggi"
+      // karena database menggunakan prioritas: Tinggi, Sedang, Rendah.
+      const prioritas =
+        urgensi === "Tinggi / Darurat"
+          ? "Tinggi"
+          : urgensi;
+
+      // Jika user memilih "Lainnya...", simpan teks yang ditulis user.
+      const jenisKerusakan =
+        jenis === "Lainnya..."
+          ? jenisLainnya.trim() || "Lainnya"
+          : jenis;
+
+      const { error: insertError } = await supabase
+        .from("pengaduan")
+        .insert({
+          nomor,
+          user_id: user?.id ?? null,
+
+          pelapor: nama.trim(),
+          kontak: telepon.trim() || null,
+          email: email.trim() || null,
+
+          lokasi: lokasi.trim(),
+          barang: barang.trim(),
+          jenis: jenisKerusakan,
+          deskripsi: deskripsi.trim(),
+
+          prioritas,
+          status: "Pending",
+
+          // Foto belum di-upload ke Supabase Storage.
+          foto_url: null,
+        });
+
+      if (insertError) {
+        console.error("Gagal menyimpan laporan:", insertError);
+        alert(`Gagal mengirim laporan: ${insertError.message}`);
+        return;
+      }
+
+      alert(`Laporan berhasil dikirim!\\nNomor laporan: ${nomor}`);
+
+      // Setelah berhasil, arahkan user ke daftar laporan.
+      router.push(`/${locale}/laporan`);
+    } catch (error) {
+      console.error("Terjadi kesalahan:", error);
+      alert("Terjadi kesalahan saat mengirim laporan.");
+    }
   };
 
   /* =========================
@@ -722,6 +826,7 @@ export default function LaporPage() {
                 className={
                   styles.submitButton
                 }
+                onClick={handleSubmit}
               >
                 {t("submit")}
 

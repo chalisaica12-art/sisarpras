@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { supabase } from "../../lib/supabase";
 import styles from "./page.module.css";
 
 /* =========================
@@ -40,118 +41,21 @@ type SortKey =
 type SortDirection = "asc" | "desc";
 
 /* =========================
-   DATA CONTOH
+   DATA DARI SUPABASE
 ========================= */
 
-const barangData: Barang[] = [
-  {
-    id: 1,
-    kode: "1.3.4.02.01.05.012.0002",
-    nama: "Meteran Gagang",
-    tahun: "2026",
-    kondisi: "Baik",
-    lokasi: "Gudang Sarpras",
-    perolehan: "BOS",
-  },
-  {
-    id: 2,
-    kode: "1.3.2.08.01.10.087.0002",
-    nama: "Hand Magnet With Caster",
-    tahun: "2026",
-    kondisi: "Baik",
-    lokasi: "Gudang Sarpras",
-    perolehan: "BOS",
-  },
-  {
-    id: 3,
-    kode: "1.3.2.08.03.05.051.0001",
-    nama: "Mesin Press Kaos Digital",
-    tahun: "2026",
-    kondisi: "Baik",
-    lokasi: "Gudang Sarpras",
-    perolehan: "BOS",
-  },
-  {
-    id: 4,
-    kode: "1.3.2.08.01.10.087.0001",
-    nama: "Hand Magnet With Caster",
-    tahun: "2026",
-    kondisi: "Baik",
-    lokasi: "Gudang Sarpras",
-    perolehan: "BOS",
-  },
-  {
-    id: 5,
-    kode: "1.3.4.02.01.05.012.0001",
-    nama: "Meteran Gagang",
-    tahun: "2026",
-    kondisi: "Baik",
-    lokasi: "Gudang Sarpras",
-    perolehan: "BOS",
-  },
-  {
-    id: 6,
-    kode: "02.09.03.01.14.0042",
-    nama: "CCTV IP CAM HILOOK",
-    tahun: "2025",
-    kondisi: "Baik",
-    lokasi: "HOME THEATER",
-    perolehan: "BOS",
-  },
-  {
-    id: 7,
-    kode: "02.09.03.01.14.0045",
-    nama: "CCTV IP CAM HILOOK",
-    tahun: "2025",
-    kondisi: "Baik",
-    lokasi: "LAB BAHASA",
-    perolehan: "BOS",
-  },
-  {
-    id: 8,
-    kode: "1.3.2.10.02.03.001.0027",
-    nama: "Printer Epson L5190",
-    tahun: "2025",
-    kondisi: "Baik",
-    lokasi: "RUANG HUMAS",
-    perolehan: "BOS",
-  },
-  {
-    id: 9,
-    kode: "1.3.2.10.01.01.001.0009",
-    nama: "Monitor only (Set PC Core i7)",
-    tahun: "2025",
-    kondisi: "Baik",
-    lokasi: "Bank Mini",
-    perolehan: "BOS",
-  },
-  {
-    id: 10,
-    kode: "1.3.2.16.02.04.026.0001",
-    nama: "Access Point TP-Link TL-WR844N",
-    tahun: "2025",
-    kondisi: "Baik",
-    lokasi: "LKS",
-    perolehan: "BOS",
-  },
-  {
-    id: 11,
-    kode: "1.3.2.10.02.03.001.0030",
-    nama: "Printer Epson L3210",
-    tahun: "2024",
-    kondisi: "Rusak Ringan",
-    lokasi: "Ruang TU",
-    perolehan: "BPOPP",
-  },
-  {
-    id: 12,
-    kode: "1.3.2.08.01.10.088.0001",
-    nama: "Bor Tangan",
-    tahun: "2024",
-    kondisi: "Rusak Berat",
-    lokasi: "Bengkel",
-    perolehan: "BLUD",
-  },
+const kondisiOptions: Kondisi[] = [
+  "Baik",
+  "Rusak Ringan",
+  "Rusak Berat",
+];
+
+const perolehanOptions: Perolehan[] = [
+  "BOS",
+  "BPOPP",
+  "BLUD",
+  "CSR",
+  "TEFA",
 ];
 
 /* =========================
@@ -359,6 +263,175 @@ function StatCard({
 
 export default function BarangPage() {
   /* =========================
+     DATA + CRUD SUPABASE
+  ========================= */
+
+  const [barangData, setBarangData] = useState<Barang[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [form, setForm] = useState({
+    kode: "",
+    nama: "",
+    tahun: "",
+    kondisi: "Baik" as Kondisi,
+    lokasi: "",
+    perolehan: "BOS" as Perolehan,
+  });
+
+  async function loadBarang() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("barang")
+      .select("id, kode_barang, nama_barang, tahun_pembelian, kondisi, lokasi, asal_perolehan, created_at")
+      .order("id", { ascending: true });
+
+    if (error) {
+      console.error("Gagal mengambil data barang:", error);
+      alert(`Gagal mengambil data barang: ${error.message}`);
+      setBarangData([]);
+      setLoading(false);
+      return;
+    }
+
+    const mapped: Barang[] = (data ?? []).map((item: any) => ({
+      id: Number(item.id),
+      kode: String(item.kode_barang ?? ""),
+      nama: String(item.nama_barang ?? ""),
+      tahun: String(item.tahun_pembelian ?? ""),
+      kondisi: item.kondisi as Kondisi,
+      lokasi: String(item.lokasi ?? ""),
+      perolehan: item.asal_perolehan as Perolehan,
+    }));
+
+    setBarangData(mapped);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadBarang();
+  }, []);
+
+  function openAddModal() {
+    setEditingId(null);
+    setForm({
+      kode: "",
+      nama: "",
+      tahun: "",
+      kondisi: "Baik",
+      lokasi: "",
+      perolehan: "BOS",
+    });
+    setModalOpen(true);
+  }
+
+  function openEditModal(item: Barang) {
+    setEditingId(item.id);
+    setForm({
+      kode: item.kode,
+      nama: item.nama,
+      tahun: item.tahun,
+      kondisi: item.kondisi,
+      lokasi: item.lokasi,
+      perolehan: item.perolehan,
+    });
+    setModalOpen(true);
+  }
+
+  function closeModal() {
+    if (!saving) setModalOpen(false);
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const kode = form.kode.trim();
+    const nama = form.nama.trim();
+    const tahun = form.tahun.trim();
+    const lokasi = form.lokasi.trim();
+
+    if (!kode || !nama || !tahun || !lokasi || !form.kondisi || !form.perolehan) {
+      alert("Semua data barang wajib diisi.");
+      return;
+    }
+
+    if (!/^\d{4}$/.test(tahun)) {
+      alert("Tahun pembelian harus 4 digit, contoh: 2026.");
+      return;
+    }
+
+    setSaving(true);
+
+    if (editingId === null) {
+      const { error } = await supabase.from("barang").insert({
+        kode_barang: kode,
+        nama_barang: nama,
+        tahun_pembelian: tahun,
+        kondisi: form.kondisi,
+        lokasi,
+        asal_perolehan: form.perolehan,
+      });
+
+      if (error) {
+        console.error("Gagal menambah barang:", error);
+        alert(`Gagal menambah barang: ${error.message}`);
+        setSaving(false);
+        return;
+      }
+
+      alert("Data barang berhasil ditambahkan.");
+    } else {
+      const { error } = await supabase
+        .from("barang")
+        .update({
+          kode_barang: kode,
+          nama_barang: nama,
+          tahun_pembelian: tahun,
+          kondisi: form.kondisi,
+          lokasi,
+          asal_perolehan: form.perolehan,
+        })
+        .eq("id", editingId);
+
+      if (error) {
+        console.error("Gagal mengubah barang:", error);
+        alert(`Gagal mengubah barang: ${error.message}`);
+        setSaving(false);
+        return;
+      }
+
+      alert("Data barang berhasil diubah.");
+    }
+
+    setSaving(false);
+    setModalOpen(false);
+    await loadBarang();
+  }
+
+  async function handleDelete(item: Barang) {
+    const confirmed = window.confirm(
+      `Hapus data barang "${item.nama}" dengan kode ${item.kode}?`
+    );
+
+    if (!confirmed) return;
+
+    const { error } = await supabase
+      .from("barang")
+      .delete()
+      .eq("id", item.id);
+
+    if (error) {
+      console.error("Gagal menghapus barang:", error);
+      alert(`Gagal menghapus barang: ${error.message}`);
+      return;
+    }
+
+    setPage(1);
+    await loadBarang();
+  }
+
+  /* =========================
      FILTER
   ========================= */
 
@@ -433,6 +506,7 @@ export default function BarangPage() {
       );
     });
   }, [
+    barangData,
     keyword,
     lokasi,
     perolehan,
@@ -708,6 +782,7 @@ export default function BarangPage() {
         <button
           type="button"
           className={styles.primaryButton}
+          onClick={openAddModal}
         >
           <PlusIcon />
           Tambah Data
@@ -1011,7 +1086,13 @@ export default function BarangPage() {
 
             <tbody>
 
-              {currentData.length > 0 ? (
+              {loading ? (
+                <tr>
+                  <td colSpan={8} className={styles.empty}>
+                    Memuat data barang...
+                  </td>
+                </tr>
+              ) : currentData.length > 0 ? (
                 currentData.map(
                   (item, index) => (
                     <tr key={item.id}>
@@ -1096,6 +1177,7 @@ export default function BarangPage() {
                             type="button"
                             className={`${styles.actionButton} ${styles.actionEdit}`}
                             title="Edit barang"
+                            onClick={() => openEditModal(item)}
                           >
                             <EditIcon />
                           </button>
@@ -1112,6 +1194,7 @@ export default function BarangPage() {
                             type="button"
                             className={`${styles.actionButton} ${styles.actionDelete}`}
                             title="Hapus barang"
+                            onClick={() => handleDelete(item)}
                           >
                             <DeleteIcon />
                           </button>
@@ -1233,6 +1316,73 @@ export default function BarangPage() {
         </div>
 
       </section>
+
+
+      {modalOpen && (
+        <div className={styles.modalOverlay} role="dialog" aria-modal="true">
+          <div className={styles.modalCard}>
+            <div className={styles.modalHeader}>
+              <div>
+                <h2>{editingId === null ? "Tambah Data Barang" : "Edit Data Barang"}</h2>
+                <p>Lengkapi data barang berikut.</p>
+              </div>
+              <button type="button" className={styles.modalClose} onClick={closeModal} disabled={saving} aria-label="Tutup">
+                ×
+              </button>
+            </div>
+
+            <form className={styles.formGrid} onSubmit={handleSubmit}>
+              <label>
+                <span>Kode Barang <b>*</b></span>
+                <input value={form.kode} onChange={(event) => setForm({ ...form, kode: event.target.value })} placeholder="Contoh: 1.3.2.08.01.10.087.0001" required />
+              </label>
+
+              <label>
+                <span>Nama Barang <b>*</b></span>
+                <input value={form.nama} onChange={(event) => setForm({ ...form, nama: event.target.value })} placeholder="Nama barang" required />
+              </label>
+
+              <label>
+                <span>Tahun Pembelian <b>*</b></span>
+                <input
+                  value={form.tahun}
+                  onChange={(event) => setForm({ ...form, tahun: event.target.value.replace(/\D/g, "").slice(0, 4) })}
+                  placeholder="2026"
+                  inputMode="numeric"
+                  maxLength={4}
+                  required
+                />
+              </label>
+
+              <label>
+                <span>Kondisi <b>*</b></span>
+                <select value={form.kondisi} onChange={(event) => setForm({ ...form, kondisi: event.target.value as Kondisi })} required>
+                  {kondisiOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+
+              <label>
+                <span>Lokasi <b>*</b></span>
+                <input value={form.lokasi} onChange={(event) => setForm({ ...form, lokasi: event.target.value })} placeholder="Contoh: Gudang Sarpras" required />
+              </label>
+
+              <label>
+                <span>Asal Perolehan <b>*</b></span>
+                <select value={form.perolehan} onChange={(event) => setForm({ ...form, perolehan: event.target.value as Perolehan })} required>
+                  {perolehanOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </label>
+
+              <div className={styles.formActions}>
+                <button type="button" className={styles.modalCancel} onClick={closeModal} disabled={saving}>Batal</button>
+                <button type="submit" className={styles.modalSave} disabled={saving}>
+                  {saving ? "Menyimpan..." : editingId === null ? "Simpan Data" : "Simpan Perubahan"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
     </main>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   useLocale,
@@ -8,6 +9,7 @@ import {
 } from "next-intl";
 import Footer from "../../../components/Footer";
 import styles from "./page.module.css";
+import { supabase } from "@/lib/supabase";
 
 type ChatMessage = {
   id: string;
@@ -25,8 +27,24 @@ type AttachedImage = {
   size: string;
 };
 
-const STORAGE_KEY =
-  "sisarpras-chat-SR-2026-00128";
+type Pengaduan = {
+  id: number;
+  nomor: string;
+  user_id: string | null;
+  pelapor: string;
+  kontak: string | null;
+  email: string | null;
+  lokasi: string;
+  barang: string;
+  jenis: string | null;
+  deskripsi: string | null;
+  prioritas: "Tinggi" | "Sedang" | "Rendah";
+  status: "Pending" | "Diverifikasi" | "Diproses" | "Selesai";
+  foto_url: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 
 function Icon({
   children,
@@ -159,6 +177,12 @@ function CloseIcon() {
 export default function DetailLaporanPage() {
   const locale = useLocale();
   const t = useTranslations("Detail");
+  const params = useParams();
+  const reportId = String(params?.id ?? "");
+
+  const [report, setReport] = useState<Pengaduan | null>(null);
+  const [loadingReport, setLoadingReport] = useState(true);
+  const [reportError, setReportError] = useState("");
 
   const defaultMessages: ChatMessage[] = [
     {
@@ -226,6 +250,96 @@ export default function DetailLaporanPage() {
     useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!reportId) return;
+
+    let active = true;
+
+    async function loadReport() {
+      setLoadingReport(true);
+      setReportError("");
+
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        if (active) {
+          setReportError(
+            locale === "id"
+              ? "Silakan login terlebih dahulu untuk melihat laporan."
+              : "Please log in first to view this report."
+          );
+          setLoadingReport(false);
+        }
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("pengaduan")
+        .select("*")
+        .eq("nomor", reportId)
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (!active) return;
+
+      if (error) {
+        console.error("Gagal memuat detail laporan:", error);
+        setReportError(
+          locale === "id"
+            ? "Gagal memuat detail laporan."
+            : "Failed to load report details."
+        );
+        setLoadingReport(false);
+        return;
+      }
+
+      if (!data) {
+        setReportError(
+          locale === "id"
+            ? "Laporan tidak ditemukan atau bukan milik akun ini."
+            : "Report not found or it does not belong to this account."
+        );
+        setLoadingReport(false);
+        return;
+      }
+
+      setReport(data as Pengaduan);
+      setLoadingReport(false);
+    }
+
+    loadReport();
+
+    const channel = supabase
+      .channel(`detail-pengaduan-${reportId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "pengaduan",
+        },
+        (payload) => {
+          const changed = payload.new as Partial<Pengaduan>;
+
+          if (
+            changed?.nomor === reportId ||
+            String(changed?.id ?? "") === reportId
+          ) {
+            loadReport();
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      active = false;
+      supabase.removeChannel(channel);
+    };
+  }, [reportId, locale]);
+
+  useEffect(() => {
     const mq = window.matchMedia(
       "(max-width: 650px)"
     );
@@ -251,7 +365,7 @@ export default function DetailLaporanPage() {
     try {
       const saved =
         localStorage.getItem(
-          STORAGE_KEY
+          `sisarpras-chat-${reportId}`
         );
 
       if (saved) {
@@ -269,14 +383,14 @@ export default function DetailLaporanPage() {
     } finally {
       setHydrated(true);
     }
-  }, []);
+  }, [reportId]);
 
   useEffect(() => {
     if (!hydrated) return;
 
     try {
       localStorage.setItem(
-        STORAGE_KEY,
+        `sisarpras-chat-${reportId}`,
         JSON.stringify(messages)
       );
     } catch (error) {
@@ -285,7 +399,7 @@ export default function DetailLaporanPage() {
         error
       );
     }
-  }, [messages, hydrated]);
+  }, [messages, hydrated, reportId]);
 
   useEffect(() => {
     const close = (event: MouseEvent) => {
@@ -521,6 +635,103 @@ export default function DetailLaporanPage() {
     setSelectMode(false);
   }
 
+  const statusStep =
+    report?.status === "Selesai"
+      ? 4
+      : report?.status === "Diproses"
+      ? 3
+      : report?.status === "Diverifikasi"
+      ? 2
+      : 1;
+
+  const statusLabel =
+    locale === "id"
+      ? report?.status ?? "Pending"
+      : report?.status === "Diverifikasi"
+      ? "Verified"
+      : report?.status === "Diproses"
+      ? "Processed"
+      : report?.status === "Selesai"
+      ? "Completed"
+      : "Pending";
+
+  const createdDate = report
+    ? new Date(report.created_at).toLocaleString(
+        locale === "id" ? "id-ID" : "en-US",
+        {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+          timeZone: "Asia/Jakarta",
+        }
+      ) + " WIB"
+    : "";
+
+  const updatedDate = report
+    ? new Date(report.updated_at).toLocaleString(
+        locale === "id" ? "id-ID" : "en-US",
+        {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+          timeZone: "Asia/Jakarta",
+        }
+      ) + " WIB"
+    : "";
+
+  if (loadingReport) {
+    return (
+      <>
+        <main className={styles.page}>
+          <div className={styles.backContainer}>
+            <Link
+              href={`/${locale}/laporan`}
+              className={styles.backButton}
+            >
+              <span className={styles.backIcon}>←</span>
+              <span>{t("backToReports")}</span>
+            </Link>
+          </div>
+
+          <section className={styles.reportHeader}>
+            <p>{locale === "id" ? "Memuat detail laporan..." : "Loading report details..."}</p>
+          </section>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  if (!report) {
+    return (
+      <>
+        <main className={styles.page}>
+          <div className={styles.backContainer}>
+            <Link
+              href={`/${locale}/laporan`}
+              className={styles.backButton}
+            >
+              <span className={styles.backIcon}>←</span>
+              <span>{t("backToReports")}</span>
+            </Link>
+          </div>
+
+          <section className={styles.reportHeader}>
+            <h1>{locale === "id" ? "Laporan tidak tersedia" : "Report unavailable"}</h1>
+            <p>{reportError}</p>
+          </section>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <main className={styles.page}>
@@ -574,7 +785,7 @@ export default function DetailLaporanPage() {
                 }
               >
                 <h1>
-                  {t("reportTitle")}
+                  {report.nomor}
                 </h1>
 
                 <span
@@ -582,12 +793,14 @@ export default function DetailLaporanPage() {
                     styles.status
                   }
                 >
-                  {t("statusProcessing")}
+                  {statusLabel}
                 </span>
               </div>
 
               <p>
-                {t("createdAt")}
+                {locale === "id"
+                  ? `Dibuat ${createdDate}`
+                  : `Created ${createdDate}`}
               </p>
             </div>
           </div>
@@ -607,7 +820,7 @@ export default function DetailLaporanPage() {
               }
             >
               {t("stepCounter", {
-                current: 3,
+                current: statusStep,
                 total: 4,
               })}
             </span>
@@ -619,41 +832,68 @@ export default function DetailLaporanPage() {
             <ProgressItem
               number="01"
               label={t("submitted")}
-              title={t(
-                "submittedTitle"
-              )}
-              date="06 Sep 2026, 13:20 WIB"
-              done
+              title={
+                locale === "id"
+                  ? "Laporan dikirim"
+                  : "Report submitted"
+              }
+              date={createdDate}
+              done={statusStep > 1}
+              active={statusStep === 1}
             />
 
             <ProgressItem
               number="02"
               label={t("verified")}
-              title={t(
-                "verifiedTitle"
-              )}
-              date="06 Sep 2026, 14:05 WIB"
-              done
+              title={
+                locale === "id"
+                  ? "Laporan diverifikasi"
+                  : "Report verified"
+              }
+              date={
+                statusStep >= 3
+                  ? updatedDate
+                  : t("waitingAction")
+              }
+              done={statusStep >= 3}
+              active={Number(statusStep) === 2}
+              waiting={statusStep < 2}
             />
 
             <ProgressItem
               number="03"
               label={t("processed")}
-              title={t(
-                "processedTitle"
-              )}
-              date="07 Sep 2026, 09:10 WIB"
-              active
+              title={
+                locale === "id"
+                  ? "Laporan diproses"
+                  : "Report processed"
+              }
+              date={
+                statusStep >= 3
+                  ? updatedDate
+                  : t("waitingAction")
+              }
+              done={statusStep >= 4}
+              active={statusStep === 3}
+              waiting={statusStep < 3}
             />
 
             <ProgressItem
               number="04"
               label={t("completed")}
-              title={t(
-                "completedTitle"
-              )}
-              date={t("waitingAction")}
-              waiting
+              title={
+                locale === "id"
+                  ? "Laporan selesai"
+                  : "Report completed"
+              }
+              date={
+                statusStep >= 4
+                  ? updatedDate
+                  : t("waitingAction")
+              }
+              done={statusStep >= 4}
+              active={false}
+              waiting={statusStep < 4}
             />
           </div>
         </section>
@@ -700,27 +940,27 @@ export default function DetailLaporanPage() {
               >
                 <InfoRow
                   label={t("reporter")}
-                  value={t("reporterValue")}
+                  value={report.pelapor}
                 />
 
                 <InfoRow
                   label={t("phone")}
-                  value="012345678910"
+                  value={report.kontak || "-"}
                 />
 
                 <InfoRow
                   label={t("email")}
-                  value="hna@gmail.com"
+                  value={report.email || "-"}
                 />
 
                 <InfoRow
                   label={t("location")}
-                  value="Lab RPL"
+                  value={report.lokasi}
                 />
 
                 <InfoRow
                   label={t("itemName")}
-                  value={t("itemValue")}
+                  value={report.barang}
                 />
 
                 <div
@@ -737,7 +977,7 @@ export default function DetailLaporanPage() {
                       styles.typeBadge
                     }
                   >
-                    {t("typeValue")}
+                    {report.jenis || "-"}
                   </strong>
                 </div>
 
@@ -755,7 +995,7 @@ export default function DetailLaporanPage() {
                       styles.urgentBadge
                     }
                   >
-                    {t("urgencyValue")}
+                    {report.prioritas}
                   </strong>
                 </div>
               </div>
@@ -770,7 +1010,7 @@ export default function DetailLaporanPage() {
                 </h3>
 
                 <p>
-                  {t("description")}
+                  {report.deskripsi || "-"}
                 </p>
               </div>
 
@@ -783,54 +1023,72 @@ export default function DetailLaporanPage() {
                   {t("photoTitle")}
                 </h3>
 
-                <div
-                  className={
-                    styles.photoBox
-                  }
-                  onClick={() =>
-                    setSelectedImage(
-                      "/classroom.jpg"
-                    )
-                  }
-                >
-                  <img
-                    src="/classroom.jpg"
-                    alt={t(
-                      "photoAlt"
-                    )}
-                  />
-
+                {report.foto_url ? (
                   <div
                     className={
-                      styles.photoOverlay
+                      styles.photoBox
+                    }
+                    onClick={() =>
+                      setSelectedImage(
+                        report.foto_url!
+                      )
                     }
                   >
-                    <div>
-                      <ImageIcon />
+                    <img
+                      src={report.foto_url}
+                      alt={t(
+                        "photoAlt"
+                      )}
+                    />
 
-                      <span>
-                        lampu_proyektor_lab.jpg
-                        <small>
-                          1.8 MB
-                        </small>
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={(event) => {
-                        event.stopPropagation();
-
-                        setSelectedImage(
-                          "/classroom.jpg"
-                        );
-                      }}
+                    <div
+                      className={
+                        styles.photoOverlay
+                      }
                     >
-                      ⛶{" "}
-                      {t("enlarge")}
-                    </button>
+                      <div>
+                        <ImageIcon />
+
+                        <span>
+                          {locale === "id"
+                            ? "Foto laporan"
+                            : "Report photo"}
+                        </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation();
+
+                          setSelectedImage(
+                            report.foto_url!
+                          );
+                        }}
+                      >
+                        ⛶{" "}
+                        {t("enlarge")}
+                      </button>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div
+                    className={
+                      styles.photoBox
+                    }
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#7b8499",
+                      cursor: "default",
+                    }}
+                  >
+                    {locale === "id"
+                      ? "Tidak ada foto laporan"
+                      : "No report photo"}
+                  </div>
+                )}
               </div>
             </div>
           </div>
